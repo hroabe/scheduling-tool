@@ -4,7 +4,7 @@
 
 Python(Django) + Next.js
 
-<img src="docs/app.png" alt="メイン画面" width="500"/>
+<img src="docs/app.png" alt="メイン画面" width="780"/>
 
 ## バックエンド
 

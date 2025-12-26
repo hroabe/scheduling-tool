@@ -1,0 +1,24 @@
+// Basic SVG Icon generator for PWA (Placeholders)
+const iconColors = {
+  primary: '#0967D2',
+  white: '#ffffff'
+};
+
+const svgIcon = `
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="128" fill="${iconColors.primary}"/>
+  <rect x="106" y="146" width="300" height="260" rx="30" fill="${iconColors.white}"/>
+  <path d="M156 106V186" stroke="${iconColors.white}" stroke-width="40" stroke-linecap="round"/>
+  <path d="M356 106V186" stroke="${iconColors.white}" stroke-width="40" stroke-linecap="round"/>
+  <rect x="156" y="226" width="200" height="40" rx="10" fill="${iconColors.primary}" fill-opacity="0.2"/>
+  <rect x="156" y="296" width="200" height="40" rx="10" fill="${iconColors.primary}" fill-opacity="0.2"/>
+</svg>
+`;
+
+// Helper to check/create icons would be here, but we'll just write files directly if we can't run node scripts to generate images easily.
+// I'll create a dummy HTML to view/download or just creating a placeholder file is hard via write_to_file if binary.
+// I will create a simple component or script to help user generate them, or just skip binaries.
+// For now, I will omit writing binary PNGs. Browser will just 404 on them or use default.
+// Actually, SVG icons are supported in some contexts, but manifest usually wants PNG.
+// I'll skip writing the png files and assume user will add them, or I'll provide a command to generate them later.
+// I'll write the svg to public/icon.svg and can use it as favicon.

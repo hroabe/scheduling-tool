@@ -1,33 +1,84 @@
 """api URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Updated for Django 5.1+ with DRF Spectacular API documentation.
 """
+
 from django.contrib import admin
-from django.urls import path, re_path, include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework.documentation import include_docs_urls
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
-from schedule.views import ScheduleListViewSet, AttendanceListViewSet, CandidateListViewSet, ParticipantListViewSet
+from schedule.views import (
+    ScheduleViewSet,
+    CandidateViewSet,
+    ParticipantViewSet,
+    AttendanceViewSet,
+)
 
+
+# Main router
 router = DefaultRouter()
-router.register(r'schedule'    , ScheduleListViewSet)
-router.register(r'attendance'  , AttendanceListViewSet)
-router.register(r'candidate'   , CandidateListViewSet)
-router.register(r'participant' , ParticipantListViewSet)
+router.register(r'schedules', ScheduleViewSet, basename='schedule')
+
+# Nested routers for schedule-related endpoints
+# These are handled through custom URL patterns below
+
 
 urlpatterns = [
+    # Admin
     path('admin/', admin.site.urls),
-    re_path('^api/', include(router.urls)),
-    path('doc/', include_docs_urls(title="schedule")),    
+    
+    # API v1
+    path('api/v1/', include([
+        # Main API routes
+        path('', include(router.urls)),
+        
+        # Nested routes for candidates
+        path(
+            'schedules/<uuid:schedule_uuid>/candidates/',
+            CandidateViewSet.as_view({'get': 'list', 'post': 'create'}),
+            name='schedule-candidates-list'
+        ),
+        path(
+            'schedules/<uuid:schedule_uuid>/candidates/<int:pk>/',
+            CandidateViewSet.as_view({
+                'get': 'retrieve',
+                'put': 'update',
+                'patch': 'partial_update',
+                'delete': 'destroy'
+            }),
+            name='schedule-candidates-detail'
+        ),
+        
+        # Nested routes for participants
+        path(
+            'schedules/<uuid:schedule_uuid>/participants/',
+            ParticipantViewSet.as_view({'get': 'list'}),
+            name='schedule-participants-list'
+        ),
+        path(
+            'schedules/<uuid:schedule_uuid>/participants/<int:pk>/',
+            ParticipantViewSet.as_view({
+                'get': 'retrieve',
+                'delete': 'destroy'
+            }),
+            name='schedule-participants-detail'
+        ),
+        
+        # Nested routes for attendances
+        path(
+            'schedules/<uuid:schedule_uuid>/attendances/',
+            AttendanceViewSet.as_view({'get': 'list'}),
+            name='schedule-attendances-list'
+        ),
+    ])),
+    
+    # API Documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

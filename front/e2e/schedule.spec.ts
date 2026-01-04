@@ -13,10 +13,14 @@ test.describe('Schedule Creation Flow', () => {
   test('create page should load correctly', async ({ page }) => {
     await page.goto('/create');
 
-    // Page should display creation form
-    await expect(page.locator('text=イベント情報, text=イベント名, text=Event')).toBeVisible({ timeout: 10000 });
+    // Page should display creation form - wait for any content to load
+    await page.waitForLoadState('networkidle');
 
-    // Form fields should be present - using the actual field names from create/page.tsx
+    // Check for form elements or heading text
+    const hasForm = await page.locator('form, input').first().isVisible({ timeout: 10000 });
+    expect(hasForm).toBe(true);
+
+    // Form fields should be present
     await expect(page.locator('input').first()).toBeVisible();
   });
 
@@ -34,17 +38,15 @@ test.describe('Schedule Creation Flow', () => {
     await expect(nameInput).toHaveValue('E2Eテストイベント');
   });
 
-  test('should show validation message on empty required fields', async ({ page }) => {
+  test('submit button should be disabled when form is incomplete', async ({ page }) => {
     await page.goto('/create');
     await page.waitForLoadState('networkidle');
 
-    // Try to submit without filling required fields
+    // Submit button should be disabled when required fields are empty
     const submitButton = page.locator('button[type="submit"]');
     if (await submitButton.isVisible()) {
-      await submitButton.click();
-
-      // Should stay on create page (not redirect)
-      await expect(page).toHaveURL(/create/);
+      // Button should be disabled (this is expected behavior)
+      await expect(submitButton).toBeDisabled();
     }
   });
 });

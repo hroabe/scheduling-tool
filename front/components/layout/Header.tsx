@@ -11,14 +11,35 @@ import {
     useColorModeValue,
     Heading,
     Link as ChakraLink,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    Avatar,
+    Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { Sun, Moon, Github, Calendar } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Sun, Moon, Github, Calendar, LogOut, User as UserIcon } from 'lucide-react';
+import { useAuthStore } from '@/stores/authStore';
+import { useEffect } from 'react';
 
 export function Header() {
     const { colorMode, toggleColorMode } = useColorMode();
+    const router = useRouter();
+    const { user, logout, checkAuth, isAuthenticated } = useAuthStore();
     const bg = useColorModeValue('whiteAlpha.900', 'blackAlpha.700');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+
+    // Initial auth check
+    useEffect(() => {
+        checkAuth();
+    }, [checkAuth]);
+
+    const handleLogout = async () => {
+        await logout();
+        router.push('/login');
+    };
 
     return (
         <Box
@@ -60,6 +81,55 @@ export function Header() {
                         >
                             新規作成
                         </Button>
+
+                        {isAuthenticated ? (
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    variant="ghost"
+                                    rounded="full"
+                                    cursor="pointer"
+                                    minW={0}
+                                >
+                                    <HStack>
+                                        <Avatar size="sm" name={user?.username || 'User'} />
+                                        <Text display={{ base: 'none', md: 'block' }}>
+                                            {user?.username}
+                                        </Text>
+                                    </HStack>
+                                </MenuButton>
+                                <MenuList>
+                                    <MenuItem icon={<UserIcon size={16} />} as={Link} href="/dashboard">
+                                        Dashboard
+                                    </MenuItem>
+                                    <MenuItem icon={<Calendar size={16} />} as={Link} href="/oneonone">
+                                        1-on-1 Config
+                                    </MenuItem>
+                                    <MenuItem icon={<LogOut size={16} />} onClick={handleLogout}>
+                                        Logout
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
+                        ) : (
+                            <>
+                                <Button
+                                    as={Link}
+                                    href="/login"
+                                    variant="ghost"
+                                    size="sm"
+                                >
+                                    Login
+                                </Button>
+                                <Button
+                                    as={Link}
+                                    href="/register"
+                                    variant="outline"
+                                    size="sm"
+                                >
+                                    Register
+                                </Button>
+                            </>
+                        )}
 
                         <IconButton
                             aria-label="Toggle color mode"

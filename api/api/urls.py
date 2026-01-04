@@ -37,6 +37,16 @@ urlpatterns = [
         # Main API routes
         path('', include(router.urls)),
         
+        # Accounts API
+        path('accounts/', include('accounts.urls')),
+        
+        # Integrations API (RFC-0001, RFC-0002)
+        path('integrations/google/', include('integrations.google.urls')),
+        path('integrations/outlook/', include('integrations.outlook.urls')),
+        
+        # 1-on-1 Scheduling API (RFC-0005)
+        path('oneonone/', include('oneonone.urls')),
+        
         # Nested routes for candidates
         path(
             'schedules/<uuid:schedule_uuid>/candidates/',

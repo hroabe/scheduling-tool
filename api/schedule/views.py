@@ -100,13 +100,14 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         return obj
     
     def perform_destroy(self, instance):
-        """削除時に編集キーを確認"""
-        if instance.edit_key:
-            edit_key = (
-                self.request.data.get('edit_key') or 
-                self.request.query_params.get('edit_key')
-            )
-            if edit_key != instance.edit_key:
+        """削除時に編集キーを確認（hash優先）"""
+        edit_key = (
+            self.request.data.get('edit_key') or 
+            self.request.query_params.get('edit_key')
+        )
+        # edit_key が設定されているスケジュールは認証が必要
+        if instance.edit_key_hash or instance.edit_key:
+            if not instance.check_edit_key(edit_key):
                 from rest_framework.exceptions import PermissionDenied
                 raise PermissionDenied('編集キーが正しくありません。')
         instance.delete()
@@ -130,20 +131,25 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         edit_token = request.data.get('edit_token') or request.query_params.get('token')
         
         if edit_token:
-            # Update existing response
-            try:
-                participant = schedule.participants.get(edit_token=edit_token)
-                serializer = ParticipantCreateSerializer(
-                    participant,
-                    data=request.data,
-                    context={'request': request, 'schedule': schedule},
-                    partial=True
-                )
-            except Participant.DoesNotExist:
+            # Update existing response - hash優先で検証
+            participant = None
+            for p in schedule.participants.all():
+                if p.check_edit_token(edit_token):
+                    participant = p
+                    break
+            
+            if not participant:
                 return Response(
                     {'error': '無効な編集トークンです。'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+            
+            serializer = ParticipantCreateSerializer(
+                participant,
+                data=request.data,
+                context={'request': request, 'schedule': schedule},
+                partial=True
+            )
         else:
             # Create new response
             serializer = ParticipantCreateSerializer(
@@ -189,6 +195,29 @@ class ScheduleViewSet(viewsets.ModelViewSet):
             schedule.is_finalized = True
             schedule.finalized_candidate = candidate
             schedule.save()
+            
+            # RFC-0001: Trigger Google Calendar event creation
+            if schedule.owner_user:
+                try:
+                    from integrations.google.tasks import (
+                        create_google_calendar_event,
+                        has_google_integration,
+                    )
+                    if has_google_integration(schedule.owner_user):
+                        create_google_calendar_event.delay(schedule.id)
+                except ImportError:
+                    pass  # Google integration not installed
+                
+                # RFC-0002: Trigger Outlook Calendar event creation
+                try:
+                    from integrations.outlook.tasks import (
+                        create_outlook_calendar_event,
+                        has_outlook_integration,
+                    )
+                    if has_outlook_integration(schedule.owner_user):
+                        create_outlook_calendar_event.delay(schedule.id)
+                except ImportError:
+                    pass  # Outlook integration not installed
             
             return Response(
                 ScheduleDetailSerializer(schedule, context={'request': request}).data
@@ -349,24 +378,24 @@ class ParticipantViewSet(
         return Participant.objects.none()
     
     def perform_destroy(self, instance):
-        """削除時に編集トークンを確認"""
+        """削除時に編集トークンを確認（hash優先）"""
         edit_token = (
             self.request.data.get('edit_token') or
             self.request.query_params.get('token')
         )
         
-        # Allow deletion with participant's own token or schedule's edit key
-        if edit_token:
-            if str(instance.edit_token) == str(edit_token):
-                instance.delete()
-                return
+        # Allow deletion with participant's own token
+        if edit_token and instance.check_edit_token(edit_token):
+            instance.delete()
+            return
         
+        # Or schedule's edit key
         schedule_edit_key = (
             self.request.data.get('edit_key') or
             self.request.query_params.get('edit_key')
         )
         
-        if instance.schedule.edit_key and schedule_edit_key != instance.schedule.edit_key:
+        if not instance.schedule.check_edit_key(schedule_edit_key):
             from rest_framework.exceptions import PermissionDenied
             raise PermissionDenied('削除権限がありません。')
         

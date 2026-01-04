@@ -1,0 +1,91 @@
+{
+    "common": {
+        "submit": "送信",
+        "cancel": "キャンセル",
+        "save": "保存",
+        "delete": "削除",
+        "edit": "編集",
+        "back": "戻る",
+        "close": "閉じる",
+        "confirm": "確認",
+        "loading": "読み込み中...",
+        "error": "エラー",
+        "success": "成功"
+    },
+    "auth": {
+        "login": "ログイン",
+        "logout": "ログアウト",
+        "register": "登録",
+        "username": "ユーザー名",
+        "password": "パスワード",
+        "email": "メールアドレス",
+        "confirmPassword": "パスワード確認",
+        "firstName": "名",
+        "lastName": "姓",
+        "loginSuccess": "ログインしました。",
+        "logoutSuccess": "ログアウトしました。",
+        "registerSuccess": "登録が完了しました。",
+        "invalidCredentials": "ユーザー名またはパスワードが正しくありません。",
+        "emailInUse": "このメールアドレスは既に使用されています。",
+        "passwordMismatch": "パスワードが一致しません。",
+        "passwordChanged": "パスワードを変更しました。"
+    },
+    "schedule": {
+        "title": "日程調整",
+        "create": "新規作成",
+        "myEvents": "マイイベント",
+        "eventName": "イベント名",
+        "description": "説明",
+        "deadline": "回答期限",
+        "candidates": "候補日",
+        "participants": "参加者",
+        "finalize": "確定する",
+        "finalized": "確定済み",
+        "notFinalized": "未確定",
+        "created": "日程を作成しました。",
+        "finalizedSuccess": "日程を確定しました。",
+        "noEvents": "まだイベントがありません。"
+    },
+    "response": {
+        "available": "◯",
+        "maybe": "△",
+        "unavailable": "×",
+        "yourName": "お名前",
+        "submitted": "回答を送信しました。",
+        "updated": "回答を更新しました。"
+    },
+    "integration": {
+        "googleConnected": "Google連携が完了しました。",
+        "googleDisconnected": "Google連携を解除しました。",
+        "outlookConnected": "Outlook連携が完了しました。",
+        "outlookDisconnected": "Outlook連携を解除しました。",
+        "tokenExpired": "トークンが期限切れです。再連携が必要です。",
+        "connect": "連携する",
+        "disconnect": "連携解除"
+    },
+    "booking": {
+        "title": "予約",
+        "bookTime": "予約する",
+        "availableSlots": "空き枠",
+        "confirmed": "予約が完了しました。",
+        "cancelled": "予約をキャンセルしました。",
+        "alreadyBooked": "この時間枠は既に予約されています。",
+        "guestName": "お名前",
+        "guestEmail": "メールアドレス",
+        "message": "メッセージ"
+    },
+    "errors": {
+        "invalidRequest": "無効なリクエストです。",
+        "notFound": "見つかりません。",
+        "permissionDenied": "権限がありません。",
+        "serverError": "サーバーエラーが発生しました。",
+        "networkError": "ネットワークエラーが発生しました。"
+    },
+    "settings": {
+        "title": "設定",
+        "language": "言語",
+        "timezone": "タイムゾーン",
+        "notifications": "通知設定",
+        "emailNotifications": "メール通知"
+    }
+}

@@ -8,14 +8,17 @@
 
 ## Architecture
 - `architecture/system-overview.md` : 全体構成（Django/Next/Celery/Redis/DB）
-- `architecture/data-model.md` : データモデル（概念スキーマ/制約/保持）
+- `architecture/data-model.md` : データモデル（概念/命名対応/改善計画）
 
 ## API
 - `api/api-spec.md` : エンドポイント仕様（v1）
 
 ## Frontend / Mobile
-- `frontend/frontend-spec.md` : 画面仕様・状態管理・UI規約
+- `frontend/frontend-spec.md` : 画面仕様・状態管理・UI規約（実装ルーティング整合）
 - `mobile/mobile-spec.md` : RNアプリのスコープ/画面/API
+
+## Operations
+- `operations/upgrade-to-latest-5x-15x-2026-01.md` : Django 5.x / Next.js 15.x 最新パッチへ更新ガイド
 
 ## Standards
 - `standards/quality-standards.md` : テスト/品質ゲート/受け入れ基準

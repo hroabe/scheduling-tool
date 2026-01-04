@@ -129,6 +129,11 @@ export function useFinalizeSchedule(uuid: string) {
     });
 }
 
+// 1-on-1 key additions (partial update to queryKeys object not easily done with replace, so I'll add them to the object if I can, or just append hooks)
+// Wait, I needs to update queryKeys const at the top first if I want to use them. 
+// I'll assume I can just add hooks below and use string keys or update queryKeys separately.
+// Let's update the file by chunks.
+
 // CSV Export hook
 export function useExportCsv(uuid: string) {
     return useMutation({
@@ -144,5 +149,57 @@ export function useExportCsv(uuid: string) {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         },
+    });
+}
+
+// RFC-0005: 1-on-1 Scheduling Hooks
+export function useAvailabilityPages() {
+    return useQuery({
+        queryKey: ['oneonone', 'pages'],
+        queryFn: () => api.getAvailabilityPages(),
+    });
+}
+
+export function useCreateAvailabilityPage() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data: any) => api.createAvailabilityPage(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['oneonone', 'pages'] });
+        },
+    });
+}
+
+export function useAvailabilityPage(idOrSlug: string) {
+    return useQuery({
+        queryKey: ['oneonone', 'page', idOrSlug],
+        queryFn: () => api.getAvailabilityPage(idOrSlug),
+        enabled: !!idOrSlug,
+    });
+}
+
+export function usePublicAvailabilityPage(slug: string) {
+    return useQuery({
+        queryKey: ['oneonone', 'public-page', slug],
+        queryFn: () => api.getPublicAvailabilityPage(slug),
+        enabled: !!slug,
+    });
+}
+
+export function useAddAvailabilitySlots(pageId: number | string) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data: { slots: { start_at: string; end_at: string }[] }) =>
+            api.addAvailabilitySlots(pageId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['oneonone', 'page', String(pageId)] });
+        },
+    });
+}
+
+export function useBookSlot(slug: string) {
+    return useMutation({
+        mutationFn: (data: { slot: number; guest_name: string; guest_email: string; guest_message?: string }) =>
+            api.bookSlot(slug, data),
     });
 }

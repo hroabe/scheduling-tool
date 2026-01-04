@@ -137,3 +137,53 @@ export interface ApiError {
     detail?: string;
     [key: string]: string | string[] | undefined;
 }
+
+// RFC-0003: User types
+export interface UserProfile {
+    timezone_name: string;
+    email_notifications: boolean;
+    avatar_url?: string;
+}
+
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    profile?: UserProfile;
+    date_joined: string;
+}
+
+export interface UserIntegration {
+    id: number;
+    provider: 'google' | 'outlook' | 'zoom';
+    provider_display: string;
+    is_active: boolean;
+    is_valid: boolean;
+    is_expired: boolean;
+    expires_at: string;
+    scopes: string;
+    last_used_at?: string;
+    created_at: string;
+}
+
+export interface LoginInput {
+    username: string;
+    password: string;
+}
+
+export interface RegisterInput {
+    username: string;
+    email: string;
+    password: string;
+    password_confirm: string;
+    first_name?: string;
+    last_name?: string;
+}
+
+export interface AuthResponse {
+    user: User;
+    message: string;
+}
+

@@ -133,3 +133,105 @@ export interface ApiError {
     detail?: string;
     [key: string]: string | string[] | undefined;
 }
+
+// RFC-0003: User Authentication Types
+export interface UserProfile {
+    timezone_name: string;
+    email_notifications: boolean;
+    avatar_url?: string;
+    preferred_language: string;
+}
+
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    profile?: UserProfile;
+    date_joined: string;
+}
+
+export interface UserIntegration {
+    id: number;
+    provider: 'google' | 'outlook' | 'zoom';
+    provider_display: string;
+    is_active: boolean;
+    is_valid: boolean;
+    is_expired: boolean;
+    expires_at: string;
+    scopes: string;
+    last_used_at?: string;
+    created_at: string;
+}
+
+export interface LoginInput {
+    username: string;
+    password: string;
+}
+
+export interface RegisterInput {
+    username: string;
+    email: string;
+    password: string;
+    password_confirm: string;
+    first_name?: string;
+    last_name?: string;
+}
+
+export interface AuthResponse {
+    user: User;
+    message: string;
+}
+
+// RFC-0005: 1-on-1 Booking Types
+export interface AvailabilityPage {
+    id: number;
+    slug: string;
+    title: string;
+    description: string;
+    owner_name: string;
+    timezone_name: string;
+    duration_minutes: number;
+    buffer_minutes: number;
+    is_public: boolean;
+    is_active: boolean;
+    available_slots_count?: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface AvailabilitySlot {
+    id: number;
+    start_at: string;
+    end_at: string;
+    is_booked: boolean;
+    is_available: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Booking {
+    uuid: string;
+    slot: number;
+    slot_info?: AvailabilitySlot;
+    page_title: string;
+    host_name: string;
+    guest_name: string;
+    guest_email: string;
+    guest_message: string;
+    status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+    status_display: string;
+    meeting_url?: string;
+    confirmed_at?: string;
+    cancelled_at?: string;
+    created_at: string;
+}
+
+export interface BookingInput {
+    slot: number;
+    guest_name: string;
+    guest_email: string;
+    guest_message?: string;
+}
+

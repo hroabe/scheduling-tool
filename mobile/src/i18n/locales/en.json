@@ -1,0 +1,70 @@
+{
+    "common": {
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "back": "Back",
+        "close": "Close",
+        "confirm": "Confirm",
+        "loading": "Loading...",
+        "error": "Error"
+    },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "register": "Register",
+        "username": "Username",
+        "password": "Password",
+        "email": "Email",
+        "confirmPassword": "Confirm Password",
+        "loginSubtitle": "Sign in to your account",
+        "registerSubtitle": "Create a new account",
+        "usernamePlaceholder": "Enter username",
+        "passwordPlaceholder": "Enter password",
+        "emailPlaceholder": "Enter email",
+        "confirmPasswordPlaceholder": "Re-enter password",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "fillAllFields": "Please fill in all fields",
+        "invalidCredentials": "Invalid username or password",
+        "passwordMismatch": "Passwords do not match",
+        "registerError": "Registration failed"
+    },
+    "account": {
+        "profile": "Profile",
+        "integrations": "Integrations",
+        "myBookings": "My Bookings",
+        "availabilityPages": "Availability Pages"
+    },
+    "integration": {
+        "connected": "Connected",
+        "notConnected": "Not connected",
+        "disconnectConfirm": "Disconnect this integration?"
+    },
+    "schedule": {
+        "title": "Schedule",
+        "create": "Create New",
+        "myEvents": "My Events",
+        "eventName": "Event Name",
+        "description": "Description",
+        "deadline": "Deadline"
+    },
+    "booking": {
+        "title": "Booking",
+        "bookTime": "Book a time",
+        "availableSlots": "Available slots",
+        "confirmed": "Booking confirmed",
+        "cancelled": "Booking cancelled",
+        "guestName": "Your Name",
+        "guestEmail": "Email",
+        "message": "Message",
+        "noBookings": "No bookings",
+        "cancelConfirm": "Cancel this booking?"
+    },
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "error": "Error",
+    "confirm": "Confirm"
+}

@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'drf_spectacular',
     # Local apps
     'schedule',
+    'accounts',
+    'integrations.google',
+    'integrations.outlook',
+    'oneonone',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',  # RFC-0006: i18n
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -106,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# Internationalization (RFC-0006)
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'ja'
@@ -114,8 +119,24 @@ LANGUAGE_CODE = 'ja'
 TIME_ZONE = config('DEFAULT_TIMEZONE', default='Asia/Tokyo')
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+
+# Supported languages (RFC-0006)
+LANGUAGES = [
+    ('ja', '日本語'),
+    ('en', 'English'),
+    ('zh-hans', '简体中文'),
+    ('zh-hant', '繁體中文'),
+    ('ko', '한국어'),
+    ('vi', 'Tiếng Việt'),
+    ('pt', 'Português'),
+]
+
+# Locale paths for translation files
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -204,6 +225,27 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+# Encryption Key for OAuth tokens (generate with: from cryptography.fernet import Fernet; Fernet.generate_key())
+# IMPORTANT: Set this in production via environment variable
+FERNET_KEY = config('FERNET_KEY', default=None)
+
+
+# Google OAuth (RFC-0001)
+GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID', default='')
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET', default='')
+GOOGLE_REDIRECT_URI = config('GOOGLE_REDIRECT_URI', default='http://localhost:8000/api/v1/integrations/google/callback/')
+
+# Microsoft OAuth (RFC-0002)
+MICROSOFT_CLIENT_ID = config('MICROSOFT_CLIENT_ID', default='')
+MICROSOFT_CLIENT_SECRET = config('MICROSOFT_CLIENT_SECRET', default='')
+MICROSOFT_REDIRECT_URI = config('MICROSOFT_REDIRECT_URI', default='http://localhost:8000/api/v1/integrations/outlook/callback/')
+
+# Zoom OAuth (RFC-0004)
+ZOOM_CLIENT_ID = config('ZOOM_CLIENT_ID', default='')
+ZOOM_CLIENT_SECRET = config('ZOOM_CLIENT_SECRET', default='')
+ZOOM_REDIRECT_URI = config('ZOOM_REDIRECT_URI', default='http://localhost:8000/api/v1/integrations/zoom/callback/')
 
 
 # Email Configuration

@@ -1,0 +1,97 @@
+{
+    "common": {
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "back": "Back",
+        "close": "Close",
+        "confirm": "Confirm",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success"
+    },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "register": "Register",
+        "username": "Username",
+        "password": "Password",
+        "email": "Email",
+        "confirmPassword": "Confirm Password",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "loginSuccess": "Login successful.",
+        "logoutSuccess": "Logged out.",
+        "registerSuccess": "Registration complete.",
+        "invalidCredentials": "Invalid username or password.",
+        "emailInUse": "This email is already in use.",
+        "passwordMismatch": "Passwords do not match.",
+        "passwordChanged": "Password changed successfully."
+    },
+    "schedule": {
+        "title": "Schedule",
+        "create": "Create New",
+        "myEvents": "My Events",
+        "eventName": "Event Name",
+        "description": "Description",
+        "deadline": "Deadline",
+        "candidates": "Candidates",
+        "participants": "Participants",
+        "finalize": "Finalize",
+        "finalized": "Finalized",
+        "notFinalized": "Not finalized",
+        "created": "Schedule created successfully.",
+        "finalizedSuccess": "Schedule finalized.",
+        "noEvents": "No events yet."
+    },
+    "response": {
+        "available": "Yes",
+        "maybe": "Maybe",
+        "unavailable": "No",
+        "yourName": "Your Name",
+        "submitted": "Response submitted.",
+        "updated": "Response updated."
+    },
+    "integration": {
+        "googleConnected": "Google Calendar connected.",
+        "googleDisconnected": "Google Calendar disconnected.",
+        "outlookConnected": "Outlook Calendar connected.",
+        "outlookDisconnected": "Outlook Calendar disconnected.",
+        "tokenExpired": "Token expired. Please reconnect.",
+        "connect": "Connect",
+        "disconnect": "Disconnect"
+    },
+    "booking": {
+        "title": "Booking",
+        "bookTime": "Book a time",
+        "availableSlots": "Available slots",
+        "confirmed": "Booking confirmed.",
+        "cancelled": "Booking cancelled.",
+        "alreadyBooked": "This slot is already booked.",
+        "guestName": "Your Name",
+        "guestEmail": "Email",
+        "message": "Message"
+    },
+    "errors": {
+        "invalidRequest": "Invalid request.",
+        "notFound": "Not found.",
+        "permissionDenied": "Permission denied.",
+        "serverError": "Server error.",
+        "networkError": "Network error."
+    },
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "timezone": "Timezone",
+        "notifications": "Notifications",
+        "emailNotifications": "Email Notifications"
+    },
+    "account": {
+        "profile": "Profile",
+        "integrations": "Integrations",
+        "myEvents": "My Events",
+        "settings": "Settings"
+    }
+}

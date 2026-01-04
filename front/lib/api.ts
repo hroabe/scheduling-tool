@@ -10,6 +10,11 @@ import type {
     Participant,
     ParticipantInput,
     PaginatedResponse,
+    User,
+    UserProfile,
+    UserIntegration,
+    RegisterInput,
+    AuthResponse,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -29,6 +34,7 @@ class ApiClient {
 
         const config: RequestInit = {
             ...options,
+            credentials: 'include', // Required for session-based auth
             headers: {
                 'Content-Type': 'application/json',
                 ...options.headers,
@@ -150,9 +156,127 @@ class ApiClient {
     // CSV Export
     async exportCsv(uuid: string, includeComments = true): Promise<Blob> {
         const url = `${this.baseUrl}/api/v1/schedules/${uuid}/export_csv/?include_comments=${includeComments}`;
-        const response = await fetch(url);
+        const response = await fetch(url, { credentials: 'include' });
         if (!response.ok) throw new Error('Export failed');
         return response.blob();
+    }
+
+    // RFC-0003: Authentication endpoints
+    async login(username: string, password: string): Promise<AuthResponse> {
+        return this.request<AuthResponse>('/api/v1/accounts/login/', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+        });
+    }
+
+    async logout(): Promise<{ message: string }> {
+        return this.request<{ message: string }>('/api/v1/accounts/logout/', {
+            method: 'POST',
+        });
+    }
+
+    async register(data: RegisterInput): Promise<AuthResponse> {
+        return this.request<AuthResponse>('/api/v1/accounts/register/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async getMe(): Promise<User> {
+        return this.request<User>('/api/v1/accounts/me/');
+    }
+
+    async updateMe(data: Partial<User & UserProfile>): Promise<User> {
+        return this.request<User>('/api/v1/accounts/me/', {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async getMySchedules(params?: {
+        page?: number;
+        page_size?: number;
+    }): Promise<PaginatedResponse<ScheduleListItem>> {
+        const searchParams = new URLSearchParams();
+        if (params?.page) searchParams.set('page', params.page.toString());
+        if (params?.page_size) searchParams.set('page_size', params.page_size.toString());
+        const query = searchParams.toString() ? `?${searchParams.toString()}` : '';
+        return this.request<PaginatedResponse<ScheduleListItem>>(`/api/v1/accounts/me/schedules/${query}`);
+    }
+
+    async getIntegrations(): Promise<PaginatedResponse<UserIntegration>> {
+        return this.request<PaginatedResponse<UserIntegration>>('/api/v1/accounts/integrations/');
+    }
+
+    async disconnectIntegration(id: number): Promise<{ message: string }> {
+        return this.request<{ message: string }>(`/api/v1/accounts/integrations/${id}/disconnect/`, {
+            method: 'POST',
+        });
+    }
+
+    // RFC-0005: 1-on-1 Scheduling
+    async getAvailabilityPages(): Promise<PaginatedResponse<any>> {
+        return this.request<PaginatedResponse<any>>('/api/v1/oneonone/pages/');
+    }
+
+    async createAvailabilityPage(data: any): Promise<any> {
+        return this.request<any>('/api/v1/oneonone/pages/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async getAvailabilityPage(idOrSlug: string): Promise<any> {
+        return this.request<any>(`/api/v1/oneonone/pages/${idOrSlug}/`);
+    }
+
+    async getPublicAvailabilityPage(slug: string): Promise<any> {
+        return this.request<any>(`/api/v1/oneonone/p/${slug}/`);
+    }
+
+    async addAvailabilitySlots(
+        pageId: number | string,
+        data: { slots: { start_at: string; end_at: string }[] }
+    ): Promise<any> {
+        return this.request<any>(`/api/v1/oneonone/pages/${pageId}/add_slots/`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async bookSlot(
+        slug: string,
+        data: { slot: number; guest_name: string; guest_email: string; guest_message?: string }
+    ): Promise<any> {
+        return this.request<any>(`/api/v1/oneonone/p/${slug}/book/`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    // RFC-0001/0002: Calendar Integration
+    async getGoogleConnectUrl(): Promise<{ auth_url: string }> {
+        return this.request<{ auth_url: string }>('/api/v1/integrations/google/connect/', {
+            method: 'POST',
+        });
+    }
+
+    async getOutlookConnectUrl(): Promise<{ auth_url: string }> {
+        return this.request<{ auth_url: string }>('/api/v1/integrations/outlook/connect/', {
+            method: 'POST',
+        });
+    }
+
+    async disconnectGoogle(): Promise<{ message: string }> {
+        return this.request<{ message: string }>('/api/v1/integrations/google/disconnect/', {
+            method: 'POST',
+        });
+    }
+
+    async disconnectOutlook(): Promise<{ message: string }> {
+        return this.request<{ message: string }>('/api/v1/integrations/outlook/disconnect/', {
+            method: 'POST',
+        });
     }
 }
 
@@ -169,3 +293,4 @@ export class ApiError extends Error {
 
 export const api = new ApiClient();
 export default api;
+

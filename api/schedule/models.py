@@ -5,9 +5,13 @@ Modern Django 5.1 models with UUID-based URLs, notifications, and enhanced featu
 """
 
 import uuid
+import secrets
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MinLengthValidator
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
+
 
 
 class Schedule(models.Model):
@@ -63,13 +67,31 @@ class Schedule(models.Model):
         help_text="所属"
     )
     
-    # Management
+    # RFC-0003: Owner user (authenticated user who created this schedule)
+    owner_user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='owned_schedules',
+        verbose_name="オーナーユーザー",
+        help_text="ログインユーザーが作成した場合にリンク"
+    )
+    
+    # Management - Security: hash化移行中（新規はhashのみ、既存は平文フォールバック）
     edit_key = models.CharField(
         max_length=100,
         blank=True,
         null=True,
-        verbose_name="編集キー",
-        help_text="イベント編集用のパスワード"
+        verbose_name="編集キー（旧・平文）",
+        help_text="移行期間中のみ使用。新規作成では使用しない"
+    )
+    edit_key_hash = models.CharField(
+        max_length=256,
+        blank=True,
+        null=True,
+        verbose_name="編集キー（ハッシュ）",
+        help_text="イベント編集用のパスワード（ハッシュ保存）"
     )
     
     # Settings
@@ -124,6 +146,34 @@ class Schedule(models.Model):
         help_text="確定した候補日程"
     )
     
+    # RFC-0004: Meeting URL auto-generation
+    MEETING_PROVIDER_CHOICES = [
+        ('google_meet', 'Google Meet'),
+        ('teams', 'Microsoft Teams'),
+        ('zoom', 'Zoom'),
+    ]
+    meeting_provider = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        choices=MEETING_PROVIDER_CHOICES,
+        verbose_name="会議プロバイダー",
+        help_text="自動生成された会議URLのプロバイダー"
+    )
+    meeting_url = models.URLField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="会議URL",
+        help_text="自動生成された会議URL"
+    )
+    meeting_created_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="会議URL作成日時",
+        help_text="会議URLが作成された日時"
+    )
+    
     # Timestamps
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -158,6 +208,40 @@ class Schedule(models.Model):
     def can_respond(self):
         """回答可能かどうか"""
         return self.is_active and not self.is_expired and not self.is_finalized
+
+    def set_edit_key(self, raw_key: str) -> None:
+        """
+        編集キーをハッシュ化して保存
+        
+        Args:
+            raw_key: 平文の編集キー
+        """
+        self.edit_key_hash = make_password(raw_key)
+        self.edit_key = None  # 平文は保存しない
+
+    def check_edit_key(self, raw_key: str) -> bool:
+        """
+        編集キーを検証（hash優先、平文フォールバック）
+        
+        Args:
+            raw_key: 検証する平文キー
+        Returns:
+            bool: 一致すれば True
+        """
+        if not raw_key:
+            return False
+        # hash があれば hash で判定
+        if self.edit_key_hash:
+            return check_password(raw_key, self.edit_key_hash)
+        # 移行期間: 平文フォールバック
+        if self.edit_key:
+            return self.edit_key == raw_key
+        return False
+
+    @classmethod
+    def generate_edit_key(cls) -> str:
+        """安全な編集キーを生成"""
+        return secrets.token_urlsafe(16)
 
 
 class Candidate(models.Model):
@@ -255,13 +339,20 @@ class Participant(models.Model):
         help_text="参加者からのコメント"
     )
     
-    # Edit token for allowing participants to edit their own responses
+    # Edit token - Security: hash化移行中（新規はhashのみ、既存は平文フォールバック）
     edit_token = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
         editable=False,
-        verbose_name="編集トークン",
-        help_text="回答編集用のトークン"
+        verbose_name="編集トークン（旧・平文）",
+        help_text="移行期間中のみ使用。新規作成では使用しない"
+    )
+    edit_token_hash = models.CharField(
+        max_length=256,
+        blank=True,
+        null=True,
+        verbose_name="編集トークン（ハッシュ）",
+        help_text="回答編集用のトークン（ハッシュ保存）"
     )
     
     created_at = models.DateTimeField(
@@ -282,6 +373,40 @@ class Participant(models.Model):
     
     def __str__(self):
         return self.name
+
+    def set_edit_token(self, raw_token: str) -> None:
+        """
+        編集トークンをハッシュ化して保存
+        
+        Args:
+            raw_token: 平文のトークン
+        """
+        self.edit_token_hash = make_password(raw_token)
+        # 既存の edit_token は unique 制約があるため、新規生成時のみ設定
+
+    def check_edit_token(self, raw_token: str) -> bool:
+        """
+        編集トークンを検証（hash優先、平文フォールバック）
+        
+        Args:
+            raw_token: 検証する平文トークン
+        Returns:
+            bool: 一致すれば True
+        """
+        if not raw_token:
+            return False
+        # hash があれば hash で判定
+        if self.edit_token_hash:
+            return check_password(raw_token, self.edit_token_hash)
+        # 移行期間: 平文フォールバック（UUIDとして比較）
+        if self.edit_token:
+            return str(self.edit_token) == str(raw_token)
+        return False
+
+    @classmethod
+    def generate_edit_token(cls) -> str:
+        """安全な編集トークンを生成"""
+        return secrets.token_urlsafe(24)
 
 
 class Attendance(models.Model):

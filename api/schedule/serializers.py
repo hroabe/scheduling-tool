@@ -100,17 +100,17 @@ class ParticipantSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at', 'edit_url']
     
     def get_edit_url(self, obj):
-        """編集用URLを生成（編集トークンは本人にのみ公開）"""
-        request = self.context.get('request')
-        if request and request.query_params.get('include_edit_token'):
-            return f"/event/{obj.schedule.uuid}/respond?token={obj.edit_token}"
+        """編集用URLを生成（編集トークンは作成直後のみ表示）"""
+        # 作成直後のレスポンスでのみ raw_token が存在
+        if hasattr(obj, '_raw_edit_token'):
+            return f"/event/{obj.schedule.uuid}/respond?token={obj._raw_edit_token}"
         return None
 
 
 class ParticipantCreateSerializer(serializers.ModelSerializer):
     """参加者作成用シリアライザー（回答含む）"""
     attendances = AttendanceCreateSerializer(many=True, write_only=True)
-    edit_token = serializers.UUIDField(read_only=True)
+    edit_token = serializers.CharField(read_only=True)  # 作成時のみ返却
     
     class Meta:
         model = Participant
@@ -137,10 +137,18 @@ class ParticipantCreateSerializer(serializers.ModelSerializer):
         attendances_data = validated_data.pop('attendances', [])
         schedule = self.context.get('schedule')
         
+        # 編集トークンを生成してhash化
+        raw_token = Participant.generate_edit_token()
+        
         participant = Participant.objects.create(
             schedule=schedule,
             **validated_data
         )
+        participant.set_edit_token(raw_token)
+        participant.save()
+        
+        # 一時的に平文トークンを保持（レスポンス返却用）
+        participant._raw_edit_token = raw_token
         
         # 出欠を作成
         for attendance_data in attendances_data:
@@ -248,6 +256,8 @@ class ScheduleCreateSerializer(serializers.ModelSerializer):
     candidates = CandidateCreateSerializer(many=True, write_only=True)
     uuid = serializers.UUIDField(read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
+    edit_key = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    edit_key_response = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Schedule
@@ -259,6 +269,7 @@ class ScheduleCreateSerializer(serializers.ModelSerializer):
             'owner_email',
             'department',
             'edit_key',
+            'edit_key_response',
             'deadline',
             'timezone_name',
             'allow_maybe',
@@ -270,6 +281,12 @@ class ScheduleCreateSerializer(serializers.ModelSerializer):
     
     def get_url(self, obj):
         return f"/event/{obj.uuid}"
+    
+    def get_edit_key_response(self, obj):
+        """作成直後のみ平文キーを返却"""
+        if hasattr(obj, '_raw_edit_key'):
+            return obj._raw_edit_key
+        return None
     
     def validate_candidates(self, value):
         """最低1つの候補日が必要"""
@@ -289,8 +306,20 @@ class ScheduleCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         candidates_data = validated_data.pop('candidates', [])
+        raw_edit_key = validated_data.pop('edit_key', None)
+        
+        # RFC-0003: Set owner_user if user is authenticated
+        request = self.context.get('request')
+        if request and request.user and request.user.is_authenticated:
+            validated_data['owner_user'] = request.user
         
         schedule = Schedule.objects.create(**validated_data)
+        
+        # edit_key が指定されていればhash化して保存
+        if raw_edit_key:
+            schedule.set_edit_key(raw_edit_key)
+            schedule.save()
+            schedule._raw_edit_key = raw_edit_key  # レスポンス返却用
         
         # 候補日を作成
         for i, candidate_data in enumerate(candidates_data):
@@ -322,13 +351,14 @@ class ScheduleUpdateSerializer(serializers.ModelSerializer):
         ]
     
     def validate(self, data):
-        """編集キーの検証"""
+        """編集キーの検証（hash優先）"""
         request = self.context.get('request')
         instance = self.instance
         
-        if instance and instance.edit_key:
+        # edit_key が設定されているスケジュールは認証が必要
+        if instance and (instance.edit_key_hash or instance.edit_key):
             edit_key = request.data.get('edit_key') or request.query_params.get('edit_key')
-            if edit_key != instance.edit_key:
+            if not instance.check_edit_key(edit_key):
                 raise serializers.ValidationError({
                     'edit_key': '編集キーが正しくありません。'
                 })
@@ -351,10 +381,10 @@ class ScheduleFinalizeSerializer(serializers.Serializer):
         return value
     
     def validate(self, data):
-        """編集キーの検証"""
+        """編集キーの検証（hash優先）"""
         schedule = self.context.get('schedule')
-        if schedule and schedule.edit_key:
-            if data.get('edit_key') != schedule.edit_key:
+        if schedule and (schedule.edit_key_hash or schedule.edit_key):
+            if not schedule.check_edit_key(data.get('edit_key')):
                 raise serializers.ValidationError({
                     'edit_key': '編集キーが正しくありません。'
                 })

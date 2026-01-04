@@ -1,0 +1,70 @@
+{
+    "common": {
+        "submit": "送信",
+        "cancel": "キャンセル",
+        "save": "保存",
+        "delete": "削除",
+        "edit": "編集",
+        "back": "戻る",
+        "close": "閉じる",
+        "confirm": "確認",
+        "loading": "読み込み中...",
+        "error": "エラー"
+    },
+    "auth": {
+        "login": "ログイン",
+        "logout": "ログアウト",
+        "register": "登録",
+        "username": "ユーザー名",
+        "password": "パスワード",
+        "email": "メールアドレス",
+        "confirmPassword": "パスワード確認",
+        "loginSubtitle": "アカウントにログイン",
+        "registerSubtitle": "新規アカウント作成",
+        "usernamePlaceholder": "ユーザー名を入力",
+        "passwordPlaceholder": "パスワードを入力",
+        "emailPlaceholder": "メールアドレスを入力",
+        "confirmPasswordPlaceholder": "パスワードを再入力",
+        "noAccount": "アカウントをお持ちでない方",
+        "hasAccount": "既にアカウントをお持ちの方",
+        "fillAllFields": "すべての項目を入力してください",
+        "invalidCredentials": "ユーザー名またはパスワードが正しくありません",
+        "passwordMismatch": "パスワードが一致しません",
+        "registerError": "登録に失敗しました"
+    },
+    "account": {
+        "profile": "プロフィール",
+        "integrations": "連携サービス",
+        "myBookings": "予約一覧",
+        "availabilityPages": "予約ページ管理"
+    },
+    "integration": {
+        "connected": "連携済み",
+        "notConnected": "未連携",
+        "disconnectConfirm": "連携を解除しますか？"
+    },
+    "schedule": {
+        "title": "日程調整",
+        "create": "新規作成",
+        "myEvents": "マイイベント",
+        "eventName": "イベント名",
+        "description": "説明",
+        "deadline": "回答期限"
+    },
+    "booking": {
+        "title": "予約",
+        "bookTime": "予約する",
+        "availableSlots": "空き枠",
+        "confirmed": "予約が完了しました",
+        "cancelled": "予約をキャンセルしました",
+        "guestName": "お名前",
+        "guestEmail": "メールアドレス",
+        "message": "メッセージ",
+        "noBookings": "予約はありません",
+        "cancelConfirm": "予約をキャンセルしますか？"
+    },
+    "connect": "連携する",
+    "disconnect": "連携解除",
+    "error": "エラー",
+    "confirm": "確認"
+}

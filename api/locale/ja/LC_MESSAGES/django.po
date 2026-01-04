@@ -1,0 +1,195 @@
+# Django translations for scheduling-tool
+# Japanese (日本語)
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: scheduling-tool 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-04 00:00+0900\n"
+"PO-Revision-Date: 2026-01-04 00:00+0900\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: Common messages
+msgid "Submit"
+msgstr "送信"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Back"
+msgstr "戻る"
+
+msgid "Close"
+msgstr "閉じる"
+
+msgid "Confirm"
+msgstr "確認"
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Loading..."
+msgstr "読み込み中..."
+
+#: Authentication
+msgid "Login"
+msgstr "ログイン"
+
+msgid "Logout"
+msgstr "ログアウト"
+
+msgid "Register"
+msgstr "登録"
+
+msgid "Username"
+msgstr "ユーザー名"
+
+msgid "Password"
+msgstr "パスワード"
+
+msgid "Email"
+msgstr "メールアドレス"
+
+msgid "Login successful."
+msgstr "ログインしました。"
+
+msgid "Logged out."
+msgstr "ログアウトしました。"
+
+msgid "Registration complete."
+msgstr "登録が完了しました。"
+
+msgid "Invalid username or password."
+msgstr "ユーザー名またはパスワードが正しくありません。"
+
+msgid "This email is already in use."
+msgstr "このメールアドレスは既に使用されています。"
+
+msgid "Passwords do not match."
+msgstr "パスワードが一致しません。"
+
+msgid "Password changed successfully."
+msgstr "パスワードを変更しました。"
+
+msgid "Current password is incorrect."
+msgstr "現在のパスワードが正しくありません。"
+
+#: Schedule
+msgid "Schedule"
+msgstr "日程調整"
+
+msgid "Create New"
+msgstr "新規作成"
+
+msgid "Event Name"
+msgstr "イベント名"
+
+msgid "Description"
+msgstr "説明"
+
+msgid "Deadline"
+msgstr "回答期限"
+
+msgid "Candidates"
+msgstr "候補日"
+
+msgid "Participants"
+msgstr "参加者"
+
+msgid "Finalize"
+msgstr "確定する"
+
+msgid "Finalized"
+msgstr "確定済み"
+
+msgid "Not finalized"
+msgstr "未確定"
+
+msgid "Schedule created successfully."
+msgstr "日程を作成しました。"
+
+msgid "Schedule finalized."
+msgstr "日程を確定しました。"
+
+#: Response
+msgid "Available"
+msgstr "◯"
+
+msgid "Maybe"
+msgstr "△"
+
+msgid "Unavailable"
+msgstr "×"
+
+msgid "Your Name"
+msgstr "お名前"
+
+msgid "Response submitted."
+msgstr "回答を送信しました。"
+
+msgid "Response updated."
+msgstr "回答を更新しました。"
+
+#: Integration
+msgid "Google Calendar connected."
+msgstr "Google連携が完了しました。"
+
+msgid "Google Calendar disconnected."
+msgstr "Google連携を解除しました。"
+
+msgid "Outlook Calendar connected."
+msgstr "Outlook連携が完了しました。"
+
+msgid "Outlook Calendar disconnected."
+msgstr "Outlook連携を解除しました。"
+
+msgid "Token expired. Please reconnect."
+msgstr "トークンが期限切れです。再連携が必要です。"
+
+#: 1-on-1 Booking
+msgid "Booking"
+msgstr "予約"
+
+msgid "Book a time"
+msgstr "予約する"
+
+msgid "Available slots"
+msgstr "空き枠"
+
+msgid "Booking confirmed."
+msgstr "予約が完了しました。"
+
+msgid "Booking cancelled."
+msgstr "予約をキャンセルしました。"
+
+msgid "This slot is already booked."
+msgstr "この時間枠は既に予約されています。"
+
+#: Errors
+msgid "Invalid request."
+msgstr "無効なリクエストです。"
+
+msgid "Not found."
+msgstr "見つかりません。"
+
+msgid "Permission denied."
+msgstr "権限がありません。"
+
+msgid "Server error."
+msgstr "サーバーエラーが発生しました。"

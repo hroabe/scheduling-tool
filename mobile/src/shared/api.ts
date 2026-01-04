@@ -7,6 +7,14 @@ import type {
     Participant,
     ParticipantInput,
     PaginatedResponse,
+    User,
+    AuthResponse,
+    RegisterInput,
+    UserIntegration,
+    AvailabilityPage,
+    AvailabilitySlot,
+    Booking,
+    BookingInput,
 } from './types';
 
 const API_BASE_URL = Constants.API_URL;
@@ -26,6 +34,7 @@ class ApiClient {
 
         const config: RequestInit = {
             ...options,
+            credentials: 'include', // For session cookies
             headers: {
                 'Content-Type': 'application/json',
                 ...options.headers,
@@ -50,6 +59,8 @@ class ApiClient {
             throw error;
         }
     }
+
+    // ==================== Schedule API ====================
 
     async getSchedules(params?: {
         page?: number;
@@ -143,6 +154,135 @@ class ApiClient {
     async getScheduleSummary(uuid: string): Promise<ScheduleSummary> {
         return this.request<ScheduleSummary>(`/api/v1/schedules/${uuid}/summary/`);
     }
+
+    // ==================== RFC-0003: Auth API ====================
+
+    async login(username: string, password: string): Promise<AuthResponse> {
+        return this.request<AuthResponse>('/api/v1/accounts/login/', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+        });
+    }
+
+    async logout(): Promise<{ message: string }> {
+        return this.request<{ message: string }>('/api/v1/accounts/logout/', {
+            method: 'POST',
+        });
+    }
+
+    async register(data: RegisterInput): Promise<AuthResponse> {
+        return this.request<AuthResponse>('/api/v1/accounts/register/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async getMe(): Promise<User> {
+        return this.request<User>('/api/v1/accounts/me/');
+    }
+
+    async updateMe(data: Partial<User>): Promise<User> {
+        return this.request<User>('/api/v1/accounts/me/', {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async getMySchedules(): Promise<ScheduleListItem[]> {
+        const response = await this.request<PaginatedResponse<ScheduleListItem>>(
+            '/api/v1/accounts/me/schedules/'
+        );
+        return response.results;
+    }
+
+    async getIntegrations(): Promise<UserIntegration[]> {
+        const response = await this.request<PaginatedResponse<UserIntegration>>(
+            '/api/v1/accounts/integrations/'
+        );
+        return response.results;
+    }
+
+    // ==================== RFC-0001/0002: Integration API ====================
+
+    async getGoogleConnectUrl(): Promise<{ auth_url: string }> {
+        return this.request<{ auth_url: string }>('/api/v1/integrations/google/connect/', {
+            method: 'POST',
+        });
+    }
+
+    async getOutlookConnectUrl(): Promise<{ auth_url: string }> {
+        return this.request<{ auth_url: string }>('/api/v1/integrations/outlook/connect/', {
+            method: 'POST',
+        });
+    }
+
+    async disconnectGoogle(): Promise<{ message: string }> {
+        return this.request<{ message: string }>('/api/v1/integrations/google/disconnect/', {
+            method: 'POST',
+        });
+    }
+
+    async disconnectOutlook(): Promise<{ message: string }> {
+        return this.request<{ message: string }>('/api/v1/integrations/outlook/disconnect/', {
+            method: 'POST',
+        });
+    }
+
+    async getGoogleStatus(): Promise<{ connected: boolean; integration?: UserIntegration }> {
+        return this.request('/api/v1/integrations/google/status/');
+    }
+
+    async getOutlookStatus(): Promise<{ connected: boolean; integration?: UserIntegration }> {
+        return this.request('/api/v1/integrations/outlook/status/');
+    }
+
+    // ==================== RFC-0005: 1-on-1 Booking API ====================
+
+    async getAvailabilityPages(): Promise<AvailabilityPage[]> {
+        const response = await this.request<PaginatedResponse<AvailabilityPage>>(
+            '/api/v1/oneonone/pages/'
+        );
+        return response.results;
+    }
+
+    async getAvailabilityPage(id: number): Promise<AvailabilityPage & { slots: AvailabilitySlot[] }> {
+        return this.request(`/api/v1/oneonone/pages/${id}/`);
+    }
+
+    async getPublicAvailabilityPage(slug: string): Promise<AvailabilityPage & { available_slots: AvailabilitySlot[] }> {
+        return this.request(`/api/v1/oneonone/p/${slug}/`);
+    }
+
+    async createBooking(slug: string, data: BookingInput): Promise<{ booking: Booking; cancel_token: string }> {
+        return this.request(`/api/v1/oneonone/p/${slug}/book/`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async getBooking(uuid: string): Promise<Booking> {
+        return this.request(`/api/v1/oneonone/booking/${uuid}/`);
+    }
+
+    async cancelBooking(uuid: string, cancelToken: string): Promise<{ message: string; booking: Booking }> {
+        return this.request(`/api/v1/oneonone/booking/${uuid}/cancel/`, {
+            method: 'POST',
+            body: JSON.stringify({ cancel_token: cancelToken }),
+        });
+    }
+
+    async getMyBookings(): Promise<Booking[]> {
+        const response = await this.request<PaginatedResponse<Booking>>(
+            '/api/v1/oneonone/bookings/'
+        );
+        return response.results;
+    }
+
+    async confirmBooking(id: number): Promise<{ message: string; booking: Booking }> {
+        return this.request(`/api/v1/oneonone/bookings/${id}/confirm/`, {
+            method: 'POST',
+        });
+    }
 }
 
 export class ApiError extends Error {
@@ -158,3 +298,4 @@ export class ApiError extends Error {
 
 export const api = new ApiClient();
 export default api;
+

@@ -76,6 +76,7 @@ export function ResponseTable({
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
     const headerBg = useColorModeValue('gray.50', 'gray.700');
+    const hoverBg = useColorModeValue('gray.50', 'gray.700');
 
     const { candidates, participants } = schedule;
 
@@ -162,7 +163,7 @@ export function ResponseTable({
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.2, delay: index * 0.05 }}
-                                _hover={{ bg: useColorModeValue('gray.50', 'gray.700') }}
+                                _hover={{ bg: hoverBg }}
                                 cursor={onRowClick ? 'pointer' : 'default'}
                                 onClick={() => onRowClick?.(participant)}
                             >

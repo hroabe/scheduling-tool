@@ -53,6 +53,7 @@ export function ResponseForm({ schedule, editToken, onSuccess }: ResponseFormPro
     const [attendances, setAttendances] = useState<Map<number, AttendanceStatus>>(new Map());
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const candidateBg = useColorModeValue('gray.50', 'gray.700');
 
     const { mutate: submitResponse, isPending } = useSubmitResponse(schedule.uuid);
 
@@ -145,7 +146,7 @@ export function ResponseForm({ schedule, editToken, onSuccess }: ResponseFormPro
                                             borderRadius="lg"
                                             border="1px solid"
                                             borderColor={borderColor}
-                                            bg={useColorModeValue('gray.50', 'gray.700')}
+                                            bg={candidateBg}
                                         >
                                             <Flex
                                                 direction={{ base: 'column', md: 'row' }}

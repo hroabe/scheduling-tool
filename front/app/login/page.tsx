@@ -101,7 +101,7 @@ export default function LoginPage() {
                     </form>
 
                     <Text fontSize="sm">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <ChakraLink as={Link} href="/register" color="brand.500">
                             Register here
                         </ChakraLink>

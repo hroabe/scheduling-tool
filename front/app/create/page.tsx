@@ -66,6 +66,7 @@ export default function CreatePage() {
 
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const candidateBg = useColorModeValue('gray.50', 'gray.700');
 
     const { mutate: createSchedule, isPending } = useCreateSchedule();
 
@@ -324,7 +325,7 @@ export default function CreatePage() {
                                                 >
                                                     <HStack
                                                         p={3}
-                                                        bg={useColorModeValue('gray.50', 'gray.700')}
+                                                        bg={candidateBg}
                                                         borderRadius="lg"
                                                         justify="space-between"
                                                     >

@@ -65,6 +65,7 @@ export default function EventPage() {
 
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const pageBg = useColorModeValue('gray.50', 'gray.900');
 
     const statusBadge = useMemo(() => {
         if (!schedule) return null;
@@ -102,7 +103,7 @@ export default function EventPage() {
 
     if (isLoading) {
         return (
-            <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+            <Box minH="100vh" bg={pageBg}>
                 <Header />
                 <Container maxW="container.xl" py={8}>
                     <VStack spacing={6} align="stretch">
@@ -116,7 +117,7 @@ export default function EventPage() {
 
     if (error || !schedule) {
         return (
-            <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+            <Box minH="100vh" bg={pageBg}>
                 <Header />
                 <Container maxW="container.xl" py={8}>
                     <Alert status="error" borderRadius="xl">
@@ -129,7 +130,7 @@ export default function EventPage() {
     }
 
     return (
-        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Box minH="100vh" bg={pageBg}>
             <Header />
 
             <Container maxW="container.xl" py={8}>

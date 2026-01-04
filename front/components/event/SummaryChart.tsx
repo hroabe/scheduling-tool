@@ -32,11 +32,13 @@ function CandidateBar({
     totalParticipants,
     isRecommended,
     index,
+    recommendedBg,
 }: {
     candidate: CandidateSummary;
     totalParticipants: number;
     isRecommended: boolean;
     index: number;
+    recommendedBg: string;
 }) {
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
@@ -56,7 +58,7 @@ function CandidateBar({
                 borderRadius="xl"
                 border="2px solid"
                 borderColor={isRecommended ? 'green.400' : borderColor}
-                bg={isRecommended ? useColorModeValue('green.50', 'green.900') : cardBg}
+                bg={isRecommended ? recommendedBg : cardBg}
                 position="relative"
                 overflow="hidden"
             >
@@ -149,6 +151,7 @@ function CandidateBar({
 export function SummaryChart({ schedule, summary }: SummaryChartProps) {
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const recommendedBg = useColorModeValue('green.50', 'green.900');
 
     // Build summary from schedule if API summary not available
     const candidateSummaries: CandidateSummary[] = summary?.candidates ||
@@ -283,6 +286,7 @@ export function SummaryChart({ schedule, summary }: SummaryChartProps) {
                                         totalParticipants={totalParticipants}
                                         isRecommended={candidate.candidate_id === recommendedId}
                                         index={index}
+                                        recommendedBg={recommendedBg}
                                     />
                                 ))}
                         </VStack>

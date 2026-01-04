@@ -528,7 +528,7 @@ class ScheduleSummaryExportTests(APITestCase):
         
         # candidate1が最適（2人OK vs 1人OK）
         candidates_data = response.data['candidates']
-        candidate1_data = next(c for c in candidates_data if c['id'] == self.candidate1.id)
+        candidate1_data = next(c for c in candidates_data if c['candidate_id'] == self.candidate1.id)
         self.assertEqual(candidate1_data['ok_count'], 2)
     
     def test_export_csv(self):

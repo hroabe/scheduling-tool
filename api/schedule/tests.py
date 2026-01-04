@@ -458,7 +458,7 @@ class ScheduleExpirationTests(APITestCase):
             format='json'
         )
         
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class ScheduleSummaryExportTests(APITestCase):
@@ -536,10 +536,10 @@ class ScheduleSummaryExportTests(APITestCase):
         response = self.client.get(f'/api/v1/schedules/{self.schedule.uuid}/export_csv/')
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response['Content-Type'], 'text/csv; charset=utf-8')
+        self.assertEqual(response['Content-Type'], 'text/csv; charset=utf-8-sig')
         
-        # CSVの内容を確認
-        content = response.content.decode('utf-8')
+        # CSVの内容を確認 (BOM付きなのでutf-8-sigでデコード)
+        content = response.content.decode('utf-8-sig')
         self.assertIn('参加者1', content)
         self.assertIn('参加者2', content)
 

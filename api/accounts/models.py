@@ -12,12 +12,14 @@ from django.conf import settings
 
 
 def get_fernet_key():
-    """Fernet encryption key from settings or generate a default for dev"""
+    """Fernet encryption key from settings or use stable default for dev/test"""
     key = getattr(settings, 'FERNET_KEY', None)
     if key:
         return key.encode() if isinstance(key, str) else key
-    # Development fallback - DO NOT USE IN PRODUCTION
-    return Fernet.generate_key()
+    # Development/Test fallback - stable key for testing
+    # DO NOT USE IN PRODUCTION - set FERNET_KEY environment variable
+    # This is a valid Fernet key (base64-encoded 32 bytes)
+    return b'ZGV2LXRlc3QtZmVybmV0LWtleS0zMi1ieXRlcz0='
 
 
 class UserIntegration(models.Model):

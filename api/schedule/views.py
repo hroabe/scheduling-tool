@@ -165,8 +165,15 @@ class ScheduleViewSet(viewsets.ModelViewSet):
                 from .tasks import send_response_notification
                 send_response_notification.delay(schedule.id, participant.id)
             
+            # Build response data
+            response_data = ParticipantSerializer(participant, context={'request': request}).data
+            
+            # Include edit_token only for new participants (not updates)
+            if not edit_token and hasattr(participant, '_raw_edit_token'):
+                response_data['edit_token'] = participant._raw_edit_token
+            
             return Response(
-                ParticipantSerializer(participant, context={'request': request}).data,
+                response_data,
                 status=status.HTTP_201_CREATED if not edit_token else status.HTTP_200_OK
             )
         

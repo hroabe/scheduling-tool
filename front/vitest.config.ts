@@ -11,5 +11,8 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     exclude: ['**/node_modules/**', '**/e2e/**'],
+    env: {
+      NEXT_PUBLIC_API_URL: 'http://localhost:8000',
+    },
   },
 });

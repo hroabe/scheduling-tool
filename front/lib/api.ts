@@ -17,21 +17,24 @@ import type {
     AuthResponse,
 } from '@/types';
 
-// Validate required environment variable
+// Environment variable for API base URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_BASE_URL) {
-    throw new Error(
-        'NEXT_PUBLIC_API_URL environment variable is required. ' +
-        'Set it in .env.local (development) or as an environment variable (production).'
-    );
-}
 
 class ApiClient {
     private baseUrl: string;
 
-    constructor(baseUrl: string = API_BASE_URL!) {
-        this.baseUrl = baseUrl;
+    constructor(baseUrl?: string) {
+        // Use provided baseUrl, or fall back to environment variable
+        const url = baseUrl ?? API_BASE_URL;
+
+        if (!url) {
+            throw new Error(
+                'NEXT_PUBLIC_API_URL environment variable is required. ' +
+                'Set it in .env.local (development) or as an environment variable (production).'
+            );
+        }
+
+        this.baseUrl = url;
     }
 
     private async request<T>(

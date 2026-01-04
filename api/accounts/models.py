@@ -18,8 +18,8 @@ def get_fernet_key():
         return key.encode() if isinstance(key, str) else key
     # Development/Test fallback - stable key for testing
     # DO NOT USE IN PRODUCTION - set FERNET_KEY environment variable
-    # This is a valid Fernet key (base64-encoded 32 bytes)
-    return b'ZGV2LXRlc3QtZmVybmV0LWtleS0zMi1ieXRlcz0='
+    # Valid Fernet key: 44-char URL-safe base64 encoding of 32 random bytes
+    return b'zqH8vXyKjP5mN2sD4fG7hJ9kL0wE3rT6uI1oA8bC5dY='
 
 
 class UserIntegration(models.Model):

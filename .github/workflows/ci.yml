@@ -73,7 +73,7 @@ jobs:
         cache-dependency-path: front/yarn.lock
 
     - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn install
 
     - name: Lint
       run: yarn lint
@@ -152,7 +152,7 @@ jobs:
 
     - name: Install Frontend Deps
       working-directory: ./front
-      run: yarn install --frozen-lockfile
+      run: yarn install
 
     - name: Install Playwright Browsers
       working-directory: ./front

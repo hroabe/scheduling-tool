@@ -524,7 +524,7 @@ class ScheduleSummaryExportTests(APITestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('candidates', response.data)
-        self.assertIn('best_candidate', response.data)
+        self.assertIn('recommended_candidate', response.data)
         
         # candidate1が最適（2人OK vs 1人OK）
         candidates_data = response.data['candidates']

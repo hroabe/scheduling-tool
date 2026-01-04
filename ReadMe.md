@@ -32,22 +32,44 @@
 - **Zustand** - 状態管理
 - **Framer Motion** - アニメーション
 
+### モバイル (実験的)
+- **React Native / Expo** - クロスプラットフォームアプリ
+- 詳細は [mobile/README.md](mobile/README.md) を参照
+
+### インフラ
+- **Nginx** - リバースプロキシ (RFC-0007)
+- **Docker Compose** - コンテナオーケストレーション
+
 ## 📦 セットアップ
 
 ### 必要条件
 
 - Python 3.11+
 - Node.js 20+
-- PostgreSQL 15+ (オプション、SQLiteでも動作)
-- Redis (オプション、通知機能使用時)
+- Docker & Docker Compose (推奨)
+- PostgreSQL 15+ (Docker不使用時)
+- Redis (Docker不使用時)
 
-### バックエンド
+### Docker (推奨)
 
 ```bash
-# プロジェクトのクローン
-git clone <repository-url>
-cd scheduling-tool
+# 環境変数ファイルの作成
+cp .env.docker.example .env
 
+# .env を編集して SECRET_KEY と POSTGRES_PASSWORD を設定
+# SECRET_KEY生成: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+
+# 起動
+docker-compose up -d
+
+# アクセス: http://localhost (Nginx経由)
+```
+
+> ⚠️ **重要**: `SECRET_KEY` と `POSTGRES_PASSWORD` は必須です。未設定の場合は起動に失敗します。
+
+### バックエンド (個別起動)
+
+```bash
 # Python仮想環境の作成
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
@@ -67,25 +89,35 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-### フロントエンド
+### フロントエンド (個別起動)
 
 ```bash
 cd front
 
+# 環境変数の設定
+echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
+
 # 依存関係のインストール
-npm install  # または yarn
+yarn install
 
 # 開発サーバー起動
-npm run dev
-```
-
-### Docker (推奨)
-
-```bash
-docker-compose up -d
+yarn dev
 ```
 
 ## 🔧 環境変数
+
+### Docker Compose (.env)
+
+```env
+# 必須
+SECRET_KEY=your-secret-key-here
+POSTGRES_PASSWORD=your-secure-password-here
+
+# オプション
+DEBUG=True
+POSTGRES_DB=scheduling_db
+POSTGRES_USER=scheduling
+```
 
 ### バックエンド (.env)
 
@@ -99,18 +131,20 @@ EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
 ```
 
-### フロントエンド
+### フロントエンド (.env.local)
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
+> ⚠️ `NEXT_PUBLIC_API_URL` は必須です。未設定の場合はビルドエラーになります。
+
 ## 📚 API ドキュメント
 
 開発サーバー起動後、以下のURLでAPIドキュメントを確認できます：
 
-- Swagger UI: http://localhost:8000/api/docs/
-- ReDoc: http://localhost:8000/api/redoc/
+- Swagger UI: http://localhost/api/docs/ (Docker) または http://localhost:8000/api/docs/
+- ReDoc: http://localhost/api/redoc/
 
 ### 主要エンドポイント
 
@@ -129,12 +163,12 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 ```bash
 # バックエンド
 cd api
-pytest
+python manage.py test
 
 # フロントエンド
 cd front
-npm run test
-npm run test:e2e
+yarn test
+yarn test:e2e
 ```
 
 ## 🚀 デプロイ
@@ -142,7 +176,7 @@ npm run test:e2e
 ### 本番環境設定
 
 1. `DEBUG=False` に設定
-2. `SECRET_KEY` を安全な値に変更
+2. `SECRET_KEY` を安全な値に変更（**必須**）
 3. `ALLOWED_HOSTS` を設定
 4. PostgreSQLを使用
 5. 静的ファイルを収集: `python manage.py collectstatic`

@@ -1,30 +1,45 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
+  # Nginx Reverse Proxy (RFC-0007)
+  nginx:
+    image: nginx:alpine
+    container_name: scheduling-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+      - front
+    restart: unless-stopped
+
+  # PostgreSQL Database (internal only - no external port binding)
   db:
     image: postgres:15-alpine
     container_name: scheduling-db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: scheduling_db
-      POSTGRES_USER: scheduling
-      POSTGRES_PASSWORD: scheduling_password
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB:-scheduling_db}
+      POSTGRES_USER: ${POSTGRES_USER:-scheduling}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    # No ports exposed to host - internal network only
+    expose:
+      - "5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U scheduling -d scheduling_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scheduling} -d ${POSTGRES_DB:-scheduling_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Redis
+  # Redis (internal only - no external port binding)
   redis:
     image: redis:7-alpine
     container_name: scheduling-redis
-    ports:
-      - "6379:6379"
+    # No ports exposed to host - internal network only
+    expose:
+      - "6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -33,7 +48,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Django Backend
+  # Django Backend (internal only - accessed via nginx)
   api:
     build:
       context: .
@@ -41,15 +56,16 @@ services:
     container_name: scheduling-api
     volumes:
       - ./api:/app
-    ports:
-      - "8000:8000"
+    # No ports exposed to host - accessed via nginx
+    expose:
+      - "8000"
     environment:
-      DEBUG: "True"
-      SECRET_KEY: "dev-secret-key-change-in-production"
-      DATABASE_URL: "postgres://scheduling:scheduling_password@db:5432/scheduling_db"
+      DEBUG: ${DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      DATABASE_URL: "postgres://${POSTGRES_USER:-scheduling}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-scheduling_db}"
       REDIS_URL: "redis://redis:6379/0"
-      ALLOWED_HOSTS: "localhost,127.0.0.1,api"
-      CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,api,nginx"
+      CORS_ALLOWED_ORIGINS: "http://localhost,http://127.0.0.1,http://front:3000"
     depends_on:
       db:
         condition: service_healthy
@@ -68,9 +84,9 @@ services:
     volumes:
       - ./api:/app
     environment:
-      DEBUG: "True"
-      SECRET_KEY: "dev-secret-key-change-in-production"
-      DATABASE_URL: "postgres://scheduling:scheduling_password@db:5432/scheduling_db"
+      DEBUG: ${DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      DATABASE_URL: "postgres://${POSTGRES_USER:-scheduling}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-scheduling_db}"
       REDIS_URL: "redis://redis:6379/0"
     depends_on:
       db:
@@ -88,9 +104,9 @@ services:
     volumes:
       - ./api:/app
     environment:
-      DEBUG: "True"
-      SECRET_KEY: "dev-secret-key-change-in-production"
-      DATABASE_URL: "postgres://scheduling:scheduling_password@db:5432/scheduling_db"
+      DEBUG: ${DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      DATABASE_URL: "postgres://${POSTGRES_USER:-scheduling}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-scheduling_db}"
       REDIS_URL: "redis://redis:6379/0"
     depends_on:
       db:
@@ -99,7 +115,7 @@ services:
         condition: service_healthy
     command: celery -A api beat -l INFO
 
-  # Next.js Frontend
+  # Next.js Frontend (internal only - accessed via nginx)
   front:
     build:
       context: ./front
@@ -109,10 +125,11 @@ services:
       - ./front:/app
       - /app/node_modules
       - /app/.next
-    ports:
-      - "3000:3000"
+    # No ports exposed to host - accessed via nginx
+    expose:
+      - "3000"
     environment:
-      NEXT_PUBLIC_API_URL: "http://localhost:8000"
+      NEXT_PUBLIC_API_URL: "http://localhost/api"
     depends_on:
       - api
 

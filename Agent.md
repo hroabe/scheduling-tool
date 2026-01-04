@@ -9,6 +9,7 @@
 - Frontend: **Next.js 15.5.9（15系 最新パッチ）**
 - Worker: Celery + Redis
 - DB: PostgreSQL（SQLiteでも可）
+- Proxy: **Nginx**（RFC-0007、全通信はリバースプロキシ経由）
 
 ## プロダクト概要（要約）
 - 登録不要: 共有URLで誰でも回答

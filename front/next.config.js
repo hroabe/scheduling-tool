@@ -2,12 +2,17 @@
 const nextConfig = {
     reactStrictMode: true,
 
-    // API proxy for development
+    // API proxy for development (when not using nginx)
     async rewrites() {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!apiUrl) {
+            console.warn('NEXT_PUBLIC_API_URL not set, API rewrites disabled');
+            return [];
+        }
         return [
             {
                 source: '/api/:path*',
-                destination: 'http://localhost:8000/api/:path*',
+                destination: `${apiUrl}/api/:path*`,
             },
         ];
     },
@@ -15,11 +20,6 @@ const nextConfig = {
     // Optimize images
     images: {
         domains: ['localhost'],
-    },
-
-    // Environment variables
-    env: {
-        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
     },
 };
 

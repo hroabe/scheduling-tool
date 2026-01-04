@@ -23,7 +23,7 @@ describe('ApiClient', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       expect.stringContaining('/api/v1/schedules/uuid-123/'),
       expect.objectContaining({
-        method: undefined, // GET is default
+        credentials: 'include',
         headers: expect.objectContaining({
           'Content-Type': 'application/json',
         }),
@@ -40,6 +40,13 @@ describe('ApiClient', () => {
     });
 
     await expect(api.getSchedule('invalid')).rejects.toThrow(ApiError);
+
+    // Reset and test again for message
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 404,
+      json: async () => ({ detail: 'Not found' }),
+    });
     await expect(api.getSchedule('invalid')).rejects.toThrow('Not found');
   });
 

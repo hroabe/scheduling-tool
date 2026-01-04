@@ -77,8 +77,8 @@ export function I18nProvider({
       const [namespace, messageKey] = parts;
       return messages[namespace]?.[messageKey] || key;
     }
-    // Single level key
-    return messages[key] || key;
+    // Single level key - cast to string
+    return (messages[key] as unknown as string) || key;
   };
 
   return (

@@ -137,7 +137,7 @@ export function useFinalizeSchedule(uuid: string) {
 // CSV Export hook
 export function useExportCsv(uuid: string) {
     return useMutation({
-        mutationFn: (includeComments = true) => api.exportCsv(uuid, includeComments),
+        mutationFn: (includeComments: boolean = true) => api.exportCsv(uuid, includeComments),
         onSuccess: async (blob) => {
             // Download the file
             const url = URL.createObjectURL(blob);

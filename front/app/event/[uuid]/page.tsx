@@ -83,21 +83,11 @@ export default function EventPage() {
     }, [schedule]);
 
     const handleExportCsv = () => {
-        exportCsv.mutate(true, {
-            onSuccess: () => {
-                toast({
-                    title: 'CSVをダウンロードしました',
-                    status: 'success',
-                    duration: 2000,
-                });
-            },
-            onError: () => {
-                toast({
-                    title: 'ダウンロードに失敗しました',
-                    status: 'error',
-                    duration: 3000,
-                });
-            },
+        exportCsv.mutate(true);
+        toast({
+            title: 'CSV出力を開始しました',
+            status: 'info',
+            duration: 2000,
         });
     };
 

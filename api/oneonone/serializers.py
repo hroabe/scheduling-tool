@@ -190,3 +190,90 @@ class BookingCancelSerializer(serializers.Serializer):
         if booking and booking.cancel_token != value:
             raise serializers.ValidationError('無効なキャンセルトークンです')
         return value
+
+
+class AnonymousBookingPageCreateSerializer(serializers.Serializer):
+    """
+    匿名（ログイン不要）予約ページ作成シリアライザー
+    
+    主催者がログインなしで予約ページを作成する場合に使用
+    """
+    title = serializers.CharField(max_length=200)
+    organizer_name = serializers.CharField(max_length=100)
+    organizer_email = serializers.EmailField()
+    duration_minutes = serializers.IntegerField(default=30, min_value=15, max_value=180)
+    timezone_name = serializers.CharField(max_length=50, default='Asia/Tokyo')
+    slots = AvailabilitySlotCreateSerializer(many=True)
+    
+    def validate_slots(self, value):
+        if not value:
+            raise serializers.ValidationError('少なくとも1つの空き枠が必要です')
+        if len(value) > 30:
+            raise serializers.ValidationError('空き枠は30件までです')
+        return value
+    
+    def validate(self, attrs):
+        # Validate all slots
+        for slot_data in attrs.get('slots', []):
+            if slot_data['start_at'] >= slot_data['end_at']:
+                raise serializers.ValidationError({
+                    'slots': '終了日時は開始日時より後である必要があります'
+                })
+            if slot_data['start_at'] < timezone.now():
+                raise serializers.ValidationError({
+                    'slots': '過去の日時は指定できません'
+                })
+        return attrs
+
+
+class AnonymousBookingPageHostSerializer(serializers.ModelSerializer):
+    """匿名予約ページ管理シリアライザー（ホスト向け）"""
+    slots = AvailabilitySlotSerializer(many=True, read_only=True)
+    bookings = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = AvailabilityPage
+        fields = [
+            'id', 'slug', 'title', 'description', 'organizer_name', 'organizer_email',
+            'timezone_name', 'duration_minutes', 'buffer_minutes',
+            'status', 'is_active', 'notify_on_booking',
+            'slots', 'bookings', 'public_url',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'slug', 'created_at', 'updated_at']
+    
+    def get_bookings(self, obj):
+        bookings = Booking.objects.filter(
+            slot__page=obj
+        ).select_related('slot').order_by('-created_at')
+        return BookingSerializer(bookings, many=True).data
+
+
+class AvailabilityPagePublicSerializerV2(serializers.ModelSerializer):
+    """
+    予約ページ公開シリアライザー（ゲスト向け）V2
+    
+    匿名モードにも対応
+    """
+    organizer = serializers.SerializerMethodField()
+    available_slots = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = AvailabilityPage
+        fields = [
+            'slug', 'title', 'description', 'organizer',
+            'timezone_name', 'duration_minutes',
+            'available_slots', 'status'
+        ]
+    
+    def get_organizer(self, obj):
+        if obj.owner:
+            return obj.owner.username
+        return obj.organizer_name
+    
+    def get_available_slots(self, obj):
+        from_date = self.context.get('from_date')
+        to_date = self.context.get('to_date')
+        slots = obj.get_available_slots(from_date, to_date)[:100]
+        return AvailabilitySlotSerializer(slots, many=True).data
+

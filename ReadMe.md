@@ -189,6 +189,27 @@ cd front
 vercel
 ```
 
+### HTTPS/SSL (本番環境)
+
+1. 証明書を取得 (Let's Encrypt/certbot):
+   ```bash
+   sudo apt install certbot
+   sudo certbot certonly --standalone -d your-domain.com
+   ```
+
+2. SSL設定を適用:
+   ```bash
+   cp nginx.ssl.conf nginx.conf
+   # nginx.conf 内の your-domain.com を実際のドメインに置換
+   ```
+
+3. Docker再起動:
+   ```bash
+   docker compose down && docker compose up -d
+   ```
+
+> 📁 `nginx.ssl.conf` には HSTS、TLS 1.2/1.3、セキュリティヘッダーが設定済みです。
+
 ## 📝 ライセンス
 
 MIT License

@@ -44,10 +44,11 @@
 - Candidate: 候補枠（開始/終了）
 - Participant: 参加者（回答単位）
 - Attendance: 候補×回答のレコード（◯△×）
-- Edit Token: 回答編集用トークン（現状平文保存→将来hash化）
-- Edit Key: イベント編集/確定の管理キー（現状平文保存→将来hash化）
+- Edit Token: 回答編集用トークン（hash化済み）
+- Edit Key: イベント編集/確定の管理キー（hash化済み）
 
 ## 7. 追加機能（Backlogの核）
-- 高優先: Google/Outlook連携 ✅、ユーザー認証 ✅、会議URL自動発行 ✅、1対1モード ✅、i18n（RFC-0006）
+- 高優先: Google/Outlook連携 ✅、ユーザー認証 ✅、会議URL自動発行 ✅、1対1モード ✅、i18n（RFC-0006）、かわいいモード（RFC-0008）、SEO最適化（RFC-0009）、レスポンシブ改善（- [x] RFC-0010: Responsive Design (Mobile Support)
+- [x] RFC-0011: Keycloak Authentication
+- [ ] RFC-0012: Simple Event Creation Mode (In Progress)ck通知、テンプレ複製、QR、締切後自動督促、PW/IP制限、WebSocket
 - 中優先: LINE/Slack通知、テンプレ複製、QR、締切後自動督促、PW/IP制限、WebSocket
-

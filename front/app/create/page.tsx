@@ -1,476 +1,473 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     Box,
     Container,
+    Flex,
     VStack,
     HStack,
     Heading,
     Text,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    FormHelperText,
-    Input,
-    Textarea,
-    Switch,
-    Button,
-    IconButton,
-    Card,
-    CardBody,
-    Divider,
+    Tabs,
+    TabList,
+    Tab,
     useColorModeValue,
     useToast,
-    Badge,
-    Flex,
-    InputGroup,
-    InputRightElement,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Plus, Trash2, Eye, EyeOff, Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { useI18n } from '@/providers/I18nProvider';
 import { useCreateSchedule } from '@/hooks/useApi';
-import { formatDateTime } from '@/lib/date';
-import type { CandidateInput } from '@/types';
+import { useCreateScheduleStore } from '@/stores';
+import {
+    EventBasicsCard,
+    EventOptionsCard,
+    CandidateBuilderCard,
+    CandidateListCard,
+    StickyFooterCTA,
+} from '@/components/create';
 
-const MotionBox = motion(Box);
-
-// Validation schema
-const schema = z.object({
-    name: z.string().min(1, 'イベント名を入力してください'),
-    ownerName: z.string().min(1, '主催者名を入力してください'),
-    ownerEmail: z.string().email('有効なメールアドレスを入力してください').optional().or(z.literal('')),
-    department: z.string().optional(),
+// Form validation schema
+const formSchema = z.object({
+    title: z.string().min(1, 'イベント名は必須です'),
     description: z.string().optional(),
-    editKey: z.string().optional(),
-    deadline: z.string().optional(),
-    allowMaybe: z.boolean(),
-    notifyOnResponse: z.boolean(),
 });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof formSchema>;
+
+interface Candidate {
+    start_at: string;
+    end_at: string;
+    order: number;
+}
 
 export default function CreatePage() {
+    const { t } = useI18n();
     const router = useRouter();
     const toast = useToast();
-    const [showPassword, setShowPassword] = useState(false);
-    const [candidates, setCandidates] = useState<CandidateInput[]>([]);
-    const [newCandidateDate, setNewCandidateDate] = useState('');
-    const [newCandidateStartTime, setNewCandidateStartTime] = useState('09:00');
-    const [newCandidateEndTime, setNewCandidateEndTime] = useState('10:00');
+    const bgColor = useColorModeValue('gray.50', 'gray.900');
 
-    const cardBg = useColorModeValue('white', 'gray.800');
-    const borderColor = useColorModeValue('gray.200', 'gray.700');
-    const candidateBg = useColorModeValue('gray.50', 'gray.700');
+    // Mode: 0 = simple, 1 = detail
+    const [mode, setMode] = useState(0);
+    const isSimpleMode = mode === 0;
 
-    const { mutate: createSchedule, isPending } = useCreateSchedule();
-
+    // Form
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm<FormData>({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(formSchema),
         defaultValues: {
-            allowMaybe: true,
-            notifyOnResponse: false,
+            title: '',
+            description: '',
         },
     });
 
-    const ownerEmail = watch('ownerEmail');
+    const titleValue = watch('title');
+    const hasTitle = titleValue?.trim().length > 0;
 
-    const addCandidate = () => {
-        if (!newCandidateDate) {
-            toast({
-                title: '日付を選択してください',
-                status: 'warning',
-                duration: 2000,
-            });
-            return;
+    // Candidates state
+    const [candidates, setCandidates] = useState<Candidate[]>([]);
+    const [selectedCandidates, setSelectedCandidates] = useState<Set<number>>(new Set());
+    
+    // Multi-date selection
+    const [selectedDates, setSelectedDates] = useState<string[]>([]);
+    const [calendarMonth, setCalendarMonth] = useState(new Date());
+    
+    // Time settings
+    const [startHour, setStartHour] = useState(10);
+    const [startMinute, setStartMinute] = useState(0);
+    const [endHour, setEndHour] = useState(11);
+    const [endMinute, setEndMinute] = useState(0);
+    
+    // Duration presets
+    const [durationPreset, setDurationPreset] = useState<number | 'custom'>(60);
+    const [customDuration, setCustomDuration] = useState(60);
+    
+    // Options
+    const [useDirectEndTime, setUseDirectEndTime] = useState(false);
+    const [minuteStep, setMinuteStep] = useState<5 | 1>(5);
+    
+    // Organizer
+    const [organizerName, setOrganizerName] = useState('');
+
+    // Detailed mode fields
+    const [description, setDescription] = useState('');
+    const [ownerEmail, setOwnerEmail] = useState('');
+    const [editKey, setEditKey] = useState('');
+    const [deadline, setDeadline] = useState('');
+    const [allowMaybe, setAllowMaybe] = useState(true);
+    const [notifyOnResponse, setNotifyOnResponse] = useState(false);
+
+    // Load organizer from localStorage
+    useEffect(() => {
+        const saved = localStorage.getItem('lastOrganizerName');
+        if (saved) {
+            setOrganizerName(saved);
         }
+    }, []);
 
-        const startAt = `${newCandidateDate}T${newCandidateStartTime}:00`;
-        const endAt = `${newCandidateDate}T${newCandidateEndTime}:00`;
-
-        // Check for duplicates
-        const isDuplicate = candidates.some(
-            (c) => c.start_at === startAt && c.end_at === endAt
-        );
-
-        if (isDuplicate) {
-            toast({
-                title: '同じ候補日が既に追加されています',
-                status: 'warning',
-                duration: 2000,
-            });
-            return;
-        }
-
-        setCandidates([
-            ...candidates,
-            {
-                start_at: startAt,
-                end_at: endAt,
-                note: '',
-                order: candidates.length,
-            },
-        ]);
-
-        // Reset
-        setNewCandidateDate('');
+    // Calculate end time from duration
+    const getEffectiveDuration = () => {
+        return durationPreset === 'custom' ? customDuration : durationPreset;
     };
 
-    const removeCandidate = (index: number) => {
-        setCandidates(candidates.filter((_, i) => i !== index));
+    const getCalculatedEndTime = () => {
+        const duration = getEffectiveDuration();
+        let endH = startHour;
+        let endM = startMinute + duration;
+        
+        while (endM >= 60) {
+            endM -= 60;
+            endH += 1;
+        }
+        if (endH >= 24) endH = 23;
+        
+        return { hour: endH, minute: endM };
     };
 
-    const onSubmit = (data: FormData) => {
-        if (candidates.length === 0) {
-            toast({
-                title: '候補日を追加してください',
-                description: '少なくとも1つの候補日が必要です',
-                status: 'error',
-                duration: 3000,
-            });
-            return;
-        }
+    const calculatedEnd = useDirectEndTime 
+        ? { hour: endHour, minute: endMinute }
+        : getCalculatedEndTime();
 
-        createSchedule(
-            {
-                name: data.name,
-                owner_name: data.ownerName,
-                owner_email: data.ownerEmail || undefined,
-                department: data.department || undefined,
-                description: data.description || undefined,
-                edit_key: data.editKey || undefined,
-                deadline: data.deadline || undefined,
-                allow_maybe: data.allowMaybe,
-                notify_on_response: data.notifyOnResponse,
-                candidates,
-            },
-            {
-                onSuccess: (schedule) => {
-                    toast({
-                        title: 'イベントを作成しました',
-                        description: 'URLを共有して回答を集めましょう',
-                        status: 'success',
-                        duration: 3000,
-                    });
-                    router.push(`/event/${schedule.uuid}`);
-                },
-                onError: (error) => {
-                    toast({
-                        title: 'エラーが発生しました',
-                        description: error.message,
-                        status: 'error',
-                        duration: 5000,
-                    });
-                },
+    const calculatedEndTimeStr = `${calculatedEnd.hour.toString().padStart(2, '0')}:${calculatedEnd.minute.toString().padStart(2, '0')}`;
+
+    // Handle start time change
+    const handleStartTimeChange = (hour: number, minute: number) => {
+        setStartHour(hour);
+        setStartMinute(minute);
+    };
+
+    // Handle end time change (direct input)
+    const handleEndTimeChange = (hour: number, minute: number) => {
+        setEndHour(hour);
+        setEndMinute(minute);
+        setUseDirectEndTime(true);
+    };
+
+    // Handle nudge
+    const handleNudge = (minutes: number) => {
+        let newStartM = startMinute + minutes;
+        let newStartH = startHour;
+        
+        while (newStartM < 0) {
+            newStartM += 60;
+            newStartH -= 1;
+        }
+        while (newStartM >= 60) {
+            newStartM -= 60;
+            newStartH += 1;
+        }
+        
+        newStartH = Math.max(0, Math.min(23, newStartH));
+        
+        setStartHour(newStartH);
+        setStartMinute(newStartM);
+    };
+
+    // Add candidates (multi-date)
+    const handleAddCandidates = () => {
+        if (selectedDates.length === 0) return;
+
+        const duration = getEffectiveDuration();
+        const newCandidates: Candidate[] = selectedDates.map((dateStr, idx) => {
+            const [year, month, day] = dateStr.split('-').map(Number);
+            const startDate = new Date(year, month - 1, day, startHour, startMinute);
+            const endDate = new Date(startDate.getTime() + duration * 60000);
+
+            return {
+                start_at: startDate.toISOString(),
+                end_at: endDate.toISOString(),
+                order: candidates.length + idx,
+            };
+        });
+
+        setCandidates([...candidates, ...newCandidates]);
+        setSelectedDates([]);
+        
+        toast({
+            title: `${newCandidates.length}件の候補を追加しました`,
+            status: 'success',
+            duration: 2000,
+        });
+    };
+
+    // Edit candidate
+    const handleEditCandidate = (index: number, startTime: string, endTime: string) => {
+        setCandidates(prev => prev.map((c, i) => 
+            i === index ? { ...c, start_at: startTime, end_at: endTime } : c
+        ));
+    };
+
+    // Duplicate candidate
+    const handleDuplicateCandidate = (index: number) => {
+        const original = candidates[index];
+        const startDate = new Date(original.start_at);
+        const endDate = new Date(original.end_at);
+        const duration = endDate.getTime() - startDate.getTime();
+
+        // Copy time settings for next selection
+        setStartHour(startDate.getHours());
+        setStartMinute(startDate.getMinutes());
+        
+        const durationMinutes = duration / 60000;
+        if ([30, 60, 90, 120].includes(durationMinutes)) {
+            setDurationPreset(durationMinutes);
+        } else {
+            setDurationPreset('custom');
+            setCustomDuration(durationMinutes);
+        }
+        
+        toast({
+            title: '時間設定をコピーしました',
+            description: '日付を選択して追加してください',
+            status: 'info',
+            duration: 2000,
+        });
+    };
+
+    // Delete candidate
+    const handleDeleteCandidate = (index: number) => {
+        setCandidates(prev => prev.filter((_, i) => i !== index));
+    };
+
+    // API mutation
+    const { mutateAsync: createSchedule, isPending } = useCreateSchedule();
+
+    // Create and return URL
+    const handleCreateAndCopy = async (): Promise<string | null> => {
+        try {
+            // Save organizer name
+            localStorage.setItem('lastOrganizerName', organizerName);
+
+            const result = await createSchedule({
+                name: titleValue,
+                description: description,
+                owner_name: organizerName,
+                owner_email: ownerEmail || undefined,
+                edit_key: editKey || undefined,
+                deadline: deadline || undefined,
+                allow_maybe: allowMaybe,
+                notify_on_response: notifyOnResponse,
+                candidates: candidates.map((c, i) => ({
+                    start_at: c.start_at,
+                    end_at: c.end_at,
+                    order: i,
+                })),
+            });
+
+            const url = `${window.location.origin}/event/${result.uuid}`;
+            router.push(`/event/${result.uuid}`);
+            return url;
+        } catch (error: unknown) {
+            // Extract specific error message from API response
+            let errorMessage = 'イベントの作成に失敗しました';
+            if (error && typeof error === 'object' && 'response' in error) {
+                const response = (error as { response?: { data?: Record<string, unknown> } }).response;
+                if (response?.data) {
+                    // Try to extract specific validation error
+                    const data = response.data;
+                    if (typeof data === 'object') {
+                        const firstKey = Object.keys(data)[0];
+                        if (firstKey && data[firstKey]) {
+                            const value = data[firstKey];
+                            errorMessage = Array.isArray(value) ? value[0] : String(value);
+                        }
+                    }
+                }
             }
-        );
+            toast({
+                title: 'エラーが発生しました',
+                description: errorMessage,
+                status: 'error',
+                duration: 5000,
+            });
+            return null;
+        }
+    };
+
+    // Create and navigate
+    const handleCreateAndNavigate = async () => {
+        try {
+            localStorage.setItem('lastOrganizerName', organizerName);
+
+            const result = await createSchedule({
+                name: titleValue,
+                description: description,
+                owner_name: organizerName,
+                owner_email: ownerEmail || undefined,
+                edit_key: editKey || undefined,
+                deadline: deadline || undefined,
+                allow_maybe: allowMaybe,
+                notify_on_response: notifyOnResponse,
+                candidates: candidates.map((c, i) => ({
+                    start_at: c.start_at,
+                    end_at: c.end_at,
+                    order: i,
+                })),
+            });
+
+            router.push(`/event/${result.uuid}`);
+        } catch (error: unknown) {
+            // Extract specific error message from API response
+            let errorMessage = 'イベントの作成に失敗しました';
+            if (error && typeof error === 'object' && 'response' in error) {
+                const response = (error as { response?: { data?: Record<string, unknown> } }).response;
+                if (response?.data) {
+                    // Try to extract specific validation error
+                    const data = response.data;
+                    if (typeof data === 'object') {
+                        const firstKey = Object.keys(data)[0];
+                        if (firstKey && data[firstKey]) {
+                            const value = data[firstKey];
+                            errorMessage = Array.isArray(value) ? value[0] : String(value);
+                        }
+                    }
+                }
+            }
+            toast({
+                title: 'エラーが発生しました',
+                description: errorMessage,
+                status: 'error',
+                duration: 5000,
+            });
+        }
     };
 
     return (
-        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Box minH="100vh" bg={bgColor} pb="120px">
             <Header />
-
-            <Container maxW="container.lg" py={8}>
-                <VStack spacing={8} align="stretch">
-                    {/* Page Header */}
-                    <VStack spacing={2} align="start">
-                        <Heading size="lg">新規イベント作成</Heading>
-                        <Text color="gray.600">
-                            候補日を設定して、参加者に回答をもらいましょう
+            
+            <Container maxW="1200px" py={3}>
+                {/* Header */}
+                <VStack spacing={2} mb={3} align="stretch">
+                    <Heading size="md">新規イベント作成</Heading>
+                    {!isSimpleMode && (
+                        <Text fontSize="sm" color="gray.600">
+                            候補日を選んで、リンクを共有しましょう
                         </Text>
+                    )}
+                    
+                    {/* Mode tabs */}
+                    <Tabs index={mode} onChange={setMode} variant="soft-rounded" colorScheme="brand" size="sm">
+                        <TabList>
+                            <Tab>かんたん</Tab>
+                            <Tab>詳細</Tab>
+                        </TabList>
+                    </Tabs>
+                </VStack>
+
+                {/* Main content - Two columns on desktop */}
+                <Flex gap={3} direction={{ base: 'column', lg: 'row' }} align="flex-start">
+                    {/* Left column - Input */}
+                    <VStack spacing={2} flex={1} align="stretch">
+                        {/* Event basics */}
+                        <EventBasicsCard
+                            register={register}
+                            errors={errors}
+                            organizerName={organizerName}
+                            onOrganizerChange={setOrganizerName}
+                            isSimpleMode={isSimpleMode}
+                            description={description}
+                            onDescriptionChange={setDescription}
+                            ownerEmail={ownerEmail}
+                            onOwnerEmailChange={setOwnerEmail}
+                        />
+
+                        {/* Candidate builder */}
+                        <CandidateBuilderCard
+                            selectedDates={selectedDates}
+                            onSelectDates={setSelectedDates}
+                            currentMonth={calendarMonth}
+                            onChangeMonth={setCalendarMonth}
+                            startHour={startHour}
+                            startMinute={startMinute}
+                            onStartTimeChange={handleStartTimeChange}
+                            durationPreset={durationPreset}
+                            customDuration={customDuration}
+                            onDurationPresetChange={setDurationPreset}
+                            onCustomDurationChange={setCustomDuration}
+                            calculatedEndTimeStr={calculatedEndTimeStr}
+                            useDirectEndTime={useDirectEndTime}
+                            onUseDirectEndTimeChange={setUseDirectEndTime}
+                            endHour={endHour}
+                            endMinute={endMinute}
+                            onEndTimeChange={handleEndTimeChange}
+                            minuteStep={minuteStep}
+                            onMinuteStepChange={setMinuteStep}
+                            onNudge={handleNudge}
+                            onAddCandidates={handleAddCandidates}
+                            isSimpleMode={isSimpleMode}
+                        />
+
+                        {/* Options card - only in detailed mode */}
+                        {!isSimpleMode && (
+                            <EventOptionsCard
+                                editKey={editKey}
+                                onEditKeyChange={setEditKey}
+                                deadline={deadline}
+                                onDeadlineChange={setDeadline}
+                                allowMaybe={allowMaybe}
+                                onAllowMaybeChange={setAllowMaybe}
+                                notifyOnResponse={notifyOnResponse}
+                                onNotifyOnResponseChange={setNotifyOnResponse}
+                                ownerEmail={ownerEmail}
+                            />
+                        )}
                     </VStack>
 
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <VStack spacing={6} align="stretch">
-                            {/* Basic Info Card */}
-                            <Card bg={cardBg} shadow="sm">
-                                <CardBody>
-                                    <VStack spacing={6} align="stretch">
-                                        <Heading size="sm" color="brand.500">
-                                            1. イベント情報
-                                        </Heading>
-
-                                        <FormControl isRequired isInvalid={!!errors.name}>
-                                            <FormLabel>イベント名</FormLabel>
-                                            <Input
-                                                {...register('name')}
-                                                placeholder="例：チームミーティング"
-                                                size="lg"
-                                            />
-                                            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
-                                        </FormControl>
-
-                                        <HStack spacing={4} align="start">
-                                            <FormControl isRequired isInvalid={!!errors.ownerName} flex={1}>
-                                                <FormLabel>主催者名</FormLabel>
-                                                <Input
-                                                    {...register('ownerName')}
-                                                    placeholder="例：山田太郎"
-                                                />
-                                                <FormErrorMessage>{errors.ownerName?.message}</FormErrorMessage>
-                                            </FormControl>
-
-                                            <FormControl flex={1}>
-                                                <FormLabel>所属（任意）</FormLabel>
-                                                <Input
-                                                    {...register('department')}
-                                                    placeholder="例：開発チーム"
-                                                />
-                                            </FormControl>
-                                        </HStack>
-
-                                        <FormControl isInvalid={!!errors.ownerEmail}>
-                                            <FormLabel>メールアドレス（任意）</FormLabel>
-                                            <Input
-                                                {...register('ownerEmail')}
-                                                type="email"
-                                                placeholder="回答時の通知を受け取るメールアドレス"
-                                            />
-                                            <FormErrorMessage>{errors.ownerEmail?.message}</FormErrorMessage>
-                                            <FormHelperText>
-                                                回答があった際に通知を受け取れます
-                                            </FormHelperText>
-                                        </FormControl>
-
-                                        <FormControl>
-                                            <FormLabel>説明・メモ（任意）</FormLabel>
-                                            <Textarea
-                                                {...register('description')}
-                                                placeholder="イベントの詳細や補足情報を記入してください"
-                                                rows={3}
-                                            />
-                                        </FormControl>
-                                    </VStack>
-                                </CardBody>
-                            </Card>
-
-                            {/* Candidates Card */}
-                            <Card bg={cardBg} shadow="sm">
-                                <CardBody>
-                                    <VStack spacing={6} align="stretch">
-                                        <HStack justify="space-between">
-                                            <Heading size="sm" color="brand.500">
-                                                2. 候補日を追加
-                                            </Heading>
-                                            <Badge colorScheme="brand" fontSize="sm">
-                                                {candidates.length}件
-                                            </Badge>
-                                        </HStack>
-
-                                        {/* Add Candidate Form */}
-                                        <Box
-                                            p={4}
-                                            borderRadius="lg"
-                                            border="2px dashed"
-                                            borderColor={borderColor}
-                                        >
-                                            <VStack spacing={4}>
-                                                <HStack spacing={4} w="full" flexWrap="wrap">
-                                                    <FormControl flex={2} minW="200px">
-                                                        <FormLabel fontSize="sm">日付</FormLabel>
-                                                        <Input
-                                                            type="date"
-                                                            value={newCandidateDate}
-                                                            onChange={(e) => setNewCandidateDate(e.target.value)}
-                                                        />
-                                                    </FormControl>
-                                                    <FormControl flex={1} minW="120px">
-                                                        <FormLabel fontSize="sm">開始時刻</FormLabel>
-                                                        <Input
-                                                            type="time"
-                                                            value={newCandidateStartTime}
-                                                            onChange={(e) => setNewCandidateStartTime(e.target.value)}
-                                                        />
-                                                    </FormControl>
-                                                    <FormControl flex={1} minW="120px">
-                                                        <FormLabel fontSize="sm">終了時刻</FormLabel>
-                                                        <Input
-                                                            type="time"
-                                                            value={newCandidateEndTime}
-                                                            onChange={(e) => setNewCandidateEndTime(e.target.value)}
-                                                        />
-                                                    </FormControl>
-                                                </HStack>
-                                                <Button
-                                                    leftIcon={<Plus size={18} />}
-                                                    colorScheme="brand"
-                                                    variant="outline"
-                                                    onClick={addCandidate}
-                                                    w="full"
-                                                >
-                                                    候補日を追加
-                                                </Button>
-                                            </VStack>
-                                        </Box>
-
-                                        {/* Candidates List */}
-                                        <AnimatePresence>
-                                            {candidates.map((candidate, index) => (
-                                                <MotionBox
-                                                    key={`${candidate.start_at}-${index}`}
-                                                    initial={{ opacity: 0, y: -10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    exit={{ opacity: 0, x: -20 }}
-                                                    transition={{ duration: 0.2 }}
-                                                >
-                                                    <HStack
-                                                        p={3}
-                                                        bg={candidateBg}
-                                                        borderRadius="lg"
-                                                        justify="space-between"
-                                                    >
-                                                        <HStack spacing={3}>
-                                                            <Flex
-                                                                align="center"
-                                                                justify="center"
-                                                                w={8}
-                                                                h={8}
-                                                                borderRadius="full"
-                                                                bg="brand.100"
-                                                                color="brand.600"
-                                                                fontWeight="bold"
-                                                                fontSize="sm"
-                                                            >
-                                                                {index + 1}
-                                                            </Flex>
-                                                            <VStack align="start" spacing={0}>
-                                                                <HStack>
-                                                                    <Calendar size={14} />
-                                                                    <Text fontWeight="medium">
-                                                                        {formatDateTime(candidate.start_at)}
-                                                                    </Text>
-                                                                </HStack>
-                                                                <HStack>
-                                                                    <Clock size={14} />
-                                                                    <Text fontSize="sm" color="gray.500">
-                                                                        {candidate.start_at.split('T')[1].slice(0, 5)} - {candidate.end_at.split('T')[1].slice(0, 5)}
-                                                                    </Text>
-                                                                </HStack>
-                                                            </VStack>
-                                                        </HStack>
-                                                        <IconButton
-                                                            aria-label="削除"
-                                                            icon={<Trash2 size={16} />}
-                                                            size="sm"
-                                                            variant="ghost"
-                                                            colorScheme="red"
-                                                            onClick={() => removeCandidate(index)}
-                                                        />
-                                                    </HStack>
-                                                </MotionBox>
-                                            ))}
-                                        </AnimatePresence>
-
-                                        {candidates.length === 0 && (
-                                            <Text textAlign="center" color="gray.500" py={4}>
-                                                候補日を追加してください
-                                            </Text>
-                                        )}
-                                    </VStack>
-                                </CardBody>
-                            </Card>
-
-                            {/* Settings Card */}
-                            <Card bg={cardBg} shadow="sm">
-                                <CardBody>
-                                    <VStack spacing={6} align="stretch">
-                                        <Heading size="sm" color="brand.500">
-                                            3. オプション設定
-                                        </Heading>
-
-                                        <HStack spacing={4} align="start">
-                                            <FormControl flex={1}>
-                                                <FormLabel>編集キー（任意）</FormLabel>
-                                                <InputGroup>
-                                                    <Input
-                                                        {...register('editKey')}
-                                                        type={showPassword ? 'text' : 'password'}
-                                                        placeholder="イベント編集用のパスワード"
-                                                    />
-                                                    <InputRightElement>
-                                                        <IconButton
-                                                            aria-label={showPassword ? '非表示' : '表示'}
-                                                            icon={showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={() => setShowPassword(!showPassword)}
-                                                        />
-                                                    </InputRightElement>
-                                                </InputGroup>
-                                                <FormHelperText>
-                                                    設定すると編集時にパスワードが必要になります
-                                                </FormHelperText>
-                                            </FormControl>
-
-                                            <FormControl flex={1}>
-                                                <FormLabel>回答期限（任意）</FormLabel>
-                                                <Input
-                                                    {...register('deadline')}
-                                                    type="datetime-local"
-                                                />
-                                            </FormControl>
-                                        </HStack>
-
-                                        <Divider />
-
-                                        <HStack justify="space-between">
-                                            <VStack align="start" spacing={0}>
-                                                <Text fontWeight="medium">「△（調整可能）」を許可</Text>
-                                                <Text fontSize="sm" color="gray.500">
-                                                    回答に「調整可能」の選択肢を表示します
-                                                </Text>
-                                            </VStack>
-                                            <Switch
-                                                {...register('allowMaybe')}
-                                                colorScheme="brand"
-                                                size="lg"
-                                            />
-                                        </HStack>
-
-                                        <HStack justify="space-between">
-                                            <VStack align="start" spacing={0}>
-                                                <Text fontWeight="medium">回答時にメール通知</Text>
-                                                <Text fontSize="sm" color="gray.500">
-                                                    新しい回答があった時にメールで通知します
-                                                </Text>
-                                            </VStack>
-                                            <Switch
-                                                {...register('notifyOnResponse')}
-                                                colorScheme="brand"
-                                                size="lg"
-                                                isDisabled={!ownerEmail}
-                                            />
-                                        </HStack>
-                                    </VStack>
-                                </CardBody>
-                            </Card>
-
-                            {/* Submit Button */}
-                            <Button
-                                type="submit"
-                                size="lg"
-                                colorScheme="brand"
-                                rightIcon={<ArrowRight size={18} />}
-                                isLoading={isPending}
-                                loadingText="作成中..."
-                                isDisabled={candidates.length === 0}
-                            >
-                                イベントを作成する
-                            </Button>
-                        </VStack>
-                    </form>
-                </VStack>
+                    {/* Right column - Candidate list */}
+                    <Box flex={1} minH="400px">
+                        <CandidateListCard
+                            candidates={candidates}
+                            selectedIndices={selectedCandidates}
+                            onSelectionChange={(index: number, selected: boolean) => {
+                                setSelectedCandidates(prev => {
+                                    const newSet = new Set(prev);
+                                    if (selected) {
+                                        newSet.add(index);
+                                    } else {
+                                        newSet.delete(index);
+                                    }
+                                    return newSet;
+                                });
+                            }}
+                            onSelectAll={() => {
+                                setSelectedCandidates(new Set(candidates.map((_, i) => i)));
+                            }}
+                            onDeselectAll={() => {
+                                setSelectedCandidates(new Set());
+                            }}
+                            onDeleteSelected={() => {
+                                setCandidates(prev => prev.filter((_, i) => !selectedCandidates.has(i)));
+                                setSelectedCandidates(new Set());
+                            }}
+                            onEdit={handleEditCandidate}
+                            onDuplicate={handleDuplicateCandidate}
+                            onDelete={handleDeleteCandidate}
+                        />
+                    </Box>
+                </Flex>
             </Container>
+
+            {/* Sticky footer CTA */}
+            <StickyFooterCTA
+                isDisabled={!hasTitle || candidates.length === 0}
+                isPending={isPending}
+                onCreateAndCopy={handleCreateAndCopy}
+                onCreateAndNavigate={handleCreateAndNavigate}
+                candidateCount={candidates.length}
+                hasTitle={hasTitle}
+            />
+
+            <Footer />
         </Box>
     );
 }

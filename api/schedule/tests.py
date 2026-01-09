@@ -565,16 +565,16 @@ class EditKeyHashMigrationTests(TestCase):
         self.assertTrue(schedule.check_edit_key(raw_key))
         self.assertFalse(schedule.check_edit_key('wrong-key'))
     
-    def test_legacy_plaintext_fallback(self):
-        """既存の平文データもフォールバックで動作"""
+    def test_legacy_plaintext_no_longer_works(self):
+        """平文フォールバック削除: hashなしデータは検証失敗"""
         schedule = Schedule.objects.create(
             name='レガシーテスト',
             owner_name='テスト',
             edit_key='legacy-plaintext-key'  # 旧形式
         )
         
-        # hashがない場合は平文で検証
-        self.assertTrue(schedule.check_edit_key('legacy-plaintext-key'))
+        # hashがない場合は検証失敗（平文フォールバック削除済み）
+        self.assertFalse(schedule.check_edit_key('legacy-plaintext-key'))
         self.assertFalse(schedule.check_edit_key('wrong-key'))
 
 
@@ -602,8 +602,8 @@ class EditTokenHashMigrationTests(TestCase):
         self.assertTrue(participant.check_edit_token(raw_token))
         self.assertFalse(participant.check_edit_token('wrong-token'))
     
-    def test_legacy_uuid_fallback(self):
-        """既存のUUIDトークンもフォールバックで動作"""
+    def test_legacy_uuid_no_longer_works(self):
+        """平文フォールバック削除: hashなしデータは検証失敗"""
         schedule = Schedule.objects.create(
             name='レガシートークンテスト',
             owner_name='テスト'
@@ -613,8 +613,7 @@ class EditTokenHashMigrationTests(TestCase):
             name='参加者'
         )
         
-        # edit_token_hashがない場合、edit_token（UUID）で検証
-        # Note: edit_tokenはUUIDFieldなので自動生成される
+        # edit_token_hashがない場合は検証失敗（平文フォールバック削除済み）
         legacy_token = str(participant.edit_token)
-        self.assertTrue(participant.check_edit_token(legacy_token))
+        self.assertFalse(participant.check_edit_token(legacy_token))
         self.assertFalse(participant.check_edit_token('wrong-token'))

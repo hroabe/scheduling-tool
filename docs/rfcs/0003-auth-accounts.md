@@ -14,7 +14,7 @@
 
 ## 3. Goals / Non-Goals
 ### Goals
-- 幹事用ログイン（メール+パスワード or OAuth）
+- 幹事用ログイン（メール+パスワード or SSO）
 - マイページ（owned events、履歴）
 - Integrations（Google/Outlook）の保存先をUserに統一
 - 既存の共有URL回答機能はそのまま動く
@@ -24,49 +24,84 @@
 - 大規模組織のSAML/SCIM（将来）
 
 ## 4. User Experience
-- 幹事: ログイン→「イベント一覧」→「イベント作成」→共有URL発行
-- 参加者: URLを開いて回答（必要なら edit_token で編集）
+
+### 統一認証フロー（2026-01更新）
+```
+[ログイン/サインアップ クリック]
+        │
+        ▼
+┌─────────────────────────────┐
+│  G  Google でログイン        │  ← Keycloak + Google IdP
+└─────────────────────────────┘
+        │
+        ▼
+  Googleアカウント選択/認証
+        │
+        ▼
+  Keycloakでユーザー作成/紐付け
+        │
+        ▼
+  /callback でトークン取得
+        │
+        ▼
+  アプリ利用可能
+```
+
+**注**: Keycloakのパスワード認証は無効化。Google認証のみ。
+
+### 従来フロー（参加者向け）
+- 参加者: URLを開いて回答（ログイン不要）
 - 幹事: 確定後にカレンダー登録/会議URL発行が自動化される
 
 ## 5. Design
-### Auth方式（候補）
-A. Django標準（セッション）  
-B. JWT（SimpleJWT等）  
-C. NextAuth（フロント主導）
 
-> 推奨: まずは **Djangoセッション** or **JWT** を選ぶ（モバイル要件で最終決定）。
+### Auth方式
+- **Keycloak (RFC-0011)**: SSO/OIDC 認証（推奨）
+- **Django セッション**: レガシー認証（移行期間中も対応）
 
 ### Backend
 - `User` 導入
 - `Schedule.owner_user`（nullable）追加し、ログイン幹事のイベントを紐づける
-- 既存 `owner_email` は通知用として残す（最小化は要検討）
+- 既存 `owner_email` は通知用として残す
 
-### Frontend
-- `/account`（ログイン/設定）
-- `/account/events`（一覧）
+### Frontend エンドポイント
+| パス | 機能 |
+|-----|------|
+| `/login` | 統一ログイン（SSO + メール） |
+| `/register` | 新規登録 |
+| `/callback` | OIDCコールバック |
+| `/account` | マイページ |
+
+### API エンドポイント
+| エンドポイント | 機能 |
+|---------------|------|
+| `POST /api/v1/accounts/login/` | レガシーログイン |
+| `POST /api/v1/accounts/register/` | 登録 |
+| `POST /api/v1/accounts/check-email/` | メール存在確認 |
+| `GET /api/v1/accounts/me/` | ユーザー情報取得 |
 
 ### Security/Privacy
 - パスワードはDjango標準hash
+- Keycloakトークンはブラウザ/ストレージに保存
 - 共有URLに認証情報を載せない
-- `edit_key/edit_token` の hash化（別タスク）と整合
-
-### Migration
-- 既存イベントは `owner_user=null` のまま
-- 既存イベントの「引き取り」機能は別途検討
 
 ## 6. Alternatives
 - 認証を後回しにしてGoogle連携を先にやる（ただしトークン保存先が難しい）
 
 ## 7. Rollout Plan
-- Phase1: ログイン + owned events の一覧
-- Phase2: 連携設定（Google/Outlook）画面
-- Phase3: 課金プラン導入（別RFC）
+- Phase1: ✅ ログイン + owned events の一覧
+- Phase2: ✅ 連携設定（Google/Outlook）画面
+- Phase3: ✅ Keycloak SSO 統合 (RFC-0011)
+- Phase4: 課金プラン導入（別RFC）
 
 ## 8. Test Plan
-- unit: 認証、権限
+- unit: 認証、権限、check-email
 - integration: owned events の取得、未ログインの挙動
 - e2e: ログイン→作成→一覧に出る
 
-## 9. Open Questions
-- 認証方式の最終決定（セッション vs JWT）
-- モバイルのログイン導線（WebView or ネイティブ）
+## 9. Implementation Status
+- ✅ Django セッション認証
+- ✅ 統一ログインフロー（SSO + メール）
+- ✅ check-email API
+- ✅ Keycloak 連携（RFC-0011）
+

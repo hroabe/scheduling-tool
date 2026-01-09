@@ -145,6 +145,18 @@ class Schedule(models.Model):
         verbose_name="確定日程",
         help_text="確定した候補日程"
     )
+    finalized_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="確定日時",
+        help_text="日程が確定された日時"
+    )
+    closed_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="締切日時",
+        help_text="回答が締め切られた日時"
+    )
     
     # RFC-0004: Meeting URL auto-generation
     MEETING_PROVIDER_CHOICES = [
@@ -205,9 +217,28 @@ class Schedule(models.Model):
         return False
     
     @property
+    def is_closed(self):
+        """回答が締め切られているかどうか"""
+        return self.closed_at is not None
+    
+    @property
+    def status(self):
+        """
+        イベントのステータス
+        
+        Returns:
+            str: 'fixed' (確定), 'closed' (締切), 'open' (受付中)
+        """
+        if self.is_finalized:
+            return 'fixed'
+        elif self.is_closed or self.is_expired:
+            return 'closed'
+        return 'open'
+    
+    @property
     def can_respond(self):
         """回答可能かどうか"""
-        return self.is_active and not self.is_expired and not self.is_finalized
+        return self.is_active and not self.is_expired and not self.is_finalized and not self.is_closed
 
     def set_edit_key(self, raw_key: str) -> None:
         """
@@ -221,7 +252,7 @@ class Schedule(models.Model):
 
     def check_edit_key(self, raw_key: str) -> bool:
         """
-        編集キーを検証（hash優先、平文フォールバック）
+        編集キーを検証（hashのみ）
         
         Args:
             raw_key: 検証する平文キー
@@ -230,12 +261,9 @@ class Schedule(models.Model):
         """
         if not raw_key:
             return False
-        # hash があれば hash で判定
         if self.edit_key_hash:
             return check_password(raw_key, self.edit_key_hash)
-        # 移行期間: 平文フォールバック
-        if self.edit_key:
-            return self.edit_key == raw_key
+        # 平文フォールバック削除済み - hashのみサポート
         return False
 
     @classmethod
@@ -386,7 +414,7 @@ class Participant(models.Model):
 
     def check_edit_token(self, raw_token: str) -> bool:
         """
-        編集トークンを検証（hash優先、平文フォールバック）
+        編集トークンを検証（hashのみ）
         
         Args:
             raw_token: 検証する平文トークン
@@ -395,12 +423,9 @@ class Participant(models.Model):
         """
         if not raw_token:
             return False
-        # hash があれば hash で判定
         if self.edit_token_hash:
             return check_password(raw_token, self.edit_token_hash)
-        # 移行期間: 平文フォールバック（UUIDとして比較）
-        if self.edit_token:
-            return str(self.edit_token) == str(raw_token)
+        # 平文フォールバック削除済み - hashのみサポート
         return False
 
     @classmethod

@@ -3,7 +3,7 @@
  * RFC-0006: 多言語対応
  */
 
-export const locales = ['ja', 'en', 'zh-hans', 'zh-hant', 'ko', 'vi', 'pt'] as const;
+export const locales = ['ja', 'en', 'zh', 'ko', 'es', 'fr', 'de', 'pt'] as const;
 export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = 'ja';
@@ -11,15 +11,16 @@ export const defaultLocale: Locale = 'ja';
 export const localeNames: Record<Locale, string> = {
   'ja': '日本語',
   'en': 'English',
-  'zh-hans': '简体中文',
-  'zh-hant': '繁體中文',
+  'zh': '中文（简体）',
   'ko': '한국어',
-  'vi': 'Tiếng Việt',
+  'es': 'Español',
+  'fr': 'Français',
+  'de': 'Deutsch',
   'pt': 'Português',
 };
 
-// Only Phase 1 languages are fully supported
-export const supportedLocales: Locale[] = ['ja', 'en'];
+// All languages are now fully supported
+export const supportedLocales: Locale[] = ['ja', 'en', 'zh', 'ko', 'es', 'fr', 'de', 'pt'];
 
 /**
  * Get locale from Accept-Language header or cookie
@@ -45,14 +46,11 @@ export function getLocaleFromRequest(acceptLanguage?: string, cookie?: string): 
       if (locales.includes(lang as Locale)) {
         return lang as Locale;
       }
-      // Base language match (e.g., 'zh' -> 'zh-hans')
+      // Base language match (e.g., 'zh-CN' -> 'zh')
       const base = lang.split('-')[0];
-      if (base === 'zh') return 'zh-hans';
-      if (base === 'ja') return 'ja';
-      if (base === 'en') return 'en';
-      if (base === 'ko') return 'ko';
-      if (base === 'vi') return 'vi';
-      if (base === 'pt') return 'pt';
+      if (locales.includes(base as Locale)) {
+        return base as Locale;
+      }
     }
   }
 
@@ -70,3 +68,4 @@ export async function getMessages(locale: Locale) {
     return (await import(`../messages/${defaultLocale}.json`)).default;
   }
 }
+

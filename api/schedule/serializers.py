@@ -218,6 +218,8 @@ class ScheduleDetailSerializer(serializers.ModelSerializer):
     participants = ParticipantSerializer(many=True, read_only=True)
     can_respond = serializers.BooleanField(read_only=True)
     is_expired = serializers.BooleanField(read_only=True)
+    is_closed = serializers.BooleanField(read_only=True)
+    status = serializers.CharField(read_only=True)
     url = serializers.SerializerMethodField()
     
     class Meta:
@@ -237,6 +239,10 @@ class ScheduleDetailSerializer(serializers.ModelSerializer):
             'show_participant_count',
             'is_finalized',
             'finalized_candidate',
+            'finalized_at',
+            'closed_at',
+            'status',
+            'is_closed',
             'can_respond',
             'is_expired',
             'candidates',

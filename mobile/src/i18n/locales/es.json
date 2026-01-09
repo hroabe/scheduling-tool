@@ -1,0 +1,70 @@
+{
+    "common": {
+        "submit": "Enviar",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "back": "Atrás",
+        "close": "Cerrar",
+        "confirm": "Confirmar",
+        "loading": "Cargando...",
+        "error": "Error"
+    },
+    "auth": {
+        "login": "Iniciar sesión",
+        "logout": "Cerrar sesión",
+        "register": "Registrar",
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "email": "Correo electrónico",
+        "confirmPassword": "Confirmar contraseña",
+        "loginSubtitle": "Inicia sesión en tu cuenta",
+        "registerSubtitle": "Crear nueva cuenta",
+        "usernamePlaceholder": "Ingresa nombre de usuario",
+        "passwordPlaceholder": "Ingresa contraseña",
+        "emailPlaceholder": "Ingresa correo electrónico",
+        "confirmPasswordPlaceholder": "Reingresa contraseña",
+        "noAccount": "¿No tienes cuenta?",
+        "hasAccount": "¿Ya tienes cuenta?",
+        "fillAllFields": "Por favor completa todos los campos",
+        "invalidCredentials": "Nombre de usuario o contraseña incorrectos",
+        "passwordMismatch": "Las contraseñas no coinciden",
+        "registerError": "Error en el registro"
+    },
+    "account": {
+        "profile": "Perfil",
+        "integrations": "Integraciones",
+        "myBookings": "Mis reservas",
+        "availabilityPages": "Páginas de disponibilidad"
+    },
+    "integration": {
+        "connected": "Conectado",
+        "notConnected": "No conectado",
+        "disconnectConfirm": "¿Desconectar?"
+    },
+    "schedule": {
+        "title": "Programación",
+        "create": "Crear nuevo",
+        "myEvents": "Mis eventos",
+        "eventName": "Nombre del evento",
+        "description": "Descripción",
+        "deadline": "Fecha límite"
+    },
+    "booking": {
+        "title": "Reserva",
+        "bookTime": "Reservar hora",
+        "availableSlots": "Horarios disponibles",
+        "confirmed": "Reserva confirmada",
+        "cancelled": "Reserva cancelada",
+        "guestName": "Tu nombre",
+        "guestEmail": "Correo electrónico",
+        "message": "Mensaje",
+        "noBookings": "Sin reservas",
+        "cancelConfirm": "¿Cancelar reserva?"
+    },
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "error": "Error",
+    "confirm": "Confirmar"
+}

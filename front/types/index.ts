@@ -68,6 +68,10 @@ export interface Schedule {
     show_participant_count: boolean;
     is_finalized: boolean;
     finalized_candidate?: number;
+    finalized_at?: string;
+    closed_at?: string;
+    status: 'open' | 'closed' | 'fixed';
+    is_closed: boolean;
     can_respond: boolean;
     is_expired: boolean;
     candidates: Candidate[];

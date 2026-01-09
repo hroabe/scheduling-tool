@@ -37,19 +37,39 @@ class ApiClient {
         this.baseUrl = url;
     }
 
+    /**
+     * Get CSRF token from cookie
+     */
+    private getCsrfToken(): string | null {
+        if (typeof document === 'undefined') return null;
+        const match = document.cookie.match(/csrftoken=([^;]+)/);
+        return match ? match[1] : null;
+    }
+
     private async request<T>(
         endpoint: string,
         options: RequestInit = {}
     ): Promise<T> {
         const url = `${this.baseUrl}${endpoint}`;
 
+        // Add CSRF token for state-changing methods
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            ...(options.headers as Record<string, string>),
+        };
+
+        const method = options.method?.toUpperCase() || 'GET';
+        if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+            const csrfToken = this.getCsrfToken();
+            if (csrfToken) {
+                headers['X-CSRFToken'] = csrfToken;
+            }
+        }
+
         const config: RequestInit = {
             ...options,
             credentials: 'include', // Required for session-based auth
-            headers: {
-                'Content-Type': 'application/json',
-                ...options.headers,
-            },
+            headers,
         };
 
         const response = await fetch(url, config);
@@ -159,6 +179,22 @@ class ApiClient {
         });
     }
 
+    // Close responses (without finalizing)
+    async closeSchedule(uuid: string, editKey?: string): Promise<Schedule> {
+        return this.request<Schedule>(`/api/v1/schedules/${uuid}/close/`, {
+            method: 'POST',
+            body: JSON.stringify({ edit_key: editKey }),
+        });
+    }
+
+    // Reopen closed schedule
+    async reopenSchedule(uuid: string, editKey?: string): Promise<Schedule> {
+        return this.request<Schedule>(`/api/v1/schedules/${uuid}/reopen/`, {
+            method: 'POST',
+            body: JSON.stringify({ edit_key: editKey }),
+        });
+    }
+
     // Summary
     async getScheduleSummary(uuid: string): Promise<ScheduleSummary> {
         return this.request<ScheduleSummary>(`/api/v1/schedules/${uuid}/summary/`);
@@ -190,6 +226,13 @@ class ApiClient {
         return this.request<AuthResponse>('/api/v1/accounts/register/', {
             method: 'POST',
             body: JSON.stringify(data),
+        });
+    }
+
+    async checkEmail(email: string): Promise<{ exists: boolean }> {
+        return this.request<{ exists: boolean }>('/api/v1/accounts/check-email/', {
+            method: 'POST',
+            body: JSON.stringify({ email }),
         });
     }
 

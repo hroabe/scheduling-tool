@@ -76,7 +76,7 @@ test.describe('Home Page', () => {
 });
 
 test.describe('Responsive Design', () => {
-  test('should work on mobile viewport', async ({ page }) => {
+  test('should show hamburger menu on mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
@@ -84,6 +84,30 @@ test.describe('Responsive Design', () => {
 
     // Page should be usable on mobile
     await expect(page.locator('body')).toBeVisible();
+
+    // Mobile menu button should be visible
+    const menuButton = page.getByRole('button', { name: /メニューを開く/i });
+    await expect(menuButton).toBeVisible();
+
+    // Desktop navigation should be hidden
+    const desktopNav = page.locator('header').locator('[data-testid="desktop-nav"]');
+    // Check that login button is not visible in header (it's in drawer)
+    await expect(page.locator('header').locator('a[href="/login"]')).not.toBeVisible();
+  });
+
+  test('should show full navigation on desktop', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    await page.goto('/');
+
+    await expect(page.locator('body')).toBeVisible();
+
+    // Mobile menu button should not be visible
+    const menuButton = page.getByRole('button', { name: /メニューを開く/i });
+    await expect(menuButton).not.toBeVisible();
+
+    // Desktop navigation should be visible
+    await expect(page.locator('header').locator('a[href="/login"]')).toBeVisible();
   });
 
   test('should work on tablet viewport', async ({ page }) => {
@@ -94,3 +118,4 @@ test.describe('Responsive Design', () => {
     await expect(page.locator('body')).toBeVisible();
   });
 });
+

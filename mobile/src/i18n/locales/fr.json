@@ -1,0 +1,70 @@
+{
+    "common": {
+        "submit": "Soumettre",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "back": "Retour",
+        "close": "Fermer",
+        "confirm": "Confirmer",
+        "loading": "Chargement...",
+        "error": "Erreur"
+    },
+    "auth": {
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "register": "S'inscrire",
+        "username": "Nom d'utilisateur",
+        "password": "Mot de passe",
+        "email": "E-mail",
+        "confirmPassword": "Confirmer le mot de passe",
+        "loginSubtitle": "Connectez-vous à votre compte",
+        "registerSubtitle": "Créer un nouveau compte",
+        "usernamePlaceholder": "Entrez le nom d'utilisateur",
+        "passwordPlaceholder": "Entrez le mot de passe",
+        "emailPlaceholder": "Entrez l'e-mail",
+        "confirmPasswordPlaceholder": "Réentrez le mot de passe",
+        "noAccount": "Vous n'avez pas de compte ?",
+        "hasAccount": "Vous avez déjà un compte ?",
+        "fillAllFields": "Veuillez remplir tous les champs",
+        "invalidCredentials": "Nom d'utilisateur ou mot de passe incorrect",
+        "passwordMismatch": "Les mots de passe ne correspondent pas",
+        "registerError": "Échec de l'inscription"
+    },
+    "account": {
+        "profile": "Profil",
+        "integrations": "Intégrations",
+        "myBookings": "Mes réservations",
+        "availabilityPages": "Pages de disponibilité"
+    },
+    "integration": {
+        "connected": "Connecté",
+        "notConnected": "Non connecté",
+        "disconnectConfirm": "Déconnecter ?"
+    },
+    "schedule": {
+        "title": "Planification",
+        "create": "Créer",
+        "myEvents": "Mes événements",
+        "eventName": "Nom de l'événement",
+        "description": "Description",
+        "deadline": "Date limite"
+    },
+    "booking": {
+        "title": "Réservation",
+        "bookTime": "Réserver un créneau",
+        "availableSlots": "Créneaux disponibles",
+        "confirmed": "Réservation confirmée",
+        "cancelled": "Réservation annulée",
+        "guestName": "Votre nom",
+        "guestEmail": "E-mail",
+        "message": "Message",
+        "noBookings": "Aucune réservation",
+        "cancelConfirm": "Annuler la réservation ?"
+    },
+    "connect": "Connecter",
+    "disconnect": "Déconnecter",
+    "error": "Erreur",
+    "confirm": "Confirmer"
+}

@@ -18,13 +18,58 @@ class AvailabilityPage(models.Model):
     公開空き枠ページ
     
     ホストが公開URL経由で予約を受け付けるためのページ
+    ログイン不要モードでは owner=None, host_token と verify_token で管理
     """
-    # Owner
+    STATUS_CHOICES = [
+        ('DRAFT', '下書き'),
+        ('PENDING_VERIFY', 'メール認証待ち'),
+        ('PUBLISHED', '公開中'),
+        ('UNPUBLISHED', '非公開'),
+    ]
+    
+    # Owner (optional for anonymous booking)
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='availability_pages',
-        verbose_name="オーナー"
+        verbose_name="オーナー",
+        null=True,
+        blank=True
+    )
+    
+    # Anonymous host info (for login-free mode)
+    organizer_name = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+        verbose_name="主催者名"
+    )
+    organizer_email = models.EmailField(
+        blank=True,
+        default="",
+        verbose_name="主催者メールアドレス"
+    )
+    
+    # Security tokens (stored as hashes)
+    host_token_hash = models.CharField(
+        max_length=128,
+        blank=True,
+        default="",
+        verbose_name="管理トークンハッシュ"
+    )
+    verify_token_hash = models.CharField(
+        max_length=128,
+        blank=True,
+        default="",
+        verbose_name="認証トークンハッシュ"
+    )
+    
+    # Status
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='DRAFT',
+        verbose_name="ステータス"
     )
     
     # Public identifier
@@ -66,7 +111,7 @@ class AvailabilityPage(models.Model):
         help_text="予約間の空き時間"
     )
     
-    # Visibility
+    # Visibility (legacy, use 'status' instead)
     is_public = models.BooleanField(
         default=True,
         verbose_name="公開",
@@ -100,7 +145,32 @@ class AvailabilityPage(models.Model):
     @property
     def public_url(self):
         """公開URL"""
-        return f"/oneonone/{self.slug}"
+        return f"/booking/{self.slug}"
+    
+    @property
+    def is_anonymous(self):
+        """匿名（ログイン不要）モードかどうか"""
+        return self.owner is None
+    
+    def set_host_token(self, token: str):
+        """hostトークンをハッシュ化して保存"""
+        import hashlib
+        self.host_token_hash = hashlib.sha256(token.encode()).hexdigest()
+    
+    def verify_host_token(self, token: str) -> bool:
+        """hostトークンを検証"""
+        import hashlib
+        return self.host_token_hash == hashlib.sha256(token.encode()).hexdigest()
+    
+    def set_verify_token(self, token: str):
+        """verifyトークンをハッシュ化して保存"""
+        import hashlib
+        self.verify_token_hash = hashlib.sha256(token.encode()).hexdigest()
+    
+    def verify_verify_token(self, token: str) -> bool:
+        """verifyトークンを検証"""
+        import hashlib
+        return self.verify_token_hash == hashlib.sha256(token.encode()).hexdigest()
     
     def get_available_slots(self, from_date=None, to_date=None):
         """予約可能な空き枠を取得"""

@@ -37,7 +37,12 @@
 - 確定後にカレンダーへ書き込み（RFC-0001/0002を流用）
 
 ### Frontend
-- `/oneonone/[slug]`（公開ページ）
+- `/oneonone`（ダッシュボード - 予約ページ一覧・作成）
+- `/oneonone/p/[slug]`（公開ページ）
+- `/oneonone/pages/[id]`（ページ管理）
+
+> **実装済み**: Chakra UI ベースのモダンなUIで実装。Header/Footer統合により、サイト全体と一貫したナビゲーションを提供。
+
 - 予約フローはできるだけ短く
 
 ### Security/Privacy

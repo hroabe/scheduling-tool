@@ -1,0 +1,70 @@
+{
+    "common": {
+        "submit": "提交",
+        "cancel": "取消",
+        "save": "保存",
+        "delete": "删除",
+        "edit": "编辑",
+        "back": "返回",
+        "close": "关闭",
+        "confirm": "确认",
+        "loading": "加载中...",
+        "error": "错误"
+    },
+    "auth": {
+        "login": "登录",
+        "logout": "退出登录",
+        "register": "注册",
+        "username": "用户名",
+        "password": "密码",
+        "email": "电子邮箱",
+        "confirmPassword": "确认密码",
+        "loginSubtitle": "登录您的账户",
+        "registerSubtitle": "创建新账户",
+        "usernamePlaceholder": "输入用户名",
+        "passwordPlaceholder": "输入密码",
+        "emailPlaceholder": "输入电子邮箱",
+        "confirmPasswordPlaceholder": "再次输入密码",
+        "noAccount": "还没有账户？",
+        "hasAccount": "已有账户？",
+        "fillAllFields": "请填写所有字段",
+        "invalidCredentials": "用户名或密码不正确",
+        "passwordMismatch": "密码不匹配",
+        "registerError": "注册失败"
+    },
+    "account": {
+        "profile": "个人资料",
+        "integrations": "集成服务",
+        "myBookings": "我的预约",
+        "availabilityPages": "预约页面管理"
+    },
+    "integration": {
+        "connected": "已连接",
+        "notConnected": "未连接",
+        "disconnectConfirm": "确定要断开连接吗？"
+    },
+    "schedule": {
+        "title": "日程安排",
+        "create": "新建",
+        "myEvents": "我的活动",
+        "eventName": "活动名称",
+        "description": "描述",
+        "deadline": "截止日期"
+    },
+    "booking": {
+        "title": "预约",
+        "bookTime": "预约时间",
+        "availableSlots": "可用时段",
+        "confirmed": "预约已确认",
+        "cancelled": "预约已取消",
+        "guestName": "您的姓名",
+        "guestEmail": "电子邮箱",
+        "message": "留言",
+        "noBookings": "暂无预约",
+        "cancelConfirm": "确定要取消预约吗？"
+    },
+    "connect": "连接",
+    "disconnect": "断开",
+    "error": "错误",
+    "confirm": "确认"
+}

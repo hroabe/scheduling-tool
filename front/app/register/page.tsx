@@ -17,11 +17,13 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { useI18n } from '@/providers/I18nProvider';
 
 export default function RegisterPage() {
     const router = useRouter();
     const toast = useToast();
     const { register, isLoading } = useAuthStore();
+    const { t } = useI18n();
     
     // Form state
     const [formData, setFormData] = useState({
@@ -44,22 +46,22 @@ export default function RegisterPage() {
         setError('');
 
         if (formData.password !== formData.password_confirm) {
-            setError('Passwords do not match');
+            setError(t('auth.passwordMismatch'));
             return;
         }
 
         try {
             await register(formData);
             toast({
-                title: 'Account created!',
+                title: t('auth.registerSuccess'),
                 status: 'success',
                 duration: 3000,
             });
-            router.push('/dashboard');
+            router.push('/account');
         } catch (err: any) {
-            setError(err.message || 'Registration failed');
+            setError(err.message || t('errors.serverError'));
             toast({
-                title: 'Error',
+                title: t('common.error'),
                 description: err.message,
                 status: 'error',
                 duration: 5000,
@@ -71,7 +73,7 @@ export default function RegisterPage() {
         <Container maxW="container.sm" py={20}>
             <Box p={8} borderWidth={1} borderRadius="lg" boxShadow="lg" bg="white">
                 <VStack spacing={6}>
-                    <Heading size="xl">Create Account</Heading>
+                    <Heading size="xl">{t('auth.register')}</Heading>
 
                     {error && (
                         <Box w="full" p={3} bg="red.50" color="red.500" borderRadius="md">
@@ -82,7 +84,7 @@ export default function RegisterPage() {
                     <form onSubmit={handleSubmit} style={{ width: '100%' }}>
                         <VStack spacing={4}>
                             <FormControl isRequired>
-                                <FormLabel>Username</FormLabel>
+                                <FormLabel>{t('auth.username')}</FormLabel>
                                 <Input
                                     name="username"
                                     value={formData.username}
@@ -91,7 +93,7 @@ export default function RegisterPage() {
                             </FormControl>
 
                             <FormControl isRequired>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel>{t('auth.email')}</FormLabel>
                                 <Input
                                     name="email"
                                     type="email"
@@ -101,7 +103,7 @@ export default function RegisterPage() {
                             </FormControl>
 
                             <FormControl isRequired>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel>{t('auth.password')}</FormLabel>
                                 <Input
                                     name="password"
                                     type="password"
@@ -111,7 +113,7 @@ export default function RegisterPage() {
                             </FormControl>
 
                             <FormControl isRequired>
-                                <FormLabel>Confirm Password</FormLabel>
+                                <FormLabel>{t('auth.confirmPassword')}</FormLabel>
                                 <Input
                                     name="password_confirm"
                                     type="password"
@@ -121,7 +123,7 @@ export default function RegisterPage() {
                             </FormControl>
 
                             <FormControl>
-                                <FormLabel>First Name</FormLabel>
+                                <FormLabel>{t('auth.firstName')}</FormLabel>
                                 <Input
                                     name="first_name"
                                     value={formData.first_name}
@@ -130,7 +132,7 @@ export default function RegisterPage() {
                             </FormControl>
 
                             <FormControl>
-                                <FormLabel>Last Name</FormLabel>
+                                <FormLabel>{t('auth.lastName')}</FormLabel>
                                 <Input
                                     name="last_name"
                                     value={formData.last_name}
@@ -145,15 +147,15 @@ export default function RegisterPage() {
                                 isLoading={isLoading}
                                 mt={4}
                             >
-                                Register
+                                {t('auth.register')}
                             </Button>
                         </VStack>
                     </form>
 
                     <Text fontSize="sm">
-                        Already have an account?{' '}
+                        {t('auth.login')}?{' '}
                         <ChakraLink as={Link} href="/login" color="brand.500">
-                            Login here
+                            {t('auth.login')}
                         </ChakraLink>
                     </Text>
                 </VStack>
@@ -161,3 +163,4 @@ export default function RegisterPage() {
         </Container>
     );
 }
+

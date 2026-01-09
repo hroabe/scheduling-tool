@@ -13,6 +13,7 @@ from .views import (
     MySchedulesView,
     IntegrationViewSet,
 )
+from .check_email import CheckEmailView
 
 router = DefaultRouter()
 router.register(r'integrations', IntegrationViewSet, basename='integration')
@@ -22,6 +23,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('check-email/', CheckEmailView.as_view(), name='check-email'),
     
     # Profile
     path('me/', MeView.as_view(), name='me'),
@@ -31,3 +33,4 @@ urlpatterns = [
     # Integrations
     path('', include(router.urls)),
 ]
+

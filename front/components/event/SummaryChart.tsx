@@ -19,6 +19,8 @@ import { motion } from 'framer-motion';
 import { Trophy, Users, TrendingUp } from 'lucide-react';
 import type { Schedule, ScheduleSummary, CandidateSummary } from '@/types';
 import { formatDate, formatTime } from '@/lib/date';
+import { useI18n } from '@/providers/I18nProvider';
+import { getAvailabilitySymbols } from '@/lib/availabilitySymbols';
 
 interface SummaryChartProps {
     schedule: Schedule;
@@ -33,12 +35,14 @@ function CandidateBar({
     isRecommended,
     index,
     recommendedBg,
+    symbols,
 }: {
     candidate: CandidateSummary;
     totalParticipants: number;
     isRecommended: boolean;
     index: number;
     recommendedBg: string;
+    symbols: { yes: string; maybe: string; no: string };
 }) {
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
@@ -131,15 +135,15 @@ function CandidateBar({
                     <HStack justify="center" spacing={4}>
                         <HStack>
                             <Box w={3} h={3} borderRadius="full" bg="green.400" />
-                            <Text fontSize="sm">◯ {candidate.ok_count}</Text>
+                            <Text fontSize="sm">{symbols.yes} {candidate.ok_count}</Text>
                         </HStack>
                         <HStack>
                             <Box w={3} h={3} borderRadius="full" bg="yellow.400" />
-                            <Text fontSize="sm">△ {candidate.maybe_count}</Text>
+                            <Text fontSize="sm">{symbols.maybe} {candidate.maybe_count}</Text>
                         </HStack>
                         <HStack>
                             <Box w={3} h={3} borderRadius="full" bg="red.400" />
-                            <Text fontSize="sm">× {candidate.ng_count}</Text>
+                            <Text fontSize="sm">{symbols.no} {candidate.ng_count}</Text>
                         </HStack>
                     </HStack>
                 </VStack>
@@ -152,6 +156,8 @@ export function SummaryChart({ schedule, summary }: SummaryChartProps) {
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
     const recommendedBg = useColorModeValue('green.50', 'green.900');
+    const { locale } = useI18n();
+    const symbols = getAvailabilitySymbols(locale);
 
     // Build summary from schedule if API summary not available
     const candidateSummaries: CandidateSummary[] = summary?.candidates ||
@@ -191,7 +197,7 @@ export function SummaryChart({ schedule, summary }: SummaryChartProps) {
         <VStack spacing={6} align="stretch">
             {/* Summary Stats */}
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                <Card bg={cardBg} shadow="sm">
+                <Card bg={cardBg} shadow="sm" border="1px solid" borderColor="gray.400">
                     <CardBody>
                         <HStack>
                             <Flex
@@ -217,7 +223,7 @@ export function SummaryChart({ schedule, summary }: SummaryChartProps) {
                     </CardBody>
                 </Card>
 
-                <Card bg={cardBg} shadow="sm">
+                <Card bg={cardBg} shadow="sm" border="1px solid" borderColor="gray.400">
                     <CardBody>
                         <HStack>
                             <Flex
@@ -236,14 +242,14 @@ export function SummaryChart({ schedule, summary }: SummaryChartProps) {
                                     {Math.max(...candidateSummaries.map((c) => c.ok_count))}
                                 </Text>
                                 <Text fontSize="sm" color="gray.500">
-                                    最大「◯」数
+                                    最大「{symbols.yes}」数
                                 </Text>
                             </VStack>
                         </HStack>
                     </CardBody>
                 </Card>
 
-                <Card bg={cardBg} shadow="sm">
+                <Card bg={cardBg} shadow="sm" border="1px solid" borderColor="gray.400">
                     <CardBody>
                         <HStack>
                             <Flex
@@ -269,30 +275,6 @@ export function SummaryChart({ schedule, summary }: SummaryChartProps) {
                     </CardBody>
                 </Card>
             </SimpleGrid>
-
-            {/* Candidate List */}
-            <Card bg={cardBg} shadow="sm">
-                <CardBody>
-                    <VStack spacing={4} align="stretch">
-                        <Heading size="sm">候補日ごとの回答状況</Heading>
-
-                        <VStack spacing={3}>
-                            {candidateSummaries
-                                .sort((a, b) => b.score - a.score)
-                                .map((candidate, index) => (
-                                    <CandidateBar
-                                        key={candidate.candidate_id}
-                                        candidate={candidate}
-                                        totalParticipants={totalParticipants}
-                                        isRecommended={candidate.candidate_id === recommendedId}
-                                        index={index}
-                                        recommendedBg={recommendedBg}
-                                    />
-                                ))}
-                        </VStack>
-                    </VStack>
-                </CardBody>
-            </Card>
         </VStack>
     );
 }

@@ -1,0 +1,70 @@
+{
+    "common": {
+        "submit": "Senden",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "back": "Zurück",
+        "close": "Schließen",
+        "confirm": "Bestätigen",
+        "loading": "Laden...",
+        "error": "Fehler"
+    },
+    "auth": {
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "register": "Registrieren",
+        "username": "Benutzername",
+        "password": "Passwort",
+        "email": "E-Mail",
+        "confirmPassword": "Passwort bestätigen",
+        "loginSubtitle": "Melden Sie sich an",
+        "registerSubtitle": "Neues Konto erstellen",
+        "usernamePlaceholder": "Benutzername eingeben",
+        "passwordPlaceholder": "Passwort eingeben",
+        "emailPlaceholder": "E-Mail eingeben",
+        "confirmPasswordPlaceholder": "Passwort erneut eingeben",
+        "noAccount": "Noch kein Konto?",
+        "hasAccount": "Bereits ein Konto?",
+        "fillAllFields": "Bitte füllen Sie alle Felder aus",
+        "invalidCredentials": "Benutzername oder Passwort falsch",
+        "passwordMismatch": "Passwörter stimmen nicht überein",
+        "registerError": "Registrierung fehlgeschlagen"
+    },
+    "account": {
+        "profile": "Profil",
+        "integrations": "Integrationen",
+        "myBookings": "Meine Buchungen",
+        "availabilityPages": "Verfügbarkeitsseiten"
+    },
+    "integration": {
+        "connected": "Verbunden",
+        "notConnected": "Nicht verbunden",
+        "disconnectConfirm": "Verbindung trennen?"
+    },
+    "schedule": {
+        "title": "Terminplanung",
+        "create": "Neu erstellen",
+        "myEvents": "Meine Ereignisse",
+        "eventName": "Ereignisname",
+        "description": "Beschreibung",
+        "deadline": "Frist"
+    },
+    "booking": {
+        "title": "Buchung",
+        "bookTime": "Zeit buchen",
+        "availableSlots": "Verfügbare Zeiten",
+        "confirmed": "Buchung bestätigt",
+        "cancelled": "Buchung storniert",
+        "guestName": "Ihr Name",
+        "guestEmail": "E-Mail",
+        "message": "Nachricht",
+        "noBookings": "Keine Buchungen",
+        "cancelConfirm": "Buchung stornieren?"
+    },
+    "connect": "Verbinden",
+    "disconnect": "Trennen",
+    "error": "Fehler",
+    "confirm": "Bestätigen"
+}

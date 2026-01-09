@@ -37,6 +37,8 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import type { LoginInput, RegisterInput } from '@/types';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 
 export default function AccountPage() {
     const router = useRouter();
@@ -50,28 +52,32 @@ export default function AccountPage() {
     }
 
     return (
-        <Container maxW="container.sm" py={8}>
-            <VStack spacing={6}>
-                <Heading size="lg">アカウント</Heading>
-                
-                <Card w="full">
-                    <Tabs index={tabIndex} onChange={setTabIndex} isFitted>
-                        <TabList>
-                            <Tab>ログイン</Tab>
-                            <Tab>新規登録</Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel>
-                                <LoginForm />
-                            </TabPanel>
-                            <TabPanel>
-                                <RegisterForm />
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>
-                </Card>
-            </VStack>
-        </Container>
+        <Box minH="100vh">
+            <Header />
+            <Container maxW="container.sm" py={8}>
+                <VStack spacing={6}>
+                    <Heading size="lg">アカウント</Heading>
+                    
+                    <Card w="full">
+                        <Tabs index={tabIndex} onChange={setTabIndex} isFitted>
+                            <TabList>
+                                <Tab>ログイン</Tab>
+                                <Tab>新規登録</Tab>
+                            </TabList>
+                            <TabPanels>
+                                <TabPanel>
+                                    <LoginForm />
+                                </TabPanel>
+                                <TabPanel>
+                                    <RegisterForm />
+                                </TabPanel>
+                            </TabPanels>
+                        </Tabs>
+                    </Card>
+                </VStack>
+            </Container>
+            <Footer />
+        </Box>
     );
 }
 
@@ -281,63 +287,67 @@ function ProfileSection() {
     if (!user) return null;
 
     return (
-        <Container maxW="container.md" py={8}>
-            <VStack spacing={6} align="stretch">
-                <Flex justify="space-between" align="center">
-                    <Heading size="lg">マイアカウント</Heading>
-                    <Button
-                        variant="outline"
-                        colorScheme="red"
-                        onClick={handleLogout}
-                        isLoading={isLoading}
-                    >
-                        ログアウト
-                    </Button>
-                </Flex>
+        <Box minH="100vh">
+            <Header />
+            <Container maxW="container.md" py={8}>
+                <VStack spacing={6} align="stretch">
+                    <Flex justify="space-between" align="center">
+                        <Heading size="lg">マイアカウント</Heading>
+                        <Button
+                            variant="outline"
+                            colorScheme="red"
+                            onClick={handleLogout}
+                            isLoading={isLoading}
+                        >
+                            ログアウト
+                        </Button>
+                    </Flex>
 
-                <Card>
-                    <CardHeader>
-                        <Heading size="md">プロフィール</Heading>
-                    </CardHeader>
-                    <CardBody>
-                        <VStack spacing={4} align="stretch">
-                            <HStack justify="space-between">
-                                <Text fontWeight="bold">ユーザー名</Text>
-                                <Text>{user.username}</Text>
-                            </HStack>
-                            <HStack justify="space-between">
-                                <Text fontWeight="bold">メールアドレス</Text>
-                                <Text>{user.email}</Text>
-                            </HStack>
-                            <HStack justify="space-between">
-                                <Text fontWeight="bold">名前</Text>
-                                <Text>{user.first_name} {user.last_name}</Text>
-                            </HStack>
-                            <HStack justify="space-between">
-                                <Text fontWeight="bold">タイムゾーン</Text>
-                                <Text>{user.profile?.timezone_name || 'Asia/Tokyo'}</Text>
-                            </HStack>
-                        </VStack>
-                    </CardBody>
-                </Card>
+                    <Card>
+                        <CardHeader>
+                            <Heading size="md">プロフィール</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <VStack spacing={4} align="stretch">
+                                <HStack justify="space-between">
+                                    <Text fontWeight="bold">ユーザー名</Text>
+                                    <Text>{user.username}</Text>
+                                </HStack>
+                                <HStack justify="space-between">
+                                    <Text fontWeight="bold">メールアドレス</Text>
+                                    <Text>{user.email}</Text>
+                                </HStack>
+                                <HStack justify="space-between">
+                                    <Text fontWeight="bold">名前</Text>
+                                    <Text>{user.first_name} {user.last_name}</Text>
+                                </HStack>
+                                <HStack justify="space-between">
+                                    <Text fontWeight="bold">タイムゾーン</Text>
+                                    <Text>{user.profile?.timezone_name || 'Asia/Tokyo'}</Text>
+                                </HStack>
+                            </VStack>
+                        </CardBody>
+                    </Card>
 
-                <Divider />
+                    <Divider />
 
-                <HStack spacing={4}>
-                    <Button
-                        colorScheme="blue"
-                        onClick={() => router.push('/account/events')}
-                    >
-                        マイイベント
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => router.push('/create')}
-                    >
-                        新規イベント作成
-                    </Button>
-                </HStack>
-            </VStack>
-        </Container>
+                    <HStack spacing={4}>
+                        <Button
+                            colorScheme="blue"
+                            onClick={() => router.push('/account/events')}
+                        >
+                            マイイベント
+                        </Button>
+                        <Button
+                            variant="outline"
+                            onClick={() => router.push('/create')}
+                        >
+                            新規イベント作成
+                        </Button>
+                    </HStack>
+                </VStack>
+            </Container>
+            <Footer />
+        </Box>
     );
 }

@@ -176,7 +176,6 @@ jobs:
 
     - name: Run E2E Tests
       working-directory: ./front
-      continue-on-error: true
       env:
         CI: true
       run: yarn test:e2e

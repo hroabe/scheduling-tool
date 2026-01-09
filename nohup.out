@@ -1,0 +1,144 @@
+time="2026-01-06T07:02:51.123275416+09:00" level=info msg="Starting up"
+time="2026-01-06T07:02:51.126123392+09:00" level=info msg="containerd not running, starting managed containerd"
+time="2026-01-06T07:02:51.130563267+09:00" level=info msg="started new containerd process" address=/var/run/docker/containerd/containerd.sock module=libcontainerd pid=5422
+time="2026-01-06T07:02:51.321709206+09:00" level=info msg="starting containerd" revision=b98a3aace656320842a23f4a392a33f46af97866 version=v1.7.28
+time="2026-01-06T07:02:51.337767633+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.aufs\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.371125543+09:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.aufs\"..." error="aufs is not supported (modprobe aufs failed: exit status 1 \"modprobe: FATAL: Module aufs not found in directory /lib/modules/5.15.167.4-microsoft-standard-WSL2\\n\"): skip plugin" type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.371168839+09:00" level=info msg="loading plugin \"io.containerd.event.v1.exchange\"..." type=io.containerd.event.v1
+time="2026-01-06T07:02:51.371183007+09:00" level=info msg="loading plugin \"io.containerd.internal.v1.opt\"..." type=io.containerd.internal.v1
+time="2026-01-06T07:02:51.371975497+09:00" level=info msg="loading plugin \"io.containerd.warning.v1.deprecations\"..." type=io.containerd.warning.v1
+time="2026-01-06T07:02:51.371993648+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.blockfile\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.372362227+09:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.blockfile\"..." error="no scratch file generator: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.372377536+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.btrfs\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.372661764+09:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.btrfs\"..." error="path /var/lib/docker/containerd/daemon/io.containerd.snapshotter.v1.btrfs (ext4) must be a btrfs filesystem to be used with the btrfs snapshotter: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.372676251+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.devmapper\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.372686202+09:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.devmapper\"..." error="devmapper not configured: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.372693202+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.native\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.373196464+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.overlayfs\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.373939985+09:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.zfs\"..." type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.374251870+09:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.zfs\"..." error="path /var/lib/docker/containerd/daemon/io.containerd.snapshotter.v1.zfs must be a zfs filesystem to be used with the zfs snapshotter: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-01-06T07:02:51.374300981+09:00" level=info msg="loading plugin \"io.containerd.content.v1.content\"..." type=io.containerd.content.v1
+time="2026-01-06T07:02:51.374332743+09:00" level=info msg="loading plugin \"io.containerd.metadata.v1.bolt\"..." type=io.containerd.metadata.v1
+time="2026-01-06T07:02:51.374497979+09:00" level=info msg="metadata content store policy set" policy=shared
+time="2026-01-06T07:02:51.390175056+09:00" level=info msg="loading plugin \"io.containerd.gc.v1.scheduler\"..." type=io.containerd.gc.v1
+time="2026-01-06T07:02:51.390236450+09:00" level=info msg="loading plugin \"io.containerd.differ.v1.walking\"..." type=io.containerd.differ.v1
+time="2026-01-06T07:02:51.390250283+09:00" level=info msg="loading plugin \"io.containerd.lease.v1.manager\"..." type=io.containerd.lease.v1
+time="2026-01-06T07:02:51.390271784+09:00" level=info msg="loading plugin \"io.containerd.streaming.v1.manager\"..." type=io.containerd.streaming.v1
+time="2026-01-06T07:02:51.390281541+09:00" level=info msg="loading plugin \"io.containerd.runtime.v1.linux\"..." type=io.containerd.runtime.v1
+time="2026-01-06T07:02:51.390415317+09:00" level=info msg="loading plugin \"io.containerd.monitor.v1.cgroups\"..." type=io.containerd.monitor.v1
+time="2026-01-06T07:02:51.392512884+09:00" level=info msg="loading plugin \"io.containerd.runtime.v2.task\"..." type=io.containerd.runtime.v2
+time="2026-01-06T07:02:51.393481375+09:00" level=info msg="loading plugin \"io.containerd.runtime.v2.shim\"..." type=io.containerd.runtime.v2
+time="2026-01-06T07:02:51.393508363+09:00" level=info msg="loading plugin \"io.containerd.sandbox.store.v1.local\"..." type=io.containerd.sandbox.store.v1
+time="2026-01-06T07:02:51.393519439+09:00" level=info msg="loading plugin \"io.containerd.sandbox.controller.v1.local\"..." type=io.containerd.sandbox.controller.v1
+time="2026-01-06T07:02:51.393538241+09:00" level=info msg="loading plugin \"io.containerd.service.v1.containers-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393547998+09:00" level=info msg="loading plugin \"io.containerd.service.v1.content-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393556307+09:00" level=info msg="loading plugin \"io.containerd.service.v1.diff-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393566254+09:00" level=info msg="loading plugin \"io.containerd.service.v1.images-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393575633+09:00" level=info msg="loading plugin \"io.containerd.service.v1.introspection-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393584947+09:00" level=info msg="loading plugin \"io.containerd.service.v1.namespaces-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393592535+09:00" level=info msg="loading plugin \"io.containerd.service.v1.snapshots-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393602031+09:00" level=info msg="loading plugin \"io.containerd.service.v1.tasks-service\"..." type=io.containerd.service.v1
+time="2026-01-06T07:02:51.393618279+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.containers\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393627373+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.content\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393636214+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.diff\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393654411+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.events\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393664901+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.images\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393673493+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.introspection\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393682287+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.leases\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393691903+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.namespaces\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393700635+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.sandbox-controllers\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393713202+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.sandboxes\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393721031+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.snapshots\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393728807+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.streaming\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393737502+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.tasks\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393807374+09:00" level=info msg="loading plugin \"io.containerd.transfer.v1.local\"..." type=io.containerd.transfer.v1
+time="2026-01-06T07:02:51.393832747+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.transfer\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393842731+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.version\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.393853631+09:00" level=info msg="loading plugin \"io.containerd.internal.v1.restart\"..." type=io.containerd.internal.v1
+time="2026-01-06T07:02:51.394275304+09:00" level=info msg="loading plugin \"io.containerd.tracing.processor.v1.otlp\"..." type=io.containerd.tracing.processor.v1
+time="2026-01-06T07:02:51.394299103+09:00" level=info msg="skip loading plugin \"io.containerd.tracing.processor.v1.otlp\"..." error="skip plugin: tracing endpoint not configured" type=io.containerd.tracing.processor.v1
+time="2026-01-06T07:02:51.394307186+09:00" level=info msg="loading plugin \"io.containerd.internal.v1.tracing\"..." type=io.containerd.internal.v1
+time="2026-01-06T07:02:51.394315248+09:00" level=info msg="skip loading plugin \"io.containerd.internal.v1.tracing\"..." error="skip plugin: tracing endpoint not configured" type=io.containerd.internal.v1
+time="2026-01-06T07:02:51.394322931+09:00" level=info msg="loading plugin \"io.containerd.grpc.v1.healthcheck\"..." type=io.containerd.grpc.v1
+time="2026-01-06T07:02:51.394331976+09:00" level=info msg="loading plugin \"io.containerd.nri.v1.nri\"..." type=io.containerd.nri.v1
+time="2026-01-06T07:02:51.394340485+09:00" level=info msg="NRI interface is disabled by configuration."
+time="2026-01-06T07:02:51.395206817+09:00" level=info msg=serving... address=/var/run/docker/containerd/containerd-debug.sock
+time="2026-01-06T07:02:51.395304974+09:00" level=info msg=serving... address=/var/run/docker/containerd/containerd.sock.ttrpc
+time="2026-01-06T07:02:51.395331215+09:00" level=info msg=serving... address=/var/run/docker/containerd/containerd.sock
+time="2026-01-06T07:02:51.395354197+09:00" level=info msg="containerd successfully booted in 0.076628s"
+time="2026-01-06T07:02:51.410046510+09:00" level=info msg="OTEL tracing is not configured, using no-op tracer provider"
+time="2026-01-06T07:02:51.411531633+09:00" level=info msg="CDI directory does not exist, skipping: failed to monitor for changes: no such file or directory" dir=/etc/cdi
+time="2026-01-06T07:02:51.411562852+09:00" level=info msg="CDI directory does not exist, skipping: failed to monitor for changes: no such file or directory" dir=/var/run/cdi
+time="2026-01-06T07:02:51.471409180+09:00" level=info msg="Creating a containerd client" address=/var/run/docker/containerd/containerd.sock timeout=1m0s
+time="2026-01-06T07:02:51.514269020+09:00" level=info msg="[graphdriver] using prior storage driver: overlay2"
+time="2026-01-06T07:02:52.046501952+09:00" level=info msg="Loading containers: start."
+time="2026-01-06T07:02:52.458488257+09:00" level=info msg="Removing stale sandbox" cid=873fbfd0f23b isRestore=false sid=f679df7a19ff
+time="2026-01-06T07:02:52.467827427+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.467888805+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 bfe931143a0cd80bc60f4d55dc3c54ea7a7ec8c7e913b0db382df4d22af6dfec], retrying...."
+time="2026-01-06T07:02:52.525562060+09:00" level=info msg="Removing stale sandbox" cid=ad01acd2e34c isRestore=false sid=16aea2325f64
+time="2026-01-06T07:02:52.534870793+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.534928771+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 49396233b237958a039f9b3eb8c46eedc2b34b7a57a67339d70e57bdc26c290c], retrying...."
+time="2026-01-06T07:02:52.586974108+09:00" level=info msg="Removing stale sandbox" cid=8ae97fb48ec0 isRestore=false sid=575dd6c67d25
+time="2026-01-06T07:02:52.691563597+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.691625903+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 fb0ce0a7bf0b761566571ba71d1623518fd42ee27ea36f5273278a61f38400d5], retrying...."
+time="2026-01-06T07:02:52.736483210+09:00" level=info msg="Removing stale sandbox" cid=ddb5201210b2 isRestore=false sid=8ac36272f64b
+time="2026-01-06T07:02:52.745556607+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.745610731+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 1516d2ce9cafac4ec2ed12b06722851271ffd0e92519c9f7c6ab439fc995d608], retrying...."
+time="2026-01-06T07:02:52.806170178+09:00" level=info msg="Removing stale sandbox" cid=86f2edb1e38f isRestore=false sid=1a9ecf68a168
+time="2026-01-06T07:02:52.814257118+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.814329225+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 1b0a74f08e19590ed4af08d54937f80ee1d5a2ad6bbb240ff502bef33021c246], retrying...."
+time="2026-01-06T07:02:52.864814733+09:00" level=info msg="Removing stale sandbox" cid=81dab36e45c2 isRestore=false sid=1ceebef414fc
+time="2026-01-06T07:02:52.872726475+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.872815359+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 c997d0b7c64b8699cda0c62066c6dce55e9840d7af0371120e328e8fa19170e7], retrying...."
+time="2026-01-06T07:02:52.934815215+09:00" level=info msg="Removing stale sandbox" cid=2f3b0d6b3dc0 isRestore=false sid=2520b15d151e
+time="2026-01-06T07:02:52.943406019+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:52.943451106+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 e638ec6ac4e60201202e11dc7e4c84311180a1e460acfcc5f2d2581ceb449081], retrying...."
+time="2026-01-06T07:02:53.005376646+09:00" level=info msg="Removing stale sandbox" cid=2bb7ded118c2 isRestore=false sid=4133c5ce7a5c
+time="2026-01-06T07:02:53.013923609+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:53.013976573+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 961d1c7c6fdd5f554239fa862534935807c2300568e07de72c0037386cc7145a], retrying...."
+time="2026-01-06T07:02:53.086173440+09:00" level=info msg="Removing stale sandbox" cid=1101746f3982 isRestore=false sid=8a7da59a3e64
+time="2026-01-06T07:02:53.095722127+09:00" level=warning msg="Failed deleting service host entries to the running container: open : no such file or directory"
+time="2026-01-06T07:02:53.095782052+09:00" level=warning msg="Error (Unable to complete atomic operation, key modified) deleting object [endpoint 522c274a971af50b8cb58c68746cb0ea06e3b1fb676bfd12e4d3170220653194 87fe46022131ae625a179a0a6d1b75a88a53b96fa287eba8505f8c3d27cbc264], retrying...."
+time="2026-01-06T07:02:53.631212385+09:00" level=warning msg="error locating sandbox id 16aea2325f6418f9307a82d5fe6584ab775b101aa3a2283a509c98c9990f94a4: sandbox 16aea2325f6418f9307a82d5fe6584ab775b101aa3a2283a509c98c9990f94a4 not found"
+time="2026-01-06T07:02:53.631239830+09:00" level=warning msg="error locating sandbox id 1ceebef414fca4a48a89175188cfdeadc6acd8ded91174563433a3b1c0946b5d: sandbox 1ceebef414fca4a48a89175188cfdeadc6acd8ded91174563433a3b1c0946b5d not found"
+time="2026-01-06T07:02:53.631248179+09:00" level=warning msg="error locating sandbox id 8ac36272f64bf70f0b2abb1351324d3cdb9a4d12ff923ce5fe00c883d09dd237: sandbox 8ac36272f64bf70f0b2abb1351324d3cdb9a4d12ff923ce5fe00c883d09dd237 not found"
+time="2026-01-06T07:02:53.631256199+09:00" level=warning msg="error locating sandbox id 8a7da59a3e6463295b6f40a195f6b4276b632ffbb1c469ae60a610baf587fca2: sandbox 8a7da59a3e6463295b6f40a195f6b4276b632ffbb1c469ae60a610baf587fca2 not found"
+time="2026-01-06T07:02:53.631264342+09:00" level=warning msg="error locating sandbox id 2520b15d151e6fdf3d3d7bce7678ce0f35cc5f21fa32abbd788fa25d962b75eb: sandbox 2520b15d151e6fdf3d3d7bce7678ce0f35cc5f21fa32abbd788fa25d962b75eb not found"
+time="2026-01-06T07:02:53.631272495+09:00" level=warning msg="error locating sandbox id 1a9ecf68a16866a296966533107d7079856ee0151623149a234e484e0029af06: sandbox 1a9ecf68a16866a296966533107d7079856ee0151623149a234e484e0029af06 not found"
+time="2026-01-06T07:02:53.631279980+09:00" level=warning msg="error locating sandbox id 575dd6c67d253eeab6a6efc7a1d02ee8a94647ad57f42211b3627c5dad3ae617: sandbox 575dd6c67d253eeab6a6efc7a1d02ee8a94647ad57f42211b3627c5dad3ae617 not found"
+time="2026-01-06T07:02:53.631289219+09:00" level=warning msg="error locating sandbox id 4133c5ce7a5cd09bdfe3b351c7dcb8ac8704c7eac8111a985fac254effb723e9: sandbox 4133c5ce7a5cd09bdfe3b351c7dcb8ac8704c7eac8111a985fac254effb723e9 not found"
+time="2026-01-06T07:02:53.631297195+09:00" level=warning msg="error locating sandbox id f679df7a19ff103eb90142b68ecccc2a8db3ca4ad41bd819e98144e49728156e: sandbox f679df7a19ff103eb90142b68ecccc2a8db3ca4ad41bd819e98144e49728156e not found"
+time="2026-01-06T07:02:53.917521595+09:00" level=info msg="Loading containers: done."
+time="2026-01-06T07:02:53.936629133+09:00" level=warning msg="WARNING: No blkio throttle.read_bps_device support"
+time="2026-01-06T07:02:53.936648926+09:00" level=warning msg="WARNING: No blkio throttle.write_bps_device support"
+time="2026-01-06T07:02:53.936653610+09:00" level=warning msg="WARNING: No blkio throttle.read_iops_device support"
+time="2026-01-06T07:02:53.936657671+09:00" level=warning msg="WARNING: No blkio throttle.write_iops_device support"
+time="2026-01-06T07:02:53.936674502+09:00" level=info msg="Docker daemon" commit=f8215cc containerd-snapshotter=false storage-driver=overlay2 version=28.5.1
+time="2026-01-06T07:02:53.937060278+09:00" level=info msg="Initializing buildkit"
+time="2026-01-06T07:02:54.025685077+09:00" level=info msg="shim disconnected" id=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 namespace=moby
+time="2026-01-06T07:02:54.025757739+09:00" level=warning msg="cleaning up after shim disconnected" id=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 namespace=moby
+time="2026-01-06T07:02:54.025793351+09:00" level=info msg="ignoring event" container=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-01-06T07:02:54.025778471+09:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-01-06T07:02:54.070971688+09:00" level=info msg="Processing signal 'interrupt'"
+time="2026-01-06T07:02:54.099551578+09:00" level=warning msg="Unable to disable DNAT rule:  (iptables failed: iptables --wait -t nat -D DOCKER -p tcp -d 0/0 --dport 80 -j DNAT --to-destination 172.18.0.2:80 ! -i br-522c274a971a:  (signal: interrupt))"
+time="2026-01-06T07:02:54.622044781+09:00" level=info msg="shim disconnected" id=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 namespace=moby
+time="2026-01-06T07:02:54.622086625+09:00" level=warning msg="cleaning up after shim disconnected" id=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 namespace=moby
+time="2026-01-06T07:02:54.622097032+09:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-01-06T07:02:54.622189862+09:00" level=info msg="ignoring event" container=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-01-06T07:02:54.790451922+09:00" level=info msg="Processing signal 'interrupt'"
+time="2026-01-06T07:02:54.890418037+09:00" level=info msg="Completed buildkit initialization"
+time="2026-01-06T07:02:54.894429771+09:00" level=info msg="Daemon has completed initialization"
+time="2026-01-06T07:02:54.894571173+09:00" level=info msg="API listen on /var/run/docker.sock"
+time="2026-01-06T07:02:55.324251091+09:00" level=info msg="shim disconnected" id=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 namespace=moby
+time="2026-01-06T07:02:55.324306548+09:00" level=warning msg="cleaning up after shim disconnected" id=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 namespace=moby
+time="2026-01-06T07:02:55.324311085+09:00" level=info msg="ignoring event" container=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-01-06T07:02:55.324320904+09:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-01-06T07:02:55.337977001+09:00" level=warning msg="ShouldRestart failed, container will not be restarted" container=8ae97fb48ec00d960feb7a5d4d06a1672aae844871fcd455923ebc98bc1709a4 daemonShuttingDown=true error="restart canceled" execDuration=238.208514ms exitStatus="{1 2026-01-05 22:02:55.315995724 +0000 UTC}" hasBeenManuallyStopped=false restartCount=2
+time="2026-01-06T07:02:55.421176477+09:00" level=info msg="Processing signal 'interrupt'"
+time="2026-01-06T07:02:55.499632525+09:00" level=warning msg="Unable to disable OPEN PORT rule:  (iptables failed: iptables --wait -t filter -D DOCKER ! -i br-522c274a971a -o br-522c274a971a -p tcp -d 172.18.0.2 --dport 80 -j ACCEPT:  (signal: interrupt))"
+time="2026-01-06T07:02:55.885539528+09:00" level=info msg="stopping event stream following graceful shutdown" error="<nil>" module=libcontainerd namespace=moby
+time="2026-01-06T07:02:55.886087723+09:00" level=info msg="Daemon shutdown complete"
+time="2026-01-06T07:02:55.886167129+09:00" level=info msg="stopping healthcheck following graceful shutdown" module=libcontainerd
+time="2026-01-06T07:02:55.886248353+09:00" level=info msg="stopping event stream following graceful shutdown" error="context canceled" module=libcontainerd namespace=plugins.moby
+time="2026-01-06T07:03:23.912016118+09:00" level=info msg="Processing signal 'terminated'"
+time="2026-01-06T07:03:23.912072153+09:00" level=info msg="Forcing docker daemon shutdown without cleanup; 3 interrupts received"

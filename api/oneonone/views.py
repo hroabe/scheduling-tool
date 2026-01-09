@@ -3,9 +3,12 @@
 RFC-0005: 1対1日程調整モード
 """
 
+import secrets
 from datetime import timedelta
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.text import slugify
+from django.db import transaction
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -23,6 +26,9 @@ from .serializers import (
     BookingSerializer,
     BookingCreateSerializer,
     BookingCancelSerializer,
+    AnonymousBookingPageCreateSerializer,
+    AnonymousBookingPageHostSerializer,
+    AvailabilityPagePublicSerializerV2,
 )
 
 
@@ -281,3 +287,305 @@ class HostBookingViewSet(viewsets.ReadOnlyModelViewSet):
             'message': '予約をキャンセルしました',
             'booking': BookingSerializer(booking).data
         })
+
+
+# =========================================================
+# Anonymous Booking Views (Login-free mode)
+# =========================================================
+
+class AnonymousBookingCreateView(APIView):
+    """
+    匿名で予約ページを作成
+    
+    POST /api/v1/booking/
+    """
+    permission_classes = [AllowAny]
+    
+    @transaction.atomic
+    def post(self, request):
+        serializer = AnonymousBookingPageCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        
+        # Generate unique slug
+        base_slug = slugify(data['title'], allow_unicode=True)[:50] or 'booking'
+        slug = base_slug
+        counter = 1
+        while AvailabilityPage.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+        
+        # Generate tokens
+        host_token = secrets.token_urlsafe(32)
+        verify_token = secrets.token_urlsafe(32)
+        
+        # Create page
+        page = AvailabilityPage.objects.create(
+            slug=slug,
+            title=data['title'],
+            organizer_name=data['organizer_name'],
+            organizer_email=data['organizer_email'],
+            duration_minutes=data['duration_minutes'],
+            timezone_name=data.get('timezone_name', 'Asia/Tokyo'),
+            status='PENDING_VERIFY',
+            is_public=False,  # Not public until verified
+            is_active=True,
+        )
+        page.set_host_token(host_token)
+        page.set_verify_token(verify_token)
+        page.save()
+        
+        # Create slots
+        for slot_data in data['slots']:
+            AvailabilitySlot.objects.create(
+                page=page,
+                start_at=slot_data['start_at'],
+                end_at=slot_data['end_at'],
+            )
+        
+        # TODO: Send verification email
+        # For development, print to console
+        verify_url = f"/booking/verify?token={verify_token}&slug={slug}"
+        host_url = f"/booking/{slug}/host?token={host_token}"
+        print(f"\n[DEV] Verify URL: {verify_url}")
+        print(f"[DEV] Host URL: {host_url}\n")
+        
+        return Response({
+            'slug': slug,
+            'message': '認証メールを送信しました。メールをご確認ください。',
+            'verify_url': verify_url,  # Remove in production
+        }, status=status.HTTP_201_CREATED)
+
+
+class AnonymousBookingVerifyView(APIView):
+    """
+    メール認証で予約ページを公開
+    
+    POST /api/v1/booking/verify/
+    """
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        token = request.data.get('token')
+        slug = request.data.get('slug')
+        
+        if not token or not slug:
+            return Response(
+                {'error': 'token と slug が必要です'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        page = get_object_or_404(AvailabilityPage, slug=slug)
+        
+        if page.status != 'PENDING_VERIFY':
+            return Response(
+                {'error': 'このページは既に認証済みです'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if not page.verify_verify_token(token):
+            return Response(
+                {'error': '無効な認証トークンです'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Verify and publish
+        page.status = 'PUBLISHED'
+        page.is_public = True
+        page.save(update_fields=['status', 'is_public', 'updated_at'])
+        
+        return Response({
+            'slug': slug,
+            'message': '認証が完了しました。予約ページが公開されました。',
+        })
+
+
+class AnonymousBookingHostView(APIView):
+    """
+    匿名予約ページの管理（ホスト向け）
+    
+    GET/PATCH /api/v1/booking/{slug}/host/
+    """
+    permission_classes = [AllowAny]
+    
+    def _verify_host(self, request, slug):
+        """Verify host token from query param or header"""
+        page = get_object_or_404(AvailabilityPage, slug=slug)
+        
+        token = request.query_params.get('token') or request.headers.get('X-Host-Token')
+        if not token or not page.verify_host_token(token):
+            return None, Response(
+                {'error': '管理権限がありません'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        return page, None
+    
+    def get(self, request, slug):
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+        
+        serializer = AnonymousBookingPageHostSerializer(page)
+        return Response(serializer.data)
+    
+    def patch(self, request, slug):
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+        
+        # Allow updating certain fields
+        allowed_fields = ['title', 'description', 'is_active', 'notify_on_booking']
+        for field in allowed_fields:
+            if field in request.data:
+                setattr(page, field, request.data[field])
+        page.save()
+        
+        serializer = AnonymousBookingPageHostSerializer(page)
+        return Response(serializer.data)
+
+
+class AnonymousBookingHostSlotsView(APIView):
+    """
+    空き枠の追加・削除（ホスト向け）
+    
+    POST/DELETE /api/v1/booking/{slug}/host/slots/
+    """
+    permission_classes = [AllowAny]
+    
+    def _verify_host(self, request, slug):
+        page = get_object_or_404(AvailabilityPage, slug=slug)
+        token = request.query_params.get('token') or request.headers.get('X-Host-Token')
+        if not token or not page.verify_host_token(token):
+            return None, Response(
+                {'error': '管理権限がありません'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return page, None
+    
+    def post(self, request, slug):
+        """空き枠を追加"""
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+        
+        slots_data = request.data.get('slots', [])
+        if not slots_data:
+            return Response(
+                {'error': 'slots フィールドが必要です'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        created_slots = []
+        for slot_data in slots_data:
+            serializer = AvailabilitySlotCreateSerializer(data=slot_data)
+            if serializer.is_valid():
+                slot = AvailabilitySlot.objects.create(
+                    page=page,
+                    **serializer.validated_data
+                )
+                created_slots.append(slot)
+        
+        return Response({
+            'created': AvailabilitySlotSerializer(created_slots, many=True).data,
+        }, status=status.HTTP_201_CREATED)
+    
+    def delete(self, request, slug, slot_id=None):
+        """空き枠を削除"""
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+        
+        if not slot_id:
+            slot_id = request.data.get('slot_id')
+        
+        slot = get_object_or_404(AvailabilitySlot, id=slot_id, page=page)
+        
+        if slot.is_booked:
+            return Response(
+                {'error': '予約済みの枠は削除できません'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        slot.delete()
+        return Response({'message': '枠を削除しました'})
+
+
+class PublicBookingPageViewV2(APIView):
+    """
+    公開予約ページ（ゲスト向け）V2
+    
+    匿名モードにも対応
+    GET /api/v1/booking/{slug}/
+    """
+    permission_classes = [AllowAny]
+    
+    def get(self, request, slug):
+        page = get_object_or_404(
+            AvailabilityPage,
+            slug=slug,
+            status='PUBLISHED',
+            is_active=True
+        )
+        
+        context = {'request': request}
+        
+        # Parse date range from query params
+        from_date = request.query_params.get('from')
+        to_date = request.query_params.get('to')
+        
+        if from_date:
+            try:
+                context['from_date'] = timezone.datetime.fromisoformat(
+                    from_date.replace('Z', '+00:00')
+                )
+            except ValueError:
+                pass
+        if to_date:
+            try:
+                context['to_date'] = timezone.datetime.fromisoformat(
+                    to_date.replace('Z', '+00:00')
+                )
+            except ValueError:
+                pass
+        
+        serializer = AvailabilityPagePublicSerializerV2(page, context=context)
+        return Response(serializer.data)
+
+
+class ReservationCreateView(generics.CreateAPIView):
+    """
+    予約作成（ゲスト向け）V2
+    
+    POST /api/v1/booking/{slug}/reserve/
+    """
+    permission_classes = [AllowAny]
+    serializer_class = BookingCreateSerializer
+    
+    def create(self, request, *args, **kwargs):
+        slug = self.kwargs.get('slug')
+        page = get_object_or_404(
+            AvailabilityPage,
+            slug=slug,
+            status='PUBLISHED',
+            is_active=True
+        )
+        
+        # Validate slot belongs to this page
+        data = request.data.copy()
+        slot_id = data.get('slot')
+        
+        if slot_id:
+            slot = get_object_or_404(AvailabilitySlot, id=slot_id, page=page)
+            data['slot'] = slot.id
+        
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        booking = serializer.save()
+        
+        return Response({
+            'booking': BookingSerializer(booking).data,
+            'cancel_token': booking.cancel_token,
+            'message': '予約が完了しました'
+        }, status=status.HTTP_201_CREATED)
+

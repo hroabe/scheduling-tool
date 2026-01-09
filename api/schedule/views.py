@@ -201,6 +201,7 @@ class ScheduleViewSet(viewsets.ModelViewSet):
             
             schedule.is_finalized = True
             schedule.finalized_candidate = candidate
+            schedule.finalized_at = timezone.now()
             schedule.save()
             
             # RFC-0001: Trigger Google Calendar event creation
@@ -291,20 +292,20 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         回答の集計結果を取得
         
         各候補日の◯/△/×の数と、最も参加者が多い候補を返す
+        スコア計算: 3*ok + 1*maybe - 2*ng
+        タイブレーカー: ok多い > ng少ない > 日時が早い
         """
         schedule = self.get_object()
         
         candidates_summary = []
-        best_candidate = None
-        best_score = -1
         
         for candidate in schedule.candidates.all():
             ok_count = candidate.ok_count
             maybe_count = candidate.maybe_count
             ng_count = candidate.ng_count
             
-            # Score: OK=2, Maybe=1, NG=0
-            score = ok_count * 2 + maybe_count
+            # Score: OK=3, Maybe=1, NG=-2
+            score = ok_count * 3 + maybe_count - ng_count * 2
             
             summary = {
                 'candidate_id': candidate.id,
@@ -316,10 +317,13 @@ class ScheduleViewSet(viewsets.ModelViewSet):
                 'score': score,
             }
             candidates_summary.append(summary)
-            
-            if score > best_score:
-                best_score = score
-                best_candidate = summary
+        
+        # Sort by score (desc), ok_count (desc), ng_count (asc), start_at (asc)
+        candidates_summary.sort(
+            key=lambda c: (-c['score'], -c['ok_count'], c['ng_count'], c['start_at'])
+        )
+        
+        best_candidate = candidates_summary[0] if candidates_summary else None
         
         return Response({
             'schedule_id': schedule.id,
@@ -328,6 +332,76 @@ class ScheduleViewSet(viewsets.ModelViewSet):
             'candidates': candidates_summary,
             'recommended_candidate': best_candidate,
         })
+    
+    @action(detail=True, methods=['post'])
+    def close(self, request, pk=None):
+        """
+        回答を締め切る
+        
+        編集キーが必要
+        """
+        schedule = self.get_object()
+        
+        # 編集キーの検証
+        edit_key = request.data.get('edit_key') or request.query_params.get('edit_key')
+        if schedule.edit_key_hash:
+            if not schedule.check_edit_key(edit_key):
+                return Response(
+                    {'error': '編集キーが正しくありません。'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        
+        # Already closed or finalized
+        if schedule.is_finalized:
+            return Response(
+                {'error': 'このイベントは既に確定しています。'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if schedule.closed_at:
+            return Response(
+                {'error': 'このイベントは既に締め切られています。'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        schedule.closed_at = timezone.now()
+        schedule.save()
+        
+        return Response(
+            ScheduleDetailSerializer(schedule, context={'request': request}).data
+        )
+    
+    @action(detail=True, methods=['post'])
+    def reopen(self, request, pk=None):
+        """
+        締め切りを解除して回答を再開する
+        
+        編集キーが必要
+        """
+        schedule = self.get_object()
+        
+        # 編集キーの検証
+        edit_key = request.data.get('edit_key') or request.query_params.get('edit_key')
+        if schedule.edit_key_hash:
+            if not schedule.check_edit_key(edit_key):
+                return Response(
+                    {'error': '編集キーが正しくありません。'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        
+        # Cannot reopen finalized schedule
+        if schedule.is_finalized:
+            return Response(
+                {'error': '確定済みのイベントは再開できません。'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        schedule.closed_at = None
+        schedule.save()
+        
+        return Response(
+            ScheduleDetailSerializer(schedule, context={'request': request}).data
+        )
 
 
 class CandidateViewSet(viewsets.ModelViewSet):

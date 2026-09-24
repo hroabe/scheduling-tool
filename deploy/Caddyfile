@@ -1,0 +1,24 @@
+# Single-domain reverse proxy with automatic HTTPS (Let's Encrypt)
+{$DOMAIN} {
+	encode zstd gzip
+
+	# Django: REST API, admin, and its static files
+	@backend path /api/* /admin/* /static/*
+	handle @backend {
+		reverse_proxy api:8000
+	}
+
+	# Everything else: Next.js
+	handle {
+		reverse_proxy front:3000
+	}
+
+	header {
+		-Server
+	}
+}
+
+# Redirect www to the apex domain
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}

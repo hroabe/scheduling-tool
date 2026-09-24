@@ -2,23 +2,23 @@
 
 import {
     Box,
-    Flex,
-    Container,
-    HStack,
     Button,
+    Container,
+    Flex,
+    HStack,
     IconButton,
+    Link as ChakraLink,
+    Text,
     useColorMode,
     useColorModeValue,
-    Heading,
-    Link as ChakraLink,
 } from '@chakra-ui/react';
-import Link from 'next/link';
-import { Sun, Moon, Github, Calendar } from 'lucide-react';
+import NextLink from 'next/link';
+import { Calendar, Moon, Plus, Sun } from 'lucide-react';
+import { siteConfig } from '@/lib/site';
 
 export function Header() {
     const { colorMode, toggleColorMode } = useColorMode();
-    const bg = useColorModeValue('whiteAlpha.900', 'blackAlpha.700');
-    const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const bg = useColorModeValue('rgba(255, 255, 255, 0.9)', 'rgba(26, 32, 44, 0.85)');
 
     return (
         <Box
@@ -27,60 +27,53 @@ export function Header() {
             top={0}
             zIndex={100}
             bg={bg}
-            backdropFilter="blur(10px)"
+            backdropFilter="saturate(180%) blur(10px)"
             borderBottom="1px solid"
-            borderColor={borderColor}
+            borderColor="border.default"
+            className="no-print"
         >
+            <ChakraLink
+                href="#main"
+                position="absolute"
+                left="-9999px"
+                _focus={{ left: 2, top: 2, zIndex: 200, bg: 'bg.card', p: 2, borderRadius: 'md' }}
+            >
+                本文へスキップ
+            </ChakraLink>
             <Container maxW="container.xl">
                 <Flex h={16} align="center" justify="space-between">
-                    {/* Logo */}
-                    <Link href="/" passHref>
-                        <HStack spacing={2} cursor="pointer">
-                            <Box
-                                p={2}
-                                borderRadius="lg"
-                                bg="brand.500"
-                                color="white"
-                            >
+                    <ChakraLink as={NextLink} href="/" _hover={{ textDecoration: 'none' }} aria-label={`${siteConfig.name} トップへ`}>
+                        <HStack spacing={2}>
+                            <Box p={2} borderRadius="lg" bg="brand.500" color="white" aria-hidden>
                                 <Calendar size={20} />
                             </Box>
-                            <Heading size="md" fontWeight="bold">
-                                日程調整ツール
-                            </Heading>
+                            <Text as="span" fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
+                                {siteConfig.name}
+                            </Text>
                         </HStack>
-                    </Link>
+                    </ChakraLink>
 
-                    {/* Navigation */}
-                    <HStack spacing={4}>
+                    <HStack as="nav" spacing={{ base: 1, md: 3 }} aria-label="メインナビゲーション">
                         <Button
-                            as={Link}
-                            href="/create"
-                            colorScheme="brand"
+                            as={NextLink}
+                            href="/faq"
+                            variant="ghost"
                             size="sm"
+                            display={{ base: 'none', md: 'inline-flex' }}
                         >
+                            よくある質問
+                        </Button>
+                        <Button as={NextLink} href="/create" size="sm" leftIcon={<Plus size={16} />}>
                             新規作成
                         </Button>
-
                         <IconButton
-                            aria-label="Toggle color mode"
+                            aria-label={colorMode === 'light' ? 'ダークモードに切り替え' : 'ライトモードに切り替え'}
                             icon={colorMode === 'light' ? <Moon size={18} /> : <Sun size={18} />}
                             onClick={toggleColorMode}
                             variant="ghost"
+                            colorScheme="gray"
                             size="sm"
                         />
-
-                        <ChakraLink
-                            href="https://github.com"
-                            isExternal
-                            _hover={{ color: 'brand.500' }}
-                        >
-                            <IconButton
-                                aria-label="GitHub"
-                                icon={<Github size={18} />}
-                                variant="ghost"
-                                size="sm"
-                            />
-                        </ChakraLink>
                     </HStack>
                 </Flex>
             </Container>

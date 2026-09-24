@@ -40,17 +40,15 @@ class ScheduleAdmin(admin.ModelAdmin):
     ]
     list_filter = ['is_active', 'is_finalized', 'created_at']
     search_fields = ['name', 'owner_name', 'department', 'uuid']
-    readonly_fields = ['uuid', 'created_at', 'updated_at']
+    # edit_keyはハッシュ値のため管理画面から編集させない
+    readonly_fields = ['uuid', 'edit_key', 'created_at', 'updated_at']
     
     fieldsets = (
         ('基本情報', {
             'fields': ('uuid', 'name', 'description', 'owner_name', 'owner_email', 'department')
         }),
         ('設定', {
-            'fields': ('edit_key', 'deadline', 'timezone_name', 'allow_maybe', 'show_participant_count')
-        }),
-        ('通知', {
-            'fields': ('notify_on_response',)
+            'fields': ('edit_key', 'deadline', 'timezone_name', 'allow_maybe')
         }),
         ('状態', {
             'fields': ('is_active', 'is_finalized', 'finalized_candidate')

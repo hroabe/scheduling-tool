@@ -24,3 +24,18 @@ yarn-debug.log*
 yarn-error.log*
 
 !.gitkeep
+
+# environment
+.env
+.env.local
+!.env.example
+.venv
+
+# test artifacts
+.coverage
+htmlcov/
+api/staticfiles/
+
+# e2e database
+api/e2e.sqlite3
+.env.production

@@ -1,21 +1,29 @@
 {
-    "name": "日程調整ツール",
+    "id": "/",
+    "name": "日程調整ツール - 登録不要の無料日程調整",
     "short_name": "日程調整",
-    "description": "会議やイベントの日程調整を簡単に行えるツールです。",
-    "start_url": "/",
+    "description": "登録不要・無料の日程調整ツール。結果はCSV・ICSで持ち出せます。",
+    "lang": "ja",
+    "dir": "ltr",
+    "start_url": "/?utm_source=pwa",
+    "scope": "/",
     "display": "standalone",
+    "orientation": "portrait-primary",
     "background_color": "#ffffff",
     "theme_color": "#0967D2",
+    "categories": ["productivity", "business", "utilities"],
     "icons": [
+        { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+        { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+        { "src": "/icons/icon-maskable-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+        { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    ],
+    "shortcuts": [
         {
-            "src": "/icons/icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/icons/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
+            "name": "イベントを作成",
+            "short_name": "作成",
+            "url": "/create?utm_source=pwa_shortcut",
+            "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
         }
     ]
 }

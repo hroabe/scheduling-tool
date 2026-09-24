@@ -1,10 +1,13 @@
 """
 Schedule Models - 日程調整ツール
 
-Modern Django 5.1 models with UUID-based URLs, notifications, and enhanced features.
+Django 5.2 models with UUID-based URLs and hashed edit keys.
 """
 
+import secrets
 import uuid
+
+from django.contrib.auth.hashers import check_password, make_password
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MinLengthValidator
@@ -17,7 +20,7 @@ class Schedule(models.Model):
     調整さん相当の機能:
     - URL共有用のUUID
     - 回答期限
-    - オーナー通知設定
+    - 編集キー（ハッシュ化保存）
     """
     # Primary identifier
     uuid = models.UUIDField(
@@ -65,11 +68,11 @@ class Schedule(models.Model):
     
     # Management
     edit_key = models.CharField(
-        max_length=100,
+        max_length=256,
         blank=True,
         null=True,
         verbose_name="編集キー",
-        help_text="イベント編集用のパスワード"
+        help_text="イベント編集用のパスワード（ハッシュ化して保存）"
     )
     
     # Settings
@@ -158,6 +161,23 @@ class Schedule(models.Model):
     def can_respond(self):
         """回答可能かどうか"""
         return self.is_active and not self.is_expired and not self.is_finalized
+
+    @staticmethod
+    def generate_edit_key():
+        """推測困難なランダム編集キーを生成"""
+        return secrets.token_urlsafe(9)
+
+    def set_edit_key(self, raw_key):
+        """編集キーをハッシュ化して設定（保存は呼び出し側で行う）"""
+        self.edit_key = make_password(raw_key) if raw_key else None
+
+    def check_edit_key(self, raw_key):
+        """編集キーを検証する。edit_key未設定のイベントは常にTrue"""
+        if not self.edit_key:
+            return True
+        if not raw_key:
+            return False
+        return check_password(raw_key, self.edit_key)
 
 
 class Candidate(models.Model):

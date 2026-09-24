@@ -2,47 +2,25 @@
  * React Query hooks for API data fetching
  */
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '@/lib/api';
-import type {
-    Schedule,
-    ScheduleListItem,
-    ScheduleInput,
-    ScheduleSummary,
-    Participant,
-    ParticipantInput,
-    PaginatedResponse,
-} from '@/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import api, { ApiError } from '@/lib/api';
+import type { CandidateInput, ParticipantInput, ScheduleInput, ScheduleUpdateInput } from '@/types';
 
 // Query keys
 export const queryKeys = {
-    schedules: ['schedules'] as const,
     schedule: (uuid: string) => ['schedule', uuid] as const,
     summary: (uuid: string) => ['schedule', uuid, 'summary'] as const,
-    participants: (uuid: string) => ['schedule', uuid, 'participants'] as const,
 };
 
-// Schedule hooks
-export function useSchedules(params?: {
-    page?: number;
-    pageSize?: number;
-    search?: string;
-}) {
-    return useQuery({
-        queryKey: [...queryKeys.schedules, params],
-        queryFn: () => api.getSchedules({
-            page: params?.page,
-            page_size: params?.pageSize,
-            search: params?.search,
-        }),
-    });
-}
+const noRetryOn4xx = (failureCount: number, error: Error) =>
+    !(error instanceof ApiError && error.status >= 400 && error.status < 500) && failureCount < 2;
 
 export function useSchedule(uuid: string) {
     return useQuery({
         queryKey: queryKeys.schedule(uuid),
         queryFn: () => api.getSchedule(uuid),
         enabled: !!uuid,
+        retry: noRetryOn4xx,
     });
 }
 
@@ -51,98 +29,98 @@ export function useScheduleSummary(uuid: string) {
         queryKey: queryKeys.summary(uuid),
         queryFn: () => api.getScheduleSummary(uuid),
         enabled: !!uuid,
+        retry: noRetryOn4xx,
     });
 }
 
-export function useCreateSchedule() {
+function useInvalidateSchedule(uuid: string) {
     const queryClient = useQueryClient();
+    // queryKeys.schedule(uuid) is a prefix of the summary key, so both are refreshed
+    return () => queryClient.invalidateQueries({ queryKey: queryKeys.schedule(uuid) });
+}
 
+export function useCreateSchedule() {
     return useMutation({
-        mutationFn: (data: ScheduleInput) => api.createSchedule(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.schedules });
-        },
+        mutationFn: (data: { schedule: ScheduleInput; ref?: string | null }) =>
+            api.createSchedule(data.schedule, data.ref),
     });
 }
 
 export function useUpdateSchedule(uuid: string) {
-    const queryClient = useQueryClient();
-
+    const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { schedule: Partial<ScheduleInput>; editKey?: string }) =>
+        mutationFn: (data: { schedule: ScheduleUpdateInput; editKey: string }) =>
             api.updateSchedule(uuid, data.schedule, data.editKey),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.schedule(uuid) });
-        },
+        onSuccess: invalidate,
     });
 }
 
-export function useDeleteSchedule() {
+export function useDeleteSchedule(uuid: string) {
     const queryClient = useQueryClient();
-
     return useMutation({
-        mutationFn: (data: { uuid: string; editKey?: string }) =>
-            api.deleteSchedule(data.uuid, data.editKey),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.schedules });
-        },
+        mutationFn: (editKey: string) => api.deleteSchedule(uuid, editKey),
+        onSuccess: () => queryClient.removeQueries({ queryKey: queryKeys.schedule(uuid) }),
+    });
+}
+
+export function useVerifyEditKey(uuid: string) {
+    return useMutation({
+        mutationFn: (editKey: string) => api.verifyEditKey(uuid, editKey),
     });
 }
 
 // Response hooks
 export function useSubmitResponse(uuid: string) {
-    const queryClient = useQueryClient();
-
+    const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
         mutationFn: (data: { response: ParticipantInput; editToken?: string }) =>
             api.submitResponse(uuid, data.response, data.editToken),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.schedule(uuid) });
-            queryClient.invalidateQueries({ queryKey: queryKeys.summary(uuid) });
-        },
+        onSuccess: invalidate,
     });
 }
 
 export function useDeleteParticipant(uuid: string) {
-    const queryClient = useQueryClient();
-
+    const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { participantId: number; token?: string }) =>
-            api.deleteParticipant(uuid, data.participantId, data.token),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.schedule(uuid) });
-            queryClient.invalidateQueries({ queryKey: queryKeys.summary(uuid) });
-        },
+        mutationFn: (data: { participantId: number; editToken?: string; editKey?: string }) =>
+            api.deleteParticipant(uuid, data.participantId, data),
+        onSuccess: invalidate,
+    });
+}
+
+// Candidate hooks
+export function useAddCandidate(uuid: string) {
+    const invalidate = useInvalidateSchedule(uuid);
+    return useMutation({
+        mutationFn: (data: { candidate: CandidateInput; editKey: string }) =>
+            api.addCandidate(uuid, data.candidate, data.editKey),
+        onSuccess: invalidate,
+    });
+}
+
+export function useDeleteCandidate(uuid: string) {
+    const invalidate = useInvalidateSchedule(uuid);
+    return useMutation({
+        mutationFn: (data: { candidateId: number; editKey: string }) =>
+            api.deleteCandidate(uuid, data.candidateId, data.editKey),
+        onSuccess: invalidate,
     });
 }
 
 // Finalization hook
 export function useFinalizeSchedule(uuid: string) {
-    const queryClient = useQueryClient();
-
+    const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { candidateId: number; editKey?: string }) =>
+        mutationFn: (data: { candidateId: number | null; editKey: string }) =>
             api.finalizeSchedule(uuid, data.candidateId, data.editKey),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.schedule(uuid) });
-        },
+        onSuccess: invalidate,
     });
 }
 
-// CSV Export hook
-export function useExportCsv(uuid: string) {
-    return useMutation({
-        mutationFn: (includeComments = true) => api.exportCsv(uuid, includeComments),
-        onSuccess: async (blob) => {
-            // Download the file
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `schedule-${uuid}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        },
-    });
+// Export URLs (CSV / ICS are served as attachments and downloaded via plain links)
+export function useExportUrls(uuid: string) {
+    return {
+        csv: api.exportCsvUrl(uuid),
+        ics: (candidateId?: number) => api.exportIcsUrl(uuid, candidateId),
+    };
 }

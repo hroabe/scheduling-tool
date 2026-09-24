@@ -1,0 +1,89 @@
+# Production: Caddy (automatic HTTPS) -> Next.js + Django, PostgreSQL
+#
+#   cp .env.production.example .env.production   # fill in DOMAIN, secrets
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# Routing (single domain, no CORS needed):
+#   https://$DOMAIN/api/*, /admin/*, /static/*  -> Django (api:8000)
+#   https://$DOMAIN/*                           -> Next.js (front:3000)
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-scheduling_db}
+      POSTGRES_USER: ${POSTGRES_USER:-scheduling}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scheduling} -d ${POSTGRES_DB:-scheduling_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    restart: unless-stopped
+    environment:
+      DEBUG: "False"
+      SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY}
+      DATABASE_URL: postgres://${POSTGRES_USER:-scheduling}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-scheduling_db}
+      ALLOWED_HOSTS: ${DOMAIN},api,localhost,127.0.0.1
+      CORS_ALLOWED_ORIGINS: https://${DOMAIN}
+      CSRF_TRUSTED_ORIGINS: https://${DOMAIN}
+      FRONTEND_URL: https://${DOMAIN}
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?set INTERNAL_API_TOKEN}
+      # Caddy terminates TLS and redirects HTTP->HTTPS; internal calls from Next.js use plain HTTP
+      SECURE_SSL_REDIRECT: "False"
+      NUM_PROXIES: "1"
+      DJANGO_ADMIN_URL: ${DJANGO_ADMIN_URL:-admin/}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-3}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        NEXT_PUBLIC_API_URL: https://${DOMAIN}
+        NEXT_PUBLIC_SITE_URL: https://${DOMAIN}
+        NEXT_PUBLIC_SITE_NAME: ${SITE_NAME:-日程調整ツール}
+        NEXT_PUBLIC_CONTACT_EMAIL: ${CONTACT_EMAIL:-}
+        NEXT_PUBLIC_TWITTER_HANDLE: ${TWITTER_HANDLE:-}
+        NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-}
+        NEXT_PUBLIC_BING_SITE_VERIFICATION: ${BING_SITE_VERIFICATION:-}
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?set INTERNAL_API_TOKEN}
+    depends_on:
+      - api
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - front
+      - api
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

@@ -39,9 +39,13 @@ export interface Participant {
     name: string;
     comment: string;
     attendances: Attendance[];
-    edit_url?: string;
     created_at: string;
     updated_at: string;
+}
+
+/** Returned only once, right after submitting a response */
+export interface ParticipantWithToken extends Participant {
+    edit_token: string;
 }
 
 export interface ParticipantInput {
@@ -59,17 +63,16 @@ export interface Schedule {
     name: string;
     description: string;
     owner_name: string;
-    owner_email?: string;
     department: string;
-    deadline?: string;
+    deadline: string | null;
     timezone_name: string;
     is_active: boolean;
     allow_maybe: boolean;
-    show_participant_count: boolean;
     is_finalized: boolean;
-    finalized_candidate?: number;
+    finalized_candidate: number | null;
     can_respond: boolean;
     is_expired: boolean;
+    has_edit_key: boolean;
     candidates: Candidate[];
     participants: Participant[];
     url: string;
@@ -77,34 +80,41 @@ export interface Schedule {
     updated_at: string;
 }
 
-export interface ScheduleListItem {
-    id: number;
-    uuid: string;
-    name: string;
-    owner_name: string;
-    department: string;
-    deadline?: string;
-    is_active: boolean;
-    is_finalized: boolean;
-    participant_count: number;
-    candidate_count: number;
-    url: string;
-    created_at: string;
+/** Response of POST /schedules/ (edit key is returned once when auto-generated) */
+export interface CreatedSchedule extends Schedule {
+    _edit_key?: string;
 }
 
 export interface ScheduleInput {
     name: string;
     description?: string;
     owner_name: string;
-    owner_email?: string;
-    department?: string;
     edit_key?: string;
-    deadline?: string;
+    deadline?: string | null;
     timezone_name?: string;
     allow_maybe?: boolean;
-    show_participant_count?: boolean;
-    notify_on_response?: boolean;
     candidates: CandidateInput[];
+}
+
+export interface ScheduleUpdateInput {
+    name?: string;
+    description?: string;
+    owner_name?: string;
+    deadline?: string | null;
+    is_active?: boolean;
+    allow_maybe?: boolean;
+}
+
+export interface CandidateSummary {
+    candidate_id: number;
+    start_at: string;
+    end_at: string;
+    note: string;
+    ok_count: number;
+    maybe_count: number;
+    ng_count: number;
+    score: number;
+    is_recommended: boolean;
 }
 
 export interface ScheduleSummary {
@@ -112,28 +122,10 @@ export interface ScheduleSummary {
     schedule_name: string;
     total_participants: number;
     candidates: CandidateSummary[];
-    recommended_candidate?: CandidateSummary;
+    recommended_candidate: CandidateSummary | null;
 }
 
-export interface CandidateSummary {
-    candidate_id: number;
-    start_at: string;
-    end_at: string;
-    ok_count: number;
-    maybe_count: number;
-    ng_count: number;
-    score: number;
-}
-
-// API response types
-export interface PaginatedResponse<T> {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: T[];
-}
-
-export interface ApiError {
+export interface ApiErrorBody {
     detail?: string;
-    [key: string]: string | string[] | undefined;
+    [key: string]: unknown;
 }

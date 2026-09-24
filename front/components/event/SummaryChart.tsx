@@ -1,290 +1,208 @@
 'use client';
 
 import {
-    Box,
-    VStack,
-    HStack,
-    Text,
     Badge,
+    Box,
+    Button,
     Card,
     CardBody,
-    Heading,
-    Progress,
-    SimpleGrid,
-    useColorModeValue,
     Flex,
+    Heading,
+    HStack,
     Icon,
+    SimpleGrid,
+    Skeleton,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { Trophy, Users, TrendingUp } from 'lucide-react';
-import type { Schedule, ScheduleSummary, CandidateSummary } from '@/types';
+import { CalendarPlus, TrendingUp, Trophy, Users } from 'lucide-react';
 import { formatDate, formatTime } from '@/lib/date';
+import type { CandidateSummary, Schedule, ScheduleSummary } from '@/types';
 
 interface SummaryChartProps {
     schedule: Schedule;
     summary?: ScheduleSummary;
+    icsUrl: (candidateId: number) => string;
 }
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 function CandidateBar({
     candidate,
     totalParticipants,
-    isRecommended,
-    index,
+    isFinalized,
+    icsUrl,
 }: {
     candidate: CandidateSummary;
     totalParticipants: number;
-    isRecommended: boolean;
-    index: number;
+    isFinalized: boolean;
+    icsUrl: string;
 }) {
-    const cardBg = useColorModeValue('white', 'gray.800');
-    const borderColor = useColorModeValue('gray.200', 'gray.700');
-
-    const okPercent = totalParticipants > 0 ? (candidate.ok_count / totalParticipants) * 100 : 0;
-    const maybePercent = totalParticipants > 0 ? (candidate.maybe_count / totalParticipants) * 100 : 0;
-    const ngPercent = totalParticipants > 0 ? (candidate.ng_count / totalParticipants) * 100 : 0;
+    const pct = (n: number) => (totalParticipants > 0 ? (n / totalParticipants) * 100 : 0);
+    const highlight = isFinalized || candidate.is_recommended;
 
     return (
-        <MotionBox
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
+        <Box
+            p={4}
+            w="full"
+            borderRadius="xl"
+            border="2px solid"
+            borderColor={highlight ? 'green.400' : 'border.default'}
+            bg={highlight ? 'green.50' : 'bg.card'}
+            _dark={highlight ? { bg: 'rgba(72, 187, 120, 0.12)' } : undefined}
+            data-testid="summary-candidate"
         >
-            <Box
-                p={4}
-                borderRadius="xl"
-                border="2px solid"
-                borderColor={isRecommended ? 'green.400' : borderColor}
-                bg={isRecommended ? useColorModeValue('green.50', 'green.900') : cardBg}
-                position="relative"
-                overflow="hidden"
-            >
-                {isRecommended && (
-                    <Badge
-                        position="absolute"
-                        top={2}
-                        right={2}
-                        colorScheme="green"
-                        display="flex"
-                        alignItems="center"
-                        gap={1}
-                    >
-                        <Icon as={Trophy} boxSize={3} />
-                        おすすめ
-                    </Badge>
-                )}
-
-                <VStack align="stretch" spacing={3}>
-                    {/* Date Info */}
-                    <HStack justify="space-between">
-                        <VStack align="start" spacing={0}>
-                            <HStack>
-                                <Text fontWeight="bold" fontSize="lg">
-                                    {formatDate(candidate.start_at, 'M月d日')}
-                                </Text>
-                                <Text color="gray.500">
-                                    ({formatDate(candidate.start_at, 'E')})
-                                </Text>
-                            </HStack>
-                            <Text fontSize="sm" color="gray.600">
-                                {formatTime(candidate.start_at)} - {formatTime(candidate.end_at)}
-                            </Text>
-                        </VStack>
-                        <VStack align="end" spacing={0}>
-                            <Text fontSize="2xl" fontWeight="bold" color="green.500">
-                                {candidate.ok_count}
-                            </Text>
-                            <Text fontSize="xs" color="gray.500">
-                                / {totalParticipants}名
-                            </Text>
-                        </VStack>
-                    </HStack>
-
-                    {/* Progress Bar */}
+            <VStack align="stretch" spacing={3}>
+                <Flex justify="space-between" align="start" gap={2} wrap="wrap">
                     <Box>
-                        <HStack h={4} borderRadius="full" overflow="hidden" bg="gray.100">
-                            <Box
-                                h="full"
-                                w={`${okPercent}%`}
-                                bg="green.400"
-                                transition="width 0.5s ease"
-                            />
-                            <Box
-                                h="full"
-                                w={`${maybePercent}%`}
-                                bg="yellow.400"
-                                transition="width 0.5s ease"
-                            />
-                            <Box
-                                h="full"
-                                w={`${ngPercent}%`}
-                                bg="red.400"
-                                transition="width 0.5s ease"
-                            />
+                        <HStack spacing={2} flexWrap="wrap">
+                            <Text fontWeight="bold" fontSize="lg">
+                                {formatDate(candidate.start_at, 'M月d日(E)')}
+                            </Text>
+                            {isFinalized && (
+                                <Badge colorScheme="green" variant="solid">
+                                    確定
+                                </Badge>
+                            )}
+                            {!isFinalized && candidate.is_recommended && (
+                                <MotionBox
+                                    as="span"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.3 }}
+                                >
+                                    <Badge colorScheme="green" display="inline-flex" alignItems="center" gap={1}>
+                                        <Icon as={Trophy} boxSize={3} />
+                                        おすすめ
+                                    </Badge>
+                                </MotionBox>
+                            )}
                         </HStack>
+                        <Text fontSize="sm" color="text.muted">
+                            {formatTime(candidate.start_at)} - {formatTime(candidate.end_at)}
+                            {candidate.note ? ` ・ ${candidate.note}` : ''}
+                        </Text>
                     </Box>
+                    <VStack align="end" spacing={0}>
+                        <Text fontSize="2xl" fontWeight="bold" color="green.500" lineHeight={1}>
+                            {candidate.ok_count}
+                            <Text as="span" fontSize="sm" color="text.muted" fontWeight="normal">
+                                {' '}/ {totalParticipants}名
+                            </Text>
+                        </Text>
+                        <Text fontSize="xs" color="text.muted">
+                            スコア {candidate.score}
+                        </Text>
+                    </VStack>
+                </Flex>
 
-                    {/* Stats */}
-                    <HStack justify="center" spacing={4}>
-                        <HStack>
-                            <Box w={3} h={3} borderRadius="full" bg="green.400" />
-                            <Text fontSize="sm">◯ {candidate.ok_count}</Text>
-                        </HStack>
-                        <HStack>
-                            <Box w={3} h={3} borderRadius="full" bg="yellow.400" />
-                            <Text fontSize="sm">△ {candidate.maybe_count}</Text>
-                        </HStack>
-                        <HStack>
-                            <Box w={3} h={3} borderRadius="full" bg="red.400" />
-                            <Text fontSize="sm">× {candidate.ng_count}</Text>
-                        </HStack>
+                <Flex
+                    h={3}
+                    borderRadius="full"
+                    overflow="hidden"
+                    bg="gray.100"
+                    _dark={{ bg: 'gray.700' }}
+                    role="img"
+                    aria-label={`◯${candidate.ok_count}名、△${candidate.maybe_count}名、×${candidate.ng_count}名`}
+                >
+                    <Box w={`${pct(candidate.ok_count)}%`} bg="green.400" transition="width 0.5s ease" />
+                    <Box w={`${pct(candidate.maybe_count)}%`} bg="yellow.400" transition="width 0.5s ease" />
+                    <Box w={`${pct(candidate.ng_count)}%`} bg="red.400" transition="width 0.5s ease" />
+                </Flex>
+
+                <Flex justify="space-between" align="center" wrap="wrap" gap={2}>
+                    <HStack spacing={4} fontSize="sm">
+                        <Text>◯ {candidate.ok_count}</Text>
+                        <Text>△ {candidate.maybe_count}</Text>
+                        <Text>× {candidate.ng_count}</Text>
                     </HStack>
-                </VStack>
-            </Box>
-        </MotionBox>
+                    <Button
+                        as="a"
+                        href={icsUrl}
+                        size="xs"
+                        variant="ghost"
+                        leftIcon={<CalendarPlus size={14} />}
+                        aria-label={`${formatDate(candidate.start_at, 'M月d日')}の予定をカレンダーに追加（ICS）`}
+                    >
+                        カレンダーに追加
+                    </Button>
+                </Flex>
+            </VStack>
+        </Box>
     );
 }
 
-export function SummaryChart({ schedule, summary }: SummaryChartProps) {
-    const cardBg = useColorModeValue('white', 'gray.800');
-    const borderColor = useColorModeValue('gray.200', 'gray.700');
+function StatCard({ icon, value, label, color }: { icon: typeof Users; value: number; label: string; color: string }) {
+    return (
+        <Card>
+            <CardBody>
+                <HStack>
+                    <Flex align="center" justify="center" w={12} h={12} borderRadius="xl" bg={`${color}.100`} color={`${color}.600`}>
+                        <Icon as={icon} boxSize={6} />
+                    </Flex>
+                    <Box>
+                        <Text fontSize="2xl" fontWeight="bold">
+                            {value}
+                        </Text>
+                        <Text fontSize="sm" color="text.muted">
+                            {label}
+                        </Text>
+                    </Box>
+                </HStack>
+            </CardBody>
+        </Card>
+    );
+}
 
-    // Build summary from schedule if API summary not available
-    const candidateSummaries: CandidateSummary[] = summary?.candidates ||
-        schedule.candidates.map((c) => ({
-            candidate_id: c.id,
-            start_at: c.start_at,
-            end_at: c.end_at,
-            ok_count: c.ok_count,
-            maybe_count: c.maybe_count,
-            ng_count: c.ng_count,
-            score: c.ok_count * 2 + c.maybe_count,
-        }));
-
-    const totalParticipants = summary?.total_participants || schedule.participants.length;
-
-    // Find recommended candidate
-    const recommendedId = summary?.recommended_candidate?.candidate_id ||
-        candidateSummaries.reduce((best, current) =>
-            current.score > (best?.score || -1) ? current : best,
-            candidateSummaries[0]
-        )?.candidate_id;
-
+export function SummaryChart({ schedule, summary, icsUrl }: SummaryChartProps) {
     if (schedule.participants.length === 0) {
         return (
-            <Card bg={cardBg} shadow="sm">
+            <Card>
                 <CardBody>
                     <VStack spacing={4} py={8}>
                         <Icon as={Users} boxSize={12} color="gray.400" />
-                        <Text color="gray.500">回答があると集計結果が表示されます</Text>
+                        <Text color="text.muted">回答があると集計結果が表示されます</Text>
                     </VStack>
                 </CardBody>
             </Card>
         );
     }
 
+    if (!summary) {
+        return <Skeleton h="300px" borderRadius="xl" />;
+    }
+
+    const sorted = [...summary.candidates].sort((a, b) => b.score - a.score);
+    const maxOk = Math.max(0, ...summary.candidates.map((c) => c.ok_count));
+
     return (
         <VStack spacing={6} align="stretch">
-            {/* Summary Stats */}
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                <Card bg={cardBg} shadow="sm">
-                    <CardBody>
-                        <HStack>
-                            <Flex
-                                align="center"
-                                justify="center"
-                                w={12}
-                                h={12}
-                                borderRadius="xl"
-                                bg="blue.100"
-                                color="blue.600"
-                            >
-                                <Icon as={Users} boxSize={6} />
-                            </Flex>
-                            <VStack align="start" spacing={0}>
-                                <Text fontSize="2xl" fontWeight="bold">
-                                    {totalParticipants}
-                                </Text>
-                                <Text fontSize="sm" color="gray.500">
-                                    回答者数
-                                </Text>
-                            </VStack>
-                        </HStack>
-                    </CardBody>
-                </Card>
-
-                <Card bg={cardBg} shadow="sm">
-                    <CardBody>
-                        <HStack>
-                            <Flex
-                                align="center"
-                                justify="center"
-                                w={12}
-                                h={12}
-                                borderRadius="xl"
-                                bg="green.100"
-                                color="green.600"
-                            >
-                                <Icon as={TrendingUp} boxSize={6} />
-                            </Flex>
-                            <VStack align="start" spacing={0}>
-                                <Text fontSize="2xl" fontWeight="bold">
-                                    {Math.max(...candidateSummaries.map((c) => c.ok_count))}
-                                </Text>
-                                <Text fontSize="sm" color="gray.500">
-                                    最大「◯」数
-                                </Text>
-                            </VStack>
-                        </HStack>
-                    </CardBody>
-                </Card>
-
-                <Card bg={cardBg} shadow="sm">
-                    <CardBody>
-                        <HStack>
-                            <Flex
-                                align="center"
-                                justify="center"
-                                w={12}
-                                h={12}
-                                borderRadius="xl"
-                                bg="purple.100"
-                                color="purple.600"
-                            >
-                                <Icon as={Trophy} boxSize={6} />
-                            </Flex>
-                            <VStack align="start" spacing={0}>
-                                <Text fontSize="2xl" fontWeight="bold">
-                                    {schedule.candidates.length}
-                                </Text>
-                                <Text fontSize="sm" color="gray.500">
-                                    候補日数
-                                </Text>
-                            </VStack>
-                        </HStack>
-                    </CardBody>
-                </Card>
+            <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={4}>
+                <StatCard icon={Users} value={summary.total_participants} label="回答者数" color="blue" />
+                <StatCard icon={TrendingUp} value={maxOk} label="最大「◯」数" color="green" />
+                <StatCard icon={Trophy} value={summary.candidates.length} label="候補日数" color="purple" />
             </SimpleGrid>
 
-            {/* Candidate List */}
-            <Card bg={cardBg} shadow="sm">
+            <Card>
                 <CardBody>
                     <VStack spacing={4} align="stretch">
-                        <Heading size="sm">候補日ごとの回答状況</Heading>
-
+                        <Heading as="h2" size="sm">
+                            候補日ごとの回答状況（スコア順）
+                        </Heading>
+                        <Text fontSize="xs" color="text.muted">
+                            スコア = ◯×2 + △×1。最もスコアが高い候補に「おすすめ」を表示しています。
+                        </Text>
                         <VStack spacing={3}>
-                            {candidateSummaries
-                                .sort((a, b) => b.score - a.score)
-                                .map((candidate, index) => (
-                                    <CandidateBar
-                                        key={candidate.candidate_id}
-                                        candidate={candidate}
-                                        totalParticipants={totalParticipants}
-                                        isRecommended={candidate.candidate_id === recommendedId}
-                                        index={index}
-                                    />
-                                ))}
+                            {sorted.map((candidate) => (
+                                <CandidateBar
+                                    key={candidate.candidate_id}
+                                    candidate={candidate}
+                                    totalParticipants={summary.total_participants}
+                                    isFinalized={schedule.finalized_candidate === candidate.candidate_id}
+                                    icsUrl={icsUrl(candidate.candidate_id)}
+                                />
+                            ))}
                         </VStack>
                     </VStack>
                 </CardBody>

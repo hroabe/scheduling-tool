@@ -1,172 +1,90 @@
 /**
- * Global state management using Zustand
+ * Client-side state management using Zustand
+ *
+ * - useEditKeyStore: edit keys verified in this tab (sessionStorage, cleared when the tab closes)
+ * - useMyResponsesStore: edit tokens of responses sent from this browser (localStorage)
+ * - useAttributionStore: first-touch `?ref=` / utm_source for growth measurement (localStorage)
  */
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { Schedule, ScheduleInput, CandidateInput, AttendanceStatus } from '@/types';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-interface CreateScheduleState {
-    // Form data
-    name: string;
-    description: string;
-    ownerName: string;
-    ownerEmail: string;
-    department: string;
-    editKey: string;
-    deadline: string;
-    allowMaybe: boolean;
-    notifyOnResponse: boolean;
-    candidates: CandidateInput[];
-
-    // Actions
-    setField: <K extends keyof Omit<CreateScheduleState, 'setField' | 'addCandidate' | 'removeCandidate' | 'updateCandidate' | 'reset' | 'toInput'>>(
-        field: K,
-        value: CreateScheduleState[K]
-    ) => void;
-    addCandidate: (candidate: CandidateInput) => void;
-    removeCandidate: (index: number) => void;
-    updateCandidate: (index: number, candidate: CandidateInput) => void;
-    reset: () => void;
-    toInput: () => ScheduleInput;
-}
-
-const initialState = {
-    name: '',
-    description: '',
-    ownerName: '',
-    ownerEmail: '',
-    department: '',
-    editKey: '',
-    deadline: '',
-    allowMaybe: true,
-    notifyOnResponse: false,
-    candidates: [] as CandidateInput[],
+const noopStorage = {
+    getItem: () => null,
+    setItem: () => undefined,
+    removeItem: () => undefined,
 };
 
-export const useCreateScheduleStore = create<CreateScheduleState>()((set, get) => ({
-    ...initialState,
+const sessionStore = () => (typeof window === 'undefined' ? noopStorage : window.sessionStorage);
+const localStore = () => (typeof window === 'undefined' ? noopStorage : window.localStorage);
 
-    setField: (field, value) => set({ [field]: value }),
-
-    addCandidate: (candidate) => set((state) => ({
-        candidates: [...state.candidates, { ...candidate, order: state.candidates.length }],
-    })),
-
-    removeCandidate: (index) => set((state) => ({
-        candidates: state.candidates.filter((_, i) => i !== index),
-    })),
-
-    updateCandidate: (index, candidate) => set((state) => ({
-        candidates: state.candidates.map((c, i) => (i === index ? candidate : c)),
-    })),
-
-    reset: () => set(initialState),
-
-    toInput: () => {
-        const state = get();
-        return {
-            name: state.name,
-            description: state.description,
-            owner_name: state.ownerName,
-            owner_email: state.ownerEmail || undefined,
-            department: state.department || undefined,
-            edit_key: state.editKey || undefined,
-            deadline: state.deadline || undefined,
-            allow_maybe: state.allowMaybe,
-            notify_on_response: state.notifyOnResponse,
-            candidates: state.candidates,
-        };
-    },
-}));
-
-
-interface ResponseState {
-    // Current response data
-    participantName: string;
-    comment: string;
-    attendances: Map<number, AttendanceStatus>;
-    editToken: string | null;
-
-    // Actions
-    setParticipantName: (name: string) => void;
-    setComment: (comment: string) => void;
-    setAttendance: (candidateId: number, status: AttendanceStatus) => void;
-    setEditToken: (token: string | null) => void;
-    reset: () => void;
-    toInput: () => {
-        name: string;
-        comment: string;
-        attendances: { candidate: number; status: AttendanceStatus }[];
-    };
+interface EditKeyState {
+    keys: Record<string, string>;
+    setKey: (uuid: string, key: string) => void;
+    clearKey: (uuid: string) => void;
 }
 
-export const useResponseStore = create<ResponseState>()((set, get) => ({
-    participantName: '',
-    comment: '',
-    attendances: new Map(),
-    editToken: null,
-
-    setParticipantName: (name) => set({ participantName: name }),
-    setComment: (comment) => set({ comment }),
-    setAttendance: (candidateId, status) => set((state) => {
-        const newAttendances = new Map(state.attendances);
-        newAttendances.set(candidateId, status);
-        return { attendances: newAttendances };
-    }),
-    setEditToken: (token) => set({ editToken: token }),
-    reset: () => set({
-        participantName: '',
-        comment: '',
-        attendances: new Map(),
-        editToken: null,
-    }),
-    toInput: () => {
-        const state = get();
-        return {
-            name: state.participantName,
-            comment: state.comment,
-            attendances: Array.from(state.attendances.entries()).map(([candidate, status]) => ({
-                candidate,
-                status,
-            })),
-        };
-    },
-}));
-
-
-interface UIState {
-    // Theme
-    isDarkMode: boolean;
-
-    // Modals
-    isCreateModalOpen: boolean;
-    isFinalizeModalOpen: boolean;
-    isDeleteModalOpen: boolean;
-
-    // Actions
-    toggleDarkMode: () => void;
-    setCreateModalOpen: (open: boolean) => void;
-    setFinalizeModalOpen: (open: boolean) => void;
-    setDeleteModalOpen: (open: boolean) => void;
-}
-
-export const useUIStore = create<UIState>()(
+export const useEditKeyStore = create<EditKeyState>()(
     persist(
         (set) => ({
-            isDarkMode: false,
-            isCreateModalOpen: false,
-            isFinalizeModalOpen: false,
-            isDeleteModalOpen: false,
-
-            toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
-            setCreateModalOpen: (open) => set({ isCreateModalOpen: open }),
-            setFinalizeModalOpen: (open) => set({ isFinalizeModalOpen: open }),
-            setDeleteModalOpen: (open) => set({ isDeleteModalOpen: open }),
+            keys: {},
+            setKey: (uuid, key) => set((state) => ({ keys: { ...state.keys, [uuid]: key } })),
+            clearKey: (uuid) =>
+                set((state) => {
+                    const keys = { ...state.keys };
+                    delete keys[uuid];
+                    return { keys };
+                }),
         }),
-        {
-            name: 'scheduling-tool-ui',
-            partialize: (state) => ({ isDarkMode: state.isDarkMode }),
-        }
+        { name: 'scheduling-tool-edit-keys', storage: createJSONStorage(sessionStore) }
+    )
+);
+
+export interface MyResponse {
+    participantId: number;
+    name: string;
+    editToken: string;
+}
+
+interface MyResponsesState {
+    responses: Record<string, MyResponse>;
+    saveResponse: (uuid: string, response: MyResponse) => void;
+    removeResponse: (uuid: string) => void;
+}
+
+export const useMyResponsesStore = create<MyResponsesState>()(
+    persist(
+        (set) => ({
+            responses: {},
+            saveResponse: (uuid, response) =>
+                set((state) => ({ responses: { ...state.responses, [uuid]: response } })),
+            removeResponse: (uuid) =>
+                set((state) => {
+                    const responses = { ...state.responses };
+                    delete responses[uuid];
+                    return { responses };
+                }),
+        }),
+        { name: 'scheduling-tool-my-responses', storage: createJSONStorage(localStore) }
+    )
+);
+
+interface AttributionState {
+    ref: string | null;
+    createdCount: number;
+    setRef: (ref: string) => void;
+    incrementCreated: () => void;
+}
+
+export const useAttributionStore = create<AttributionState>()(
+    persist(
+        (set) => ({
+            ref: null,
+            createdCount: 0,
+            // First touch wins: keep the original acquisition channel
+            setRef: (ref) => set((state) => (state.ref ? state : { ref })),
+            incrementCreated: () => set((state) => ({ createdCount: state.createdCount + 1 })),
+        }),
+        { name: 'scheduling-tool-attribution', storage: createJSONStorage(localStore) }
     )
 );

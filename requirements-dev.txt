@@ -1,0 +1,7 @@
+-r requirements.txt
+
+# Testing
+coverage==7.16.1
+
+# Code Quality
+flake8

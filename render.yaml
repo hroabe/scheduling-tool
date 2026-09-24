@@ -1,0 +1,67 @@
+# Render Blueprint (alternative to docker-compose.prod.yml)
+# https://render.com/docs/blueprint-spec
+#
+# After the first sync, set the `sync: false` variables in the Render dashboard:
+#   scheduling-api:   CORS_ALLOWED_ORIGINS / CSRF_TRUSTED_ORIGINS / FRONTEND_URL = https://<front URL>
+#   scheduling-front: NEXT_PUBLIC_API_URL = https://<api URL>, NEXT_PUBLIC_SITE_URL = https://<front URL or custom domain>
+# then trigger a redeploy of scheduling-front (NEXT_PUBLIC_* are inlined at build time).
+
+databases:
+  - name: scheduling-db
+    databaseName: scheduling_db
+    user: scheduling
+    plan: free
+
+services:
+  - type: web
+    name: scheduling-api
+    runtime: python
+    rootDir: api
+    buildCommand: pip install -r ../requirements.txt && python manage.py collectstatic --noinput
+    startCommand: python manage.py migrate --noinput && gunicorn api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --access-logfile -
+    healthCheckPath: /api/health/
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: INTERNAL_API_TOKEN
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scheduling-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  - type: web
+    name: scheduling-front
+    runtime: node
+    rootDir: front
+    buildCommand: npm ci && npm run build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+    startCommand: node .next/standalone/server.js
+    healthCheckPath: /robots.txt
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: INTERNAL_API_TOKEN
+        fromService:
+          type: web
+          name: scheduling-api
+          envVarKey: INTERNAL_API_TOKEN

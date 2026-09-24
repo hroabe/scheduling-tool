@@ -3,167 +3,200 @@
  */
 
 import type {
-    Schedule,
-    ScheduleListItem,
-    ScheduleInput,
-    ScheduleSummary,
+    ApiErrorBody,
+    Candidate,
+    CandidateInput,
+    CreatedSchedule,
     Participant,
     ParticipantInput,
-    PaginatedResponse,
+    ParticipantWithToken,
+    Schedule,
+    ScheduleInput,
+    ScheduleSummary,
+    ScheduleUpdateInput,
 } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
 
-class ApiClient {
+/** Pick the first human-readable message out of a DRF error body */
+export function extractErrorMessage(data: unknown): string | undefined {
+    if (!data) return undefined;
+    if (typeof data === 'string') return data;
+    if (Array.isArray(data)) {
+        for (const item of data) {
+            const message = extractErrorMessage(item);
+            if (message) return message;
+        }
+        return undefined;
+    }
+    if (typeof data === 'object') {
+        const record = data as Record<string, unknown>;
+        if (typeof record.detail === 'string') return record.detail;
+        for (const value of Object.values(record)) {
+            const message = extractErrorMessage(value);
+            if (message) return message;
+        }
+    }
+    return undefined;
+}
+
+export class ApiError extends Error {
+    status: number;
+    data: ApiErrorBody;
+
+    constructor(status: number, data: ApiErrorBody) {
+        const fallback =
+            status === 429
+                ? 'アクセスが集中しています。しばらくしてから再度お試しください。'
+                : status === 404
+                  ? 'イベントが見つかりませんでした。'
+                  : `エラーが発生しました（${status}）`;
+        super(extractErrorMessage(data) || fallback);
+        this.name = 'ApiError';
+        this.status = status;
+        this.data = data;
+    }
+}
+
+type RequestOptions = RequestInit & { editKey?: string };
+
+export class ApiClient {
     private baseUrl: string;
 
     constructor(baseUrl: string = API_BASE_URL) {
         this.baseUrl = baseUrl;
     }
 
-    private async request<T>(
-        endpoint: string,
-        options: RequestInit = {}
-    ): Promise<T> {
-        const url = `${this.baseUrl}${endpoint}`;
-
-        const config: RequestInit = {
-            ...options,
+    private async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+        const { editKey, headers, ...rest } = options;
+        const response = await fetch(`${this.baseUrl}${endpoint}`, {
+            ...rest,
             headers: {
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
-                ...options.headers,
+                ...(editKey ? { 'X-Edit-Key': editKey } : {}),
+                ...headers,
             },
-        };
-
-        const response = await fetch(url, config);
+        });
 
         if (!response.ok) {
             const error = await response.json().catch(() => ({}));
             throw new ApiError(response.status, error);
         }
 
-        // Handle empty responses
         if (response.status === 204) {
-            return {} as T;
+            return undefined as T;
         }
 
         return response.json();
     }
 
     // Schedule endpoints
-    async getSchedules(params?: {
-        page?: number;
-        page_size?: number;
-        search?: string;
-    }): Promise<PaginatedResponse<ScheduleListItem>> {
-        const searchParams = new URLSearchParams();
-        if (params?.page) searchParams.set('page', params.page.toString());
-        if (params?.page_size) searchParams.set('page_size', params.page_size.toString());
-        if (params?.search) searchParams.set('search', params.search);
-
-        const query = searchParams.toString() ? `?${searchParams.toString()}` : '';
-        return this.request<PaginatedResponse<ScheduleListItem>>(`/api/v1/schedules/${query}`);
-    }
-
-    async getSchedule(uuid: string): Promise<Schedule> {
+    getSchedule(uuid: string): Promise<Schedule> {
         return this.request<Schedule>(`/api/v1/schedules/${uuid}/`);
     }
 
-    async createSchedule(data: ScheduleInput): Promise<Schedule> {
-        return this.request<Schedule>('/api/v1/schedules/', {
+    createSchedule(data: ScheduleInput, ref?: string | null): Promise<CreatedSchedule> {
+        // ref (UTM) is sent as a query parameter so it shows up in access logs
+        const query = ref ? `?ref=${encodeURIComponent(ref)}` : '';
+        return this.request<CreatedSchedule>(`/api/v1/schedules/${query}`, {
             method: 'POST',
             body: JSON.stringify(data),
         });
     }
 
-    async updateSchedule(
-        uuid: string,
-        data: Partial<ScheduleInput>,
-        editKey?: string
-    ): Promise<Schedule> {
-        const params = editKey ? `?edit_key=${encodeURIComponent(editKey)}` : '';
-        return this.request<Schedule>(`/api/v1/schedules/${uuid}/${params}`, {
+    updateSchedule(uuid: string, data: ScheduleUpdateInput, editKey: string): Promise<Schedule> {
+        return this.request<Schedule>(`/api/v1/schedules/${uuid}/`, {
             method: 'PATCH',
             body: JSON.stringify(data),
+            editKey,
         });
     }
 
-    async deleteSchedule(uuid: string, editKey?: string): Promise<void> {
-        const params = editKey ? `?edit_key=${encodeURIComponent(editKey)}` : '';
-        return this.request<void>(`/api/v1/schedules/${uuid}/${params}`, {
+    deleteSchedule(uuid: string, editKey: string): Promise<void> {
+        return this.request<void>(`/api/v1/schedules/${uuid}/`, {
             method: 'DELETE',
+            editKey,
         });
+    }
+
+    async verifyEditKey(uuid: string, editKey: string): Promise<boolean> {
+        try {
+            await this.request(`/api/v1/schedules/${uuid}/verify_edit_key/`, {
+                method: 'POST',
+                body: '{}',
+                editKey,
+            });
+            return true;
+        } catch (error) {
+            if (error instanceof ApiError && error.status === 403) return false;
+            throw error;
+        }
     }
 
     // Response/Participation endpoints
-    async submitResponse(
-        uuid: string,
-        data: ParticipantInput,
-        editToken?: string
-    ): Promise<Participant> {
+    submitResponse(uuid: string, data: ParticipantInput, editToken?: string): Promise<ParticipantWithToken> {
         const body = editToken ? { ...data, edit_token: editToken } : data;
-        return this.request<Participant>(`/api/v1/schedules/${uuid}/respond/`, {
+        return this.request<ParticipantWithToken>(`/api/v1/schedules/${uuid}/respond/`, {
             method: 'POST',
             body: JSON.stringify(body),
         });
     }
 
-    async getParticipants(uuid: string): Promise<Participant[]> {
-        const response = await this.request<PaginatedResponse<Participant>>(
-            `/api/v1/schedules/${uuid}/participants/`
-        );
-        return response.results;
+    getParticipants(uuid: string): Promise<Participant[]> {
+        return this.request<Participant[]>(`/api/v1/schedules/${uuid}/participants/`);
     }
 
-    async deleteParticipant(
+    deleteParticipant(
         uuid: string,
         participantId: number,
-        token?: string
+        auth: { editToken?: string; editKey?: string }
     ): Promise<void> {
-        const params = token ? `?token=${encodeURIComponent(token)}` : '';
-        return this.request<void>(
-            `/api/v1/schedules/${uuid}/participants/${participantId}/${params}`,
-            { method: 'DELETE' }
-        );
+        return this.request<void>(`/api/v1/schedules/${uuid}/participants/${participantId}/`, {
+            method: 'DELETE',
+            body: auth.editToken ? JSON.stringify({ edit_token: auth.editToken }) : undefined,
+            editKey: auth.editKey,
+        });
     }
 
-    // Finalization
-    async finalizeSchedule(
-        uuid: string,
-        candidateId: number,
-        editKey?: string
-    ): Promise<Schedule> {
+    // Candidates
+    addCandidate(uuid: string, data: CandidateInput, editKey: string): Promise<Candidate> {
+        return this.request<Candidate>(`/api/v1/schedules/${uuid}/candidates/`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            editKey,
+        });
+    }
+
+    deleteCandidate(uuid: string, candidateId: number, editKey: string): Promise<void> {
+        return this.request<void>(`/api/v1/schedules/${uuid}/candidates/${candidateId}/`, {
+            method: 'DELETE',
+            editKey,
+        });
+    }
+
+    // Finalization (candidateId=null cancels the finalization)
+    finalizeSchedule(uuid: string, candidateId: number | null, editKey: string): Promise<Schedule> {
         return this.request<Schedule>(`/api/v1/schedules/${uuid}/finalize/`, {
             method: 'POST',
-            body: JSON.stringify({
-                candidate_id: candidateId,
-                edit_key: editKey,
-            }),
+            body: JSON.stringify({ candidate_id: candidateId }),
+            editKey,
         });
     }
 
     // Summary
-    async getScheduleSummary(uuid: string): Promise<ScheduleSummary> {
+    getScheduleSummary(uuid: string): Promise<ScheduleSummary> {
         return this.request<ScheduleSummary>(`/api/v1/schedules/${uuid}/summary/`);
     }
 
-    // CSV Export
-    async exportCsv(uuid: string, includeComments = true): Promise<Blob> {
-        const url = `${this.baseUrl}/api/v1/schedules/${uuid}/export_csv/?include_comments=${includeComments}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Export failed');
-        return response.blob();
+    // Exports are plain downloads (Content-Disposition: attachment), so we only build URLs.
+    exportCsvUrl(uuid: string, includeComments = true): string {
+        return `${this.baseUrl}/api/v1/schedules/${uuid}/export_csv/?include_comments=${includeComments}`;
     }
-}
 
-export class ApiError extends Error {
-    status: number;
-    data: Record<string, unknown>;
-
-    constructor(status: number, data: Record<string, unknown>) {
-        super(data.detail as string || `API Error: ${status}`);
-        this.status = status;
-        this.data = data;
+    exportIcsUrl(uuid: string, candidateId?: number): string {
+        const query = candidateId ? `?candidate_id=${candidateId}` : '';
+        return `${this.baseUrl}/api/v1/schedules/${uuid}/export_ics/${query}`;
     }
 }
 

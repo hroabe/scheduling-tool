@@ -1,26 +1,29 @@
 """
 Django settings for api project.
 
-Updated to Django 5.1+ with modern configuration.
+Django 5.2 LTS. All environment-specific values are read from environment
+variables (or api/.env) via python-decouple.
 """
 
-import os
 from pathlib import Path
-from decouple import config, Csv
+
 import dj_database_url
+from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-dev-key-change-in-production')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+if not DEBUG and SECRET_KEY.startswith('django-insecure'):
+    from django.core.exceptions import ImproperlyConfigured
+
+    raise ImproperlyConfigured('SECRET_KEY must be set when DEBUG=False.')
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
@@ -36,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third party apps
     'rest_framework',
-    'django_filters',
     'corsheaders',
     'drf_spectacular',
     # Local apps
@@ -77,37 +79,30 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# SQLite for local development, PostgreSQL (DATABASE_URL) for production
 
-# Default to SQLite for development, PostgreSQL for production
 DATABASE_URL = config('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
 
 DATABASES = {
-    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    'default': dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=config('DB_CONN_MAX_AGE', default=600, cast=int),
+        conn_health_checks=True,
+    )
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+# Password validation (used by Django admin users)
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'ja'
 
@@ -118,20 +113,20 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+# Static files (Django admin / API docs assets served by WhiteNoise)
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -139,39 +134,41 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Django REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
+    'UNAUTHENTICATED_USER': None,
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'schedule.throttling.AnonRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/hour',
-        'user': '1000/hour'
+        'anon': config('THROTTLE_ANON_RATE', default='100/hour'),
+        'user': config('THROTTLE_USER_RATE', default='1000/hour'),
+        # 編集キーの総当たり対策
+        'edit_key': config('THROTTLE_EDIT_KEY_RATE', default='30/hour'),
     },
+    # Number of trusted reverse proxies in front of the API (for client IP detection)
+    'NUM_PROXIES': config('NUM_PROXIES', default=None, cast=lambda v: int(v) if v not in (None, '') else None),
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
     'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
-# Only add BrowsableAPIRenderer in DEBUG mode
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer'
     )
 
+# Shared secret that lets the Next.js server (SSR metadata) bypass anon throttling
+INTERNAL_API_TOKEN = config('INTERNAL_API_TOKEN', default='')
+
 
 # DRF Spectacular (API Documentation)
 SPECTACULAR_SETTINGS = {
     'TITLE': '日程調整ツール API',
-    'DESCRIPTION': 'スケジュール調整のためのRESTful API',
-    'VERSION': '2.0.0',
+    'DESCRIPTION': '登録不要の日程調整ツールのRESTful API',
+    'VERSION': '2.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
@@ -180,54 +177,42 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
     default='http://localhost:3000,http://127.0.0.1:3000',
-    cast=Csv()
+    cast=Csv(),
 )
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'content-type',
+    'x-edit-key',
+)
+CORS_EXPOSE_HEADERS = ('content-disposition',)
+
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
+
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
+ADMIN_URL = config('DJANGO_ADMIN_URL', default='admin/')
 
 
-# Security Settings (for production)
+# Security Settings (production)
 if not DEBUG:
-    SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
-    SECURE_HSTS_SECONDS = 31536000
+    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
+    SECURE_REDIRECT_EXEMPT = [r'^api/health/$']
+    SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
 
-# Celery Configuration
-CELERY_BROKER_URL = config('REDIS_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = config('REDIS_URL', default='redis://localhost:6379/0')
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = TIME_ZONE
-
-
-# Email Configuration
-EMAIL_BACKEND = config(
-    'EMAIL_BACKEND',
-    default='django.core.mail.backends.console.EmailBackend'
-)
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@scheduling-tool.com')
-
-
-# Cache Configuration (Redis)
+# Cache: LocMemCache (Celery/Redis removed in Phase 0)
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': config('REDIS_URL', default='redis://localhost:6379/1'),
-    }
-} if not DEBUG else {
-    'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'scheduling-tool',
     }
 }
 
@@ -237,12 +222,8 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
         'simple': {
-            'format': '{levelname} {message}',
+            'format': '{levelname} {asctime} {name} {message}',
             'style': '{',
         },
     },

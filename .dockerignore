@@ -1,0 +1,12 @@
+.git
+.venv
+venv
+**/__pycache__
+**/*.pyc
+api/.env
+api/db.sqlite3
+api/e2e.sqlite3
+api/staticfiles
+front
+docs
+.env*

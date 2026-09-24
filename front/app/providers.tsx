@@ -1,27 +1,31 @@
 'use client';
 
-import { ChakraProvider, extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, extendTheme, type ThemeConfig } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MotionConfig } from 'framer-motion';
 import { useState } from 'react';
 
-// Theme configuration
+// Theme configuration (docs/05_ui_design.md)
 const config: ThemeConfig = {
-    initialColorMode: 'light',
-    useSystemColorMode: true,
+    initialColorMode: 'system',
+    useSystemColorMode: false,
 };
+
+const fontStack =
+    'var(--font-inter), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "YuGothic", Meiryo, sans-serif';
 
 const theme = extendTheme({
     config,
     fonts: {
-        heading: '"Inter", "Noto Sans JP", sans-serif',
-        body: '"Inter", "Noto Sans JP", sans-serif',
+        heading: fontStack,
+        body: fontStack,
     },
     colors: {
         brand: {
-            50: '#E6F6FF',
+            50: '#EBF4FF',
             100: '#BAE3FF',
             200: '#7CC4FA',
-            300: '#47A3F3',
+            300: '#4A9EE5',
             400: '#2186EB',
             500: '#0967D2',
             600: '#0552B5',
@@ -30,63 +34,45 @@ const theme = extendTheme({
             900: '#002159',
         },
     },
+    semanticTokens: {
+        colors: {
+            'brand.fg': { default: 'brand.500', _dark: 'brand.300' },
+            'brand.subtle': { default: 'brand.50', _dark: 'rgba(74, 158, 229, 0.16)' },
+            'text.muted': { default: 'gray.600', _dark: 'gray.300' },
+            'bg.card': { default: 'white', _dark: 'gray.800' },
+            'bg.page': { default: 'gray.50', _dark: 'gray.900' },
+            'bg.subtle': { default: 'gray.50', _dark: 'gray.700' },
+            'border.default': { default: 'gray.200', _dark: 'gray.700' },
+        },
+    },
     styles: {
-        global: (props: { colorMode: string }) => ({
+        global: {
             body: {
-                bg: props.colorMode === 'dark' ? 'gray.900' : 'gray.50',
-                color: props.colorMode === 'dark' ? 'white' : 'gray.900',
+                bg: 'bg.page',
+                color: 'chakra-body-text',
             },
-        }),
+        },
     },
     components: {
         Button: {
             defaultProps: {
                 colorScheme: 'brand',
             },
-            variants: {
-                solid: (props: { colorMode: string }) => ({
-                    bg: props.colorMode === 'dark' ? 'brand.400' : 'brand.500',
-                    color: 'white',
-                    _hover: {
-                        bg: props.colorMode === 'dark' ? 'brand.300' : 'brand.600',
-                        transform: 'translateY(-1px)',
-                        boxShadow: 'md',
-                    },
-                    transition: 'all 0.2s',
-                }),
-                ghost: {
-                    _hover: {
-                        transform: 'translateY(-1px)',
-                    },
-                },
-            },
         },
         Card: {
-            baseStyle: (props: { colorMode: string }) => ({
+            baseStyle: {
                 container: {
-                    bg: props.colorMode === 'dark' ? 'gray.800' : 'white',
+                    bg: 'bg.card',
                     borderRadius: 'xl',
                     boxShadow: 'sm',
                     border: '1px solid',
-                    borderColor: props.colorMode === 'dark' ? 'gray.700' : 'gray.100',
+                    borderColor: 'border.default',
                 },
-            }),
-        },
-        Input: {
-            defaultProps: {
-                focusBorderColor: 'brand.500',
             },
         },
-        Select: {
-            defaultProps: {
-                focusBorderColor: 'brand.500',
-            },
-        },
-        Textarea: {
-            defaultProps: {
-                focusBorderColor: 'brand.500',
-            },
-        },
+        Input: { defaultProps: { focusBorderColor: 'brand.500' } },
+        Select: { defaultProps: { focusBorderColor: 'brand.500' } },
+        Textarea: { defaultProps: { focusBorderColor: 'brand.500' } },
     },
 });
 
@@ -96,8 +82,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
             new QueryClient({
                 defaultOptions: {
                     queries: {
-                        staleTime: 60 * 1000, // 1 minute
-                        retry: 1,
+                        staleTime: 30 * 1000,
+                        gcTime: 5 * 60 * 1000,
+                        refetchOnWindowFocus: false,
                     },
                 },
             })
@@ -105,8 +92,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
+            <ColorModeScript initialColorMode={config.initialColorMode} />
             <ChakraProvider theme={theme}>
-                {children}
+                <MotionConfig reducedMotion="user">{children}</MotionConfig>
             </ChakraProvider>
         </QueryClientProvider>
     );

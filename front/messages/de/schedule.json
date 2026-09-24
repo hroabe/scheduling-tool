@@ -1,0 +1,30 @@
+{
+  "title": "Terminabstimmung",
+  "create": "Neu erstellen",
+  "myEvents": "Meine Termine",
+  "eventName": "Name des Termins",
+  "description": "Beschreibung",
+  "deadline": "Antwortfrist",
+  "candidates": "Terminvorschläge",
+  "participants": "Teilnehmende",
+  "finalize": "Festlegen",
+  "finalized": "Festgelegt",
+  "notFinalized": "Noch offen",
+  "created": "Terminabstimmung wurde erstellt.",
+  "finalizedSuccess": "Termin wurde festgelegt.",
+  "noEvents": "Noch keine Termine vorhanden.",
+  "status": {
+    "open": "Antworten möglich",
+    "closed": "Abstimmung beendet",
+    "expired": "Frist abgelaufen",
+    "fixed": "Festgelegt",
+    "inactive": "Pausiert"
+  },
+  "card": {
+    "candidates": "Vorschläge: {count}",
+    "responses": "Antworten: {count}",
+    "deadline": "Frist: {date}",
+    "created": "Erstellt: {date}",
+    "open": "Öffnen"
+  }
+}

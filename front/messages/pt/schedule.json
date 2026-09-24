@@ -1,0 +1,30 @@
+{
+  "title": "Agendamento",
+  "create": "Novo evento",
+  "myEvents": "Meus eventos",
+  "eventName": "Nome do evento",
+  "description": "Descrição",
+  "deadline": "Prazo para respostas",
+  "candidates": "Datas sugeridas",
+  "participants": "Participantes",
+  "finalize": "Definir data",
+  "finalized": "Definido",
+  "notFinalized": "Não definido",
+  "created": "Agendamento criado.",
+  "finalizedSuccess": "Data definida.",
+  "noEvents": "Você ainda não tem eventos.",
+  "status": {
+    "open": "Recebendo respostas",
+    "closed": "Respostas encerradas",
+    "expired": "Prazo expirado",
+    "fixed": "Definido",
+    "inactive": "Pausado"
+  },
+  "card": {
+    "candidates": "Datas: {count}",
+    "responses": "Respostas: {count}",
+    "deadline": "Prazo: {date}",
+    "created": "Criado em {date}",
+    "open": "Abrir"
+  }
+}

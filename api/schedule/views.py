@@ -3,6 +3,9 @@ Views for Schedule API
 
 ScheduleViewSet (create/retrieve/update/destroy + custom actions),
 nested Candidate/Participant/Attendance ViewSets, and a health check.
+
+Management operations (update/delete/finalize/close/reopen/candidates) are allowed
+for the owner (authenticated creator) or anyone presenting the correct edit key.
 """
 
 import csv
@@ -10,7 +13,6 @@ from io import StringIO
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from django.conf import settings
-from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import connection
 from django.db.models import Count, Prefetch, Q
 from django.http import HttpResponse, JsonResponse
@@ -22,19 +24,21 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 
+from .async_tasks import enqueue
 from .models import Attendance, Candidate, Participant, Schedule
 from .serializers import (
     AttendanceSerializer,
     CandidateCreateSerializer,
     CandidateSerializer,
     ParticipantCreateSerializer,
-    ParticipantResponseSerializer,
     ParticipantSerializer,
     ScheduleCreateSerializer,
     ScheduleDetailSerializer,
     ScheduleFinalizeSerializer,
     ScheduleUpdateSerializer,
-    get_edit_key,
+    can_manage,
+    find_participant_by_token,
+    get_edit_token,
 )
 from .throttling import EditKeyRateThrottle
 
@@ -142,6 +146,19 @@ def build_summary(schedule):
     return candidates_summary, best
 
 
+def _dispatch_calendar_events(schedule):
+    """RFC-0001/0002: 作成者がGoogle/Outlookと連携していれば確定日程をカレンダーに登録"""
+    if not schedule.owner_user_id:
+        return
+    from integrations.google.tasks import create_google_calendar_event, has_google_integration
+    from integrations.outlook.tasks import create_outlook_calendar_event, has_outlook_integration
+
+    if has_google_integration(schedule.owner_user):
+        enqueue(create_google_calendar_event, schedule.id)
+    if has_outlook_integration(schedule.owner_user):
+        enqueue(create_outlook_calendar_event, schedule.id)
+
+
 def health(request):
     """デプロイ先のヘルスチェック用エンドポイント"""
     try:
@@ -229,18 +246,18 @@ class ScheduleViewSet(
         return self._detail_response(schedule)
 
     def perform_destroy(self, instance):
-        """削除時に編集キーを確認"""
-        if not instance.check_edit_key(get_edit_key(self.request)):
+        """削除時に作成者または編集キーを確認"""
+        if not can_manage(instance, self.request):
             raise PermissionDenied(EDIT_KEY_ERROR)
         instance.delete()
 
     @action(detail=True, methods=['post'], throttle_classes=[EditKeyRateThrottle])
     def verify_edit_key(self, request, uuid=None):
-        """編集キーが正しいか確認する（編集画面の認証用）"""
+        """編集キーが正しいか（または作成者本人か）を確認する（編集画面の認証用）"""
         schedule = self.get_object()
-        if not schedule.check_edit_key(get_edit_key(request)):
+        if not can_manage(schedule, request):
             raise PermissionDenied(EDIT_KEY_ERROR)
-        return Response({'valid': True})
+        return Response({'valid': True, 'is_owner': schedule.is_owned_by(request.user)})
 
     @action(detail=True, methods=['post'])
     def respond(self, request, uuid=None):
@@ -257,13 +274,12 @@ class ScheduleViewSet(
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        edit_token = request.data.get('edit_token')
+        edit_token = get_edit_token(request)
         context = {'request': request, 'schedule': schedule}
 
         if edit_token:
-            try:
-                participant = schedule.participants.get(edit_token=edit_token)
-            except (Participant.DoesNotExist, DjangoValidationError, ValueError):
+            participant = find_participant_by_token(schedule, edit_token)
+            if participant is None:
                 return Response(
                     {'detail': '無効な編集トークンです。'},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -276,12 +292,21 @@ class ScheduleViewSet(
 
         serializer.is_valid(raise_exception=True)
         participant = serializer.save()
+        raw_token = getattr(participant, '_raw_edit_token', None)
         participant = Participant.objects.prefetch_related('attendances').get(pk=participant.pk)
 
-        return Response(
-            ParticipantResponseSerializer(participant).data,
-            status=status.HTTP_200_OK if edit_token else status.HTTP_201_CREATED,
-        )
+        data = ParticipantSerializer(participant).data
+        if raw_token:
+            # 平文の編集トークンは新規回答のレスポンスでのみ返す
+            data['edit_token'] = raw_token
+
+        # 回答通知（作成者がメール通知を有効にしている場合）
+        if not edit_token and schedule.notify_on_response and schedule.owner_email:
+            from .tasks import send_response_notification
+
+            enqueue(send_response_notification, schedule.id, participant.id)
+
+        return Response(data, status=status.HTTP_200_OK if edit_token else status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
     def finalize(self, request, uuid=None):
@@ -294,10 +319,41 @@ class ScheduleViewSet(
         serializer.is_valid(raise_exception=True)
 
         candidate_id = serializer.validated_data['candidate_id']
+        changed = candidate_id != schedule.finalized_candidate_id
         schedule.is_finalized = candidate_id is not None
         schedule.finalized_candidate_id = candidate_id
-        schedule.save(update_fields=['is_finalized', 'finalized_candidate', 'updated_at'])
+        schedule.finalized_at = timezone.now() if candidate_id is not None else None
+        schedule.save(update_fields=['is_finalized', 'finalized_candidate', 'finalized_at', 'updated_at'])
 
+        if candidate_id is not None and changed:
+            _dispatch_calendar_events(schedule)
+
+        return self._detail_response(schedule)
+
+    @action(detail=True, methods=['post'])
+    def close(self, request, uuid=None):
+        """回答を締め切る（作成者または編集キーが必要）"""
+        schedule = self.get_object()
+        if not can_manage(schedule, request):
+            raise PermissionDenied(EDIT_KEY_ERROR)
+        if schedule.is_finalized:
+            return Response({'detail': 'このイベントは既に確定しています。'}, status=status.HTTP_400_BAD_REQUEST)
+        if schedule.closed_at:
+            return Response({'detail': 'このイベントは既に締め切られています。'}, status=status.HTTP_400_BAD_REQUEST)
+        schedule.closed_at = timezone.now()
+        schedule.save(update_fields=['closed_at', 'updated_at'])
+        return self._detail_response(schedule)
+
+    @action(detail=True, methods=['post'])
+    def reopen(self, request, uuid=None):
+        """締め切りを解除して回答を再開する（作成者または編集キーが必要）"""
+        schedule = self.get_object()
+        if not can_manage(schedule, request):
+            raise PermissionDenied(EDIT_KEY_ERROR)
+        if schedule.is_finalized:
+            return Response({'detail': '確定済みのイベントは再開できません。'}, status=status.HTTP_400_BAD_REQUEST)
+        schedule.closed_at = None
+        schedule.save(update_fields=['closed_at', 'updated_at'])
         return self._detail_response(schedule)
 
     @action(detail=True, methods=['get'])
@@ -393,6 +449,8 @@ class ScheduleViewSet(
             description_parts.append(f"主催: {schedule.owner_name}")
             if candidate.note:
                 description_parts.append(f"備考: {candidate.note}")
+            if is_confirmed and schedule.meeting_url:
+                description_parts.append(f"会議URL: {schedule.meeting_url}")
             description_parts.append(event_url)
 
             lines.extend([
@@ -404,6 +462,7 @@ class ScheduleViewSet(
                 f'SUMMARY:{_sanitize_ics_value(schedule.name)}',
                 f"DESCRIPTION:{_sanitize_ics_value(chr(10).join(description_parts))}",
                 f'URL:{event_url}',
+                *([f'LOCATION:{_sanitize_ics_value(schedule.meeting_url)}'] if is_confirmed and schedule.meeting_url else []),
                 f"STATUS:{'CONFIRMED' if is_confirmed else 'TENTATIVE'}",
                 'END:VEVENT',
             ])
@@ -439,7 +498,7 @@ class ScheduleChildMixin:
         return self._schedule
 
     def require_edit_key(self):
-        if not self.get_schedule().check_edit_key(get_edit_key(self.request)):
+        if not can_manage(self.get_schedule(), self.request):
             raise PermissionDenied(EDIT_KEY_ERROR)
 
 
@@ -508,14 +567,12 @@ class ParticipantViewSet(
         )
 
     def perform_destroy(self, instance):
-        """回答者本人のedit_token または イベントの編集キーで削除可能"""
-        edit_token = self.request.data.get('edit_token') if hasattr(self.request.data, 'get') else None
-        if edit_token and str(instance.edit_token) == str(edit_token):
+        """回答者本人の編集トークン、または作成者・編集キーで削除可能"""
+        edit_token = get_edit_token(self.request)
+        if edit_token and instance.check_edit_token(edit_token):
             instance.delete()
             return
-
-        schedule = instance.schedule
-        if not schedule.edit_key or not schedule.check_edit_key(get_edit_key(self.request)):
+        if not can_manage(instance.schedule, self.request):
             raise PermissionDenied('削除権限がありません。')
         instance.delete()
 

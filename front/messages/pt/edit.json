@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Editar evento"
+  },
+  "title": "Editar evento",
+  "back": "Voltar para a página do evento",
+  "notFound": "Evento não encontrado",
+  "ownerNotice": "Este evento foi criado com a conta em que você está conectado, então você pode gerenciá-lo sem a chave de edição.",
+  "toast": {
+    "reenterKey": "Informe a chave de edição novamente"
+  },
+  "keyModal": {
+    "title": "Informe a chave de edição",
+    "description": "Para editar este evento, informe a chave de edição definida (ou gerada) quando ele foi criado.",
+    "label": "Chave de edição",
+    "helper": "O acesso vale até você fechar esta aba",
+    "required": "Informe a chave de edição",
+    "invalid": "Chave de edição incorreta",
+    "verifying": "Verificando...",
+    "submit": "Confirmar"
+  },
+  "info": {
+    "title": "Informações do evento",
+    "name": "Nome do evento",
+    "description": "Descrição",
+    "deadline": "Prazo para respostas",
+    "isActive": "Aceitar respostas",
+    "allowMaybe": "Permitir a resposta \"Talvez\"",
+    "save": "Salvar alterações",
+    "saved": "Alterações salvas",
+    "nameRequired": "Informe o nome do evento",
+    "nameTooLong": "Use no máximo 200 caracteres",
+    "descriptionTooLong": "Use no máximo 2000 caracteres",
+    "deadlinePast": "O prazo para respostas deve ser uma data futura"
+  },
+  "candidates": {
+    "title": "Gerenciar datas sugeridas",
+    "listLabel": "Lista de datas sugeridas",
+    "responseCount": "{count} respostas",
+    "deleteLabel": "Excluir {date}",
+    "minOne": "É necessária pelo menos uma data sugerida",
+    "addTitle": "Adicionar data sugerida",
+    "date": "Data",
+    "start": "Início",
+    "end": "Término",
+    "add": "Adicionar",
+    "added": "Data sugerida adicionada",
+    "deleted": "Data sugerida excluída",
+    "dateRequired": "Selecione uma data",
+    "endAfterStart": "O horário de término deve ser posterior ao de início",
+    "confirmTitle": "Excluir esta data sugerida?",
+    "confirmBody": "Esta data tem {count} respostas. Ao excluí-la, essas respostas também serão perdidas.",
+    "confirmDelete": "Excluir"
+  },
+  "closing": {
+    "title": "Encerrar respostas",
+    "open": "O evento está recebendo respostas.",
+    "expired": "O prazo para respostas já passou. Prorrogue o prazo para voltar a receber respostas.",
+    "help": "Depois de encerrar, ninguém poderá enviar ou alterar respostas. Você pode reabrir quando quiser.",
+    "close": "Encerrar respostas",
+    "closed": "As respostas estão encerradas.",
+    "closedAt": "As respostas foram encerradas em {date}.",
+    "expiredNote": "Como o prazo também já passou, será preciso prorrogá-lo para que as pessoas possam responder após a reabertura.",
+    "reopen": "Reabrir respostas",
+    "finalized": "A data já foi definida, então não é possível encerrar nem reabrir as respostas. Desfaça a definição para liberar essas ações.",
+    "closedToast": "Respostas encerradas",
+    "reopenedToast": "Respostas reabertas"
+  },
+  "finalize": {
+    "title": "Definir data",
+    "current": "Definido: {date}",
+    "meetingUrl": "Link da reunião online",
+    "help": "Escolha a data a ser definida. Depois disso, o evento deixa de receber respostas.",
+    "countsLabel": "{ok} disponíveis, {maybe} talvez, {ng} indisponíveis",
+    "recommended": "Recomendado",
+    "undo": "Desfazer definição",
+    "submit": "Definir data",
+    "done": "Data definida",
+    "undone": "Definição da data desfeita"
+  },
+  "danger": {
+    "title": "Zona de perigo",
+    "help": "Ao excluir o evento, todas as datas sugeridas e respostas são removidas permanentemente. Esta ação não pode ser desfeita.",
+    "delete": "Excluir evento",
+    "deleted": "Evento excluído",
+    "confirmTitle": "Excluir este evento?",
+    "confirmBody": "\"{name}\" e suas {count} respostas serão excluídos permanentemente. Esta ação não pode ser desfeita.",
+    "confirmDelete": "Excluir"
+  }
+}

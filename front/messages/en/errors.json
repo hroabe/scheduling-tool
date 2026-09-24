@@ -1,0 +1,10 @@
+{
+  "invalidRequest": "Please check what you entered.",
+  "unauthorized": "Please log in.",
+  "notFound": "Not found.",
+  "permissionDenied": "You don't have permission to do this.",
+  "throttled": "Too many requests. Please wait a moment and try again.",
+  "serverError": "Something went wrong on the server. Please try again later.",
+  "networkError": "Couldn't reach the server. Check your connection.",
+  "unknown": "Something went wrong."
+}

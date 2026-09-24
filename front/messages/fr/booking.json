@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} min",
+  "loadErrorTitle": "Chargement impossible",
+  "status": {
+    "pending": "En attente de vérification de l'e-mail",
+    "published": "Publiée",
+    "paused": "En pause",
+    "unpublished": "Non publiée"
+  },
+  "bookingStatus": {
+    "pending": "En attente",
+    "confirmed": "Confirmée",
+    "cancelled": "Annulée",
+    "completed": "Terminée"
+  },
+  "confirm": {
+    "keep": "Retour"
+  },
+  "invalidLink": {
+    "title": "Ce lien n'est pas valide",
+    "body": "Veuillez rouvrir le lien figurant dans l'e-mail."
+  },
+  "generator": {
+    "pickDays": "Choisissez des jours dans le calendrier (sélection multiple possible)",
+    "selectedDays": "{count} jour(s) sélectionné(s)",
+    "from": "Début",
+    "to": "Fin",
+    "invalidRange": "L'heure de fin doit être postérieure à l'heure de début.",
+    "hint": "Des créneaux de {minutes} minutes sont créés pour chaque jour choisi. Les horaires déjà passés ne sont pas ajoutés.",
+    "add": "Ajouter les créneaux",
+    "noSlots": "Aucun créneau à ajouter. Vérifiez les jours et la plage horaire."
+  },
+  "slots": {
+    "empty": "Aucun créneau pour le moment. Choisissez des jours et une plage horaire pour en ajouter.",
+    "booked": "Réservé",
+    "remove": "Supprimer le créneau {slot}"
+  },
+  "new": {
+    "title": "Créer une page de réservation individuelle",
+    "description": "Publiez vos créneaux libres et partagez l'URL. Vos invités réservent l'horaire qui leur convient, sans connexion.",
+    "basics": "Informations de base",
+    "fields": {
+      "title": "Titre de la page de réservation",
+      "titlePlaceholder": "ex. : Entretien en ligne de 30 minutes",
+      "organizerName": "Nom de l'organisateur",
+      "organizerEmail": "Adresse e-mail de l'organisateur",
+      "organizerEmailHelp": "Nous enverrons à cette adresse l'e-mail de vérification pour la publication et le lien de gestion. Elle servira aussi à vous prévenir des nouvelles réservations.",
+      "duration": "Durée",
+      "timezone": "Fuseau horaire"
+    },
+    "availability": "Définir vos créneaux libres",
+    "slotsHeading": "Créneaux à publier",
+    "slotCount": "{count} / {max}",
+    "slotLimit": "Vous pouvez ajouter jusqu'à {max} créneaux. Les créneaux en trop n'ont pas été ajoutés (vous pourrez en ajouter depuis la page de gestion après la création).",
+    "clearSlots": "Tout supprimer",
+    "submit": "Créer la page de réservation",
+    "verifyNote": "Après la création, la page de réservation sera publiée dès que vous ouvrirez le lien de l'e-mail de vérification.",
+    "errors": {
+      "title": "Veuillez saisir un titre.",
+      "organizerName": "Veuillez saisir le nom de l'organisateur.",
+      "organizerEmail": "Veuillez saisir une adresse e-mail valide.",
+      "slots": "Ajoutez au moins un créneau."
+    }
+  },
+  "host": {
+    "summary": "Organisateur : {organizer} · {minutes} min · {timezone}",
+    "noToken": "Ce navigateur ne dispose pas des informations de gestion",
+    "invalidToken": "Ce lien de gestion n'est pas valide",
+    "useEmailLink": "Ouvrez la page depuis le « lien de gestion » reçu par e-mail lors de la création de la page de réservation.",
+    "created": "Votre page de réservation a été créée.",
+    "pendingTitle": "Vérifiez votre e-mail pour publier la page de réservation",
+    "pendingBody": "Nous avons envoyé un e-mail de vérification à {email}. Ouvrez le lien qu'il contient pour publier la page de réservation et permettre aux invités de réserver.",
+    "resend": "Renvoyer l'e-mail de vérification",
+    "resent": "E-mail de vérification renvoyé à {email}",
+    "resendFailed": "Impossible de renvoyer l'e-mail de vérification",
+    "devVerify": "[Environnement de développement] Ouvrir le lien de vérification",
+    "shareHeading": "Partager avec les invités",
+    "publicUrl": "URL de la page de réservation",
+    "notPublicYet": "Les invités ne peuvent pas ouvrir cette page tant que votre e-mail n'est pas vérifié.",
+    "copy": "Copier l'URL",
+    "copied": "URL copiée",
+    "copyFailed": "Impossible de copier. Sélectionnez l'URL et copiez-la manuellement.",
+    "share": "Partager",
+    "openPublic": "Ouvrir la vue invité",
+    "settingsHeading": "Paramètres de réservation",
+    "accepting": "Accepter les réservations",
+    "acceptingHelp": "Désactivez cette option pour masquer temporairement la page de réservation.",
+    "notify": "M'avertir par e-mail des nouvelles réservations",
+    "notifyHelp": "Destinataire : {email}",
+    "saved": "Paramètres enregistrés",
+    "saveFailed": "Impossible d'enregistrer les paramètres",
+    "tabs": {
+      "slots": "Créneaux ({count})",
+      "bookings": "Réservations ({count})"
+    },
+    "addSlots": "Ajouter des créneaux",
+    "currentSlots": "Créneaux enregistrés",
+    "slotsAdded": "{count} créneau(x) ajouté(s)",
+    "slotsSkipped": "{count} créneau(x) non ajouté(s) car en double ou déjà passé(s)",
+    "slotsAddFailed": "Impossible d'ajouter les créneaux",
+    "slotDeleteFailed": "Impossible de supprimer le créneau",
+    "noBookings": "Aucune réservation pour le moment.",
+    "cancelBooking": "Annuler la réservation",
+    "cancelConfirmTitle": "Annuler cette réservation ?",
+    "cancelConfirmBody": "La réservation de {name} sera annulée et un avis d'annulation lui sera envoyé par e-mail. Cette action est irréversible.",
+    "bookingCancelled": "Réservation annulée",
+    "cancelFailed": "Impossible d'annuler la réservation",
+    "secretNote": "Cette page est réservée à l'organisateur. Ne partagez pas votre lien de gestion."
+  },
+  "guest": {
+    "unavailableTitle": "Cette page de réservation n'est pas disponible actuellement",
+    "unavailableBody": "Elle n'est peut-être pas encore publiée, les réservations sont peut-être suspendues, ou l'URL est erronée. Veuillez vous renseigner auprès de l'organisateur.",
+    "loadErrorTitle": "Impossible de charger la page de réservation",
+    "organizer": "Organisateur : {name}",
+    "timezone": "Horaires affichés en {timezone}",
+    "pickHeading": "Choisir un horaire",
+    "noSlots": "Aucun créneau n'est disponible pour le moment.",
+    "formHeading": "Informations de réservation",
+    "noSelection": "Choisissez un horaire dans la liste",
+    "pickSlot": "Veuillez choisir un horaire.",
+    "name": "Nom",
+    "email": "Adresse e-mail",
+    "message": "Message (facultatif)",
+    "submit": "Réserver cet horaire",
+    "privacy": "Vos informations ne sont partagées qu'avec l'organisateur. L'e-mail de confirmation contiendra un lien d'annulation.",
+    "slotTaken": "Ce créneau vient d'être réservé. Veuillez choisir un autre horaire.",
+    "errors": {
+      "name": "Veuillez saisir votre nom.",
+      "email": "Veuillez saisir une adresse e-mail valide."
+    }
+  },
+  "done": {
+    "title": "Votre réservation est confirmée",
+    "cancelledTitle": "Cette réservation a été annulée",
+    "emailSent": "Nous avons envoyé un e-mail de confirmation à {email}.",
+    "backToPage": "Retour à la page de réservation",
+    "cancelViaEmail": "Pour annuler, utilisez le lien figurant dans l'e-mail de confirmation."
+  },
+  "cancel": {
+    "title": "Annulation de la réservation",
+    "description": "Vous pouvez annuler la réservation ci-dessous.",
+    "alreadyCancelled": "Cette réservation a déjà été annulée.",
+    "notCancellable": "Cette réservation ne peut pas être annulée.",
+    "button": "Annuler la réservation",
+    "confirmTitle": "Annuler cette réservation ?",
+    "confirmBody": "L'organisateur sera prévenu de l'annulation. Cette action est irréversible.",
+    "done": "Réservation annulée",
+    "failed": "Impossible d'annuler"
+  },
+  "summary": {
+    "title": "Réservation",
+    "when": "Date et heure",
+    "organizer": "Organisateur",
+    "guest": "Réservé par",
+    "status": "Statut",
+    "meeting": "Lien de la réunion",
+    "message": "Message"
+  },
+  "verify": {
+    "loading": "Vérification de votre adresse e-mail…",
+    "successTitle": "Votre page de réservation est publiée",
+    "successBody": "Les invités peuvent désormais réserver. Partagez l'URL de votre page de réservation.",
+    "linkInEmail": "Vous pouvez accéder à la page de gestion via le « lien de gestion » reçu avec l'e-mail de vérification.",
+    "openHost": "Ouvrir la page de gestion",
+    "openPublic": "Voir la page de réservation",
+    "errorTitle": "Vérification impossible",
+    "invalid": "Ce lien n'est pas valide ou a expiré. Rouvrez le lien de l'e-mail ou renvoyez l'e-mail de vérification depuis la page de gestion.",
+    "createNew": "Créer une page de réservation"
+  }
+}

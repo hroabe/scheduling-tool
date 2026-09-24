@@ -1,0 +1,52 @@
+{
+  "title": "账户设置",
+  "nav": {
+    "label": "账户菜单",
+    "profile": "个人资料",
+    "events": "我的活动",
+    "integrations": "日历集成"
+  },
+  "links": {
+    "events": "登录期间创建的活动列表",
+    "integrations": "与 Google / Outlook 日历集成"
+  },
+  "profile": {
+    "heading": "个人资料",
+    "username": "用户名：{username}",
+    "lastName": "姓",
+    "firstName": "名",
+    "email": "电子邮箱",
+    "invalidEmail": "请输入有效的电子邮箱地址。",
+    "save": "保存",
+    "saved": "个人资料已保存",
+    "saveFailed": "保存失败"
+  },
+  "password": {
+    "heading": "修改密码",
+    "old_password": "当前密码",
+    "new_password": "新密码",
+    "new_password_confirm": "新密码（确认）",
+    "submit": "修改密码",
+    "changed": "密码已修改",
+    "required": "请输入当前密码和新密码。",
+    "mismatch": "两次输入的新密码不一致。",
+    "sso": "您通过单点登录（SSO）登录，密码由登录来源服务管理。"
+  },
+  "events": {
+    "title": "我的活动",
+    "create": "创建活动",
+    "total": "共 {count} 个",
+    "empty": "还没有活动",
+    "emptyDescription": "登录期间创建的活动将显示在这里。",
+    "participants": "回复 {count} 人",
+    "candidates": "候选 {count} 个",
+    "deadline": "截止 {date}",
+    "created": "创建于 {date}",
+    "pagination": "翻页",
+    "prev": "上一页",
+    "next": "下一页",
+    "page": "第 {page} / {total} 页",
+    "loadError": "无法加载活动（{reason}）",
+    "retry": "重新加载"
+  }
+}

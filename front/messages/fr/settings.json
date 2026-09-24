@@ -1,0 +1,8 @@
+{
+  "title": "Paramètres",
+  "language": "Langue d'affichage",
+  "timezone": "Fuseau horaire",
+  "notifications": "Notifications",
+  "emailNotifications": "Recevoir les notifications par e-mail",
+  "emailNotificationsHelp": "Nous vous prévenons par e-mail lorsque quelqu'un répond ou réserve, et lorsqu'une date est confirmée."
+}

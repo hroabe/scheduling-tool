@@ -1,0 +1,127 @@
+{
+  "effectiveDate": "Effective: September 24, 2026",
+  "languageNote": "This translation is provided for convenience. If it differs from the Japanese version, the Japanese version prevails.",
+  "privacy": {
+    "title": "Privacy Policy",
+    "lead": "This policy explains how {siteName} (the \"Service\") handles personal and user information.",
+    "collect": {
+      "heading": "1. Information we collect",
+      "p1": "The Service can be used without signing up. Depending on the features you use, we collect the following information.",
+      "item1": "Information entered when creating an event (event name, description, organizer name, candidate dates and times, response deadline, and the organizer's e-mail address if response notifications are requested)",
+      "item2": "Information entered when responding (name, availability for each candidate date, comment)",
+      "item3": "Information entered when creating a 1-on-1 booking page (the organizer's e-mail address, page title and description, dates and times of open slots)",
+      "item4": "Information entered when booking a 1-on-1 slot (the guest's name, e-mail address, message, and the booked date and time)",
+      "item5": "If you create an account: username, e-mail address, password (converted to an irreversible hash; never stored in plain text), and settings such as display language and time zone",
+      "item6": "If you enable calendar integration: OAuth access and refresh tokens for Google or Microsoft (stored encrypted), and the identifiers and meeting links of calendar events created through the integration",
+      "item7": "Edit keys, response edit tokens and booking cancellation tokens (all converted to hashes; never stored in plain text)",
+      "item8": "Records of notification e-mails sent (type, recipient, time sent) and access logs (IP address, user agent, access time, referrer, etc.)"
+    },
+    "purpose": {
+      "heading": "2. How we use information",
+      "item1": "To provide group scheduling (showing events, tallying responses, exporting CSV and ICS files, etc.) and 1-on-1 booking",
+      "item2": "To send notification e-mails (e-mail address verification, booking confirmations and cancellations, response notifications, deadline reminders, finalized-date notices, etc.)",
+      "item3": "To authenticate accounts and, through calendar integration, to add events and create meeting links (and to check calendar availability only as far as needed for this)",
+      "item4": "To keep the Service secure, for example by preventing unauthorized access and excessive requests",
+      "item5": "To understand usage and improve the Service (as statistics that do not identify individuals)",
+      "item6": "To respond to inquiries"
+    },
+    "visibility": {
+      "heading": "3. Who can see your information",
+      "p1": "Anyone who knows an event's URL can view its details and responses, so please be careful about who you share it with. The organizer's e-mail address is never shown.",
+      "p2": "A 1-on-1 booking page shows only the open slots published by the organizer. Guests' names, e-mail addresses and messages are never shown on the public page; only the organizer and the guest who booked can see them.",
+      "p3": "There is no public list of events, and event and booking pages are set not to be indexed by search engines.",
+      "p4": "You may use a nickname instead of your real name when responding. Please do not enter sensitive information that could identify you."
+    },
+    "storage": {
+      "heading": "4. Cookies and browser storage",
+      "p1": "The Service uses cookies and your browser's local storage and session storage for the following purposes. They are used only to make the Service work; we do not use them for advertising or tracking, and we do not use third-party cookies.",
+      "item1": "A session cookie that keeps you logged in (or an authentication token if you log in with an external identity provider), and a CSRF cookie that protects against forged requests",
+      "item2": "Your display language (cookie)",
+      "item3": "Your display theme (light, dark or cute)",
+      "item4": "Tokens for editing responses you submitted, and management tokens for 1-on-1 booking pages you created",
+      "item5": "Edit keys entered in the current tab (deleted when you close the tab)",
+      "item6": "How you found the Service (the ref parameter)"
+    },
+    "thirdParty": {
+      "heading": "5. Sharing and external services",
+      "p1": "Except as required by law, we do not provide your information to third parties without your consent. We may entrust hosting providers and e-mail delivery providers with handling information in order to operate our servers, database and e-mail.",
+      "p2": "If you enable calendar integration, event information (name, date and time, description, etc.) is sent, only as far as needed, to Google LLC (Google Calendar and Google Meet) or Microsoft Corporation (Outlook and Microsoft Teams) to add events and create meeting links. Those companies handle the information under their own privacy policies."
+    },
+    "retention": {
+      "heading": "6. Retention and deletion",
+      "p1": "Events and responses are kept until the organizer deletes them from the edit page. Organizers can delete an event at any time with the edit key (or with their account if they created it while logged in).",
+      "p2": "Respondents can change or delete their own responses from the device they responded with. To request deletion in any other way, please contact the organizer or us.",
+      "p3": "1-on-1 booking pages and bookings are kept as a record of the bookings. Organizers can stop accepting bookings at any time, and either the organizer or the guest can cancel a booking. To request deletion, please contact us.",
+      "p4": "You can disconnect calendar integration at any time from your account's integration settings, after which the stored tokens are no longer used. To delete your account, please contact us.",
+      "p5": "Events and booking pages that have not been updated for a long time may be deleted without notice."
+    },
+    "security": {
+      "heading": "7. Security",
+      "p1": "We take reasonable measures to prevent leaks and tampering, such as encrypting all traffic with HTTPS, hashing passwords, edit keys and other tokens, and encrypting the OAuth tokens used for calendar integration."
+    },
+    "contact": {
+      "heading": "8. Contact and changes",
+      "p1Email": "For questions about this policy, please contact {email}.",
+      "p1NoEmail": "For questions about this policy, please contact the operator of the Service.",
+      "p2": "We may revise this policy as needed. We will announce any significant changes on this page."
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lead": "These are the Terms of Service for {siteName} (the \"Service\").",
+    "scope": {
+      "heading": "Article 1 (Scope)",
+      "p1": "These Terms set out the conditions for using the Service. By using the Service, you are deemed to have agreed to these Terms."
+    },
+    "service": {
+      "heading": "Article 2 (The Service)",
+      "p1": "The Service provides, free of charge, group scheduling (creating events, responding, tallying, exporting CSV and ICS files, and editing events) and 1-on-1 booking pages for accepting one-on-one appointments. Both can be used without signing up.",
+      "p2": "If you choose to create an account, you can use additional features such as a list of the events you created and calendar integration."
+    },
+    "account": {
+      "heading": "Article 3 (Accounts)",
+      "p1": "If you create an account, please register accurate information. You are responsible for managing your password and must not let others use your account. We are not liable for damage caused by unauthorized use of your account, except in cases of our willful misconduct or gross negligence."
+    },
+    "keys": {
+      "heading": "Article 4 (Edit keys and management links)",
+      "p1": "You are responsible for managing event edit keys, 1-on-1 booking page management links and booking cancellation links. We are not liable for damage caused by their loss or disclosure. We cannot recover edit keys."
+    },
+    "integrations": {
+      "heading": "Article 5 (External services)",
+      "p1": "Calendar integration uses external services such as Google and Microsoft, and their terms of service apply to your use of them. Integration features may become unavailable because of changes to or outages of those services, and we are not liable for any resulting damage."
+    },
+    "booking": {
+      "heading": "Article 6 (1-on-1 bookings)",
+      "p1": "A booking made through a 1-on-1 booking page is an arrangement between the organizer and the guest. We are not a party to bookings and are not liable for disputes between users about keeping, changing or cancelling them."
+    },
+    "prohibited": {
+      "heading": "Article 7 (Prohibited conduct)",
+      "item1": "Acts that violate laws or public order and morals",
+      "item2": "Posting information that infringes the rights of others, discriminatory or violent content, or sensitive information that can identify individuals",
+      "item3": "Registering someone else's e-mail address without their consent, or using the Service to send spam",
+      "item4": "Placing an excessive load on our servers, unauthorized access, or automated mass requests",
+      "item5": "Sales, advertising or solicitation using the Service (unless approved by us)",
+      "item6": "Any other conduct we consider inappropriate"
+    },
+    "removal": {
+      "heading": "Article 8 (Removal of content and suspension)",
+      "p1": "If you violate these Terms, or if we consider it necessary for operating the Service, we may delete events, responses, booking pages or accounts, or restrict your use of the Service, without prior notice."
+    },
+    "changes": {
+      "heading": "Article 9 (Changes to or suspension of the Service)",
+      "p1": "We may change, suspend or end the Service without prior notice. We are not liable for any damage this causes to users."
+    },
+    "disclaimer": {
+      "heading": "Article 10 (Disclaimer)",
+      "p1": "We do not guarantee that the Service is free of factual or legal defects. Except in cases of our willful misconduct or gross negligence, we are not liable for data loss, delayed or undelivered notification e-mails, the outcome of scheduling or bookings, or disputes between users."
+    },
+    "amendment": {
+      "heading": "Article 11 (Amendments)",
+      "p1": "We may amend these Terms as needed. Amended Terms take effect when they are posted on this page."
+    },
+    "law": {
+      "heading": "Article 12 (Governing law and jurisdiction)",
+      "p1": "These Terms are governed by the laws of Japan. Any dispute relating to the Service is subject to the exclusive jurisdiction of the court having jurisdiction over the operator's location."
+    }
+  }
+}

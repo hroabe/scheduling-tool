@@ -1,0 +1,47 @@
+{
+  "available": "◯",
+  "maybe": "△",
+  "unavailable": "×",
+  "yourName": "Ihr Name",
+  "submitted": "Antwort wurde gesendet.",
+  "updated": "Antwort wurde aktualisiert.",
+  "status": {
+    "ok": "Verfügbar",
+    "maybe": "Eventuell",
+    "ng": "Nicht verfügbar",
+    "pending": "Keine Antwort"
+  },
+  "form": {
+    "ariaLabel": "Formular zur Verfügbarkeit",
+    "name": "Ihr Name",
+    "namePlaceholder": "z. B. Anna Schmidt",
+    "nameRequired": "Bitte geben Sie Ihren Namen ein",
+    "nameTooLong": "Bitte höchstens 100 Zeichen eingeben",
+    "commentTooLong": "Bitte höchstens 1000 Zeichen eingeben",
+    "attendanceLegend": "Wählen Sie Ihre Verfügbarkeit für jeden Terminvorschlag",
+    "candidateGroup": "Verfügbarkeit am {date}",
+    "optionLabel": "{date}: {status}",
+    "missing": "Für {count} Terminvorschläge fehlt noch eine Auswahl",
+    "comment": "Kommentar (optional)",
+    "commentPlaceholder": "Weitere Hinweise können Sie hier eintragen",
+    "submit": "Antwort senden",
+    "update": "Antwort aktualisieren",
+    "sending": "Wird gesendet...",
+    "error": "Ihre Antwort konnte nicht gesendet werden"
+  },
+  "table": {
+    "caption": "Antworten nach Teilnehmenden",
+    "participant": "Teilnehmer/in",
+    "comment": "Kommentar",
+    "actions": "Aktionen",
+    "total": "Summe",
+    "you": "Sie",
+    "finalized": "Festgelegt",
+    "recommended": "Empfohlen",
+    "empty": "Noch keine Antworten",
+    "emptyHint": "Teilen Sie den Link, um Antworten zu sammeln",
+    "editResponse": "Antwort von {name} bearbeiten",
+    "deleteResponse": "Antwort von {name} löschen",
+    "countLabel": "{status}: {count}"
+  }
+}

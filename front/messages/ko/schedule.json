@@ -1,0 +1,30 @@
+{
+  "title": "일정 조율",
+  "create": "새로 만들기",
+  "myEvents": "내 이벤트",
+  "eventName": "이벤트 이름",
+  "description": "설명",
+  "deadline": "응답 마감",
+  "candidates": "후보 날짜",
+  "participants": "참가자",
+  "finalize": "확정하기",
+  "finalized": "확정됨",
+  "notFinalized": "미확정",
+  "created": "일정을 만들었습니다.",
+  "finalizedSuccess": "일정을 확정했습니다.",
+  "noEvents": "아직 이벤트가 없습니다.",
+  "status": {
+    "open": "응답 받는 중",
+    "closed": "응답 마감",
+    "expired": "응답 기한 만료",
+    "fixed": "확정됨",
+    "inactive": "접수 중지"
+  },
+  "card": {
+    "candidates": "후보: {count}개",
+    "responses": "응답: {count}명",
+    "deadline": "마감: {date}",
+    "created": "생성: {date}",
+    "open": "열기"
+  }
+}

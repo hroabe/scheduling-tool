@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "M/d(E)",
+    "dayLong": "M月d日(E)"
+  },
+  "meta": {
+    "pageTitle": "{name}の日程調整",
+    "pageTitleFallback": "日程調整",
+    "pageDescription": "{owner}さんが「{name}」の日程調整をしています。{state}",
+    "pageStateOpen": "候補日から◯△×で回答してください（登録不要）。",
+    "pageStateFinalized": "日程が確定しました。",
+    "owner": "主催: {name}",
+    "candidates": "候補: {count}件",
+    "responses": "回答: {count}名",
+    "deadline": "期限: {date}",
+    "deadlineUntil": "回答期限: {date} まで",
+    "created": "作成: {date}"
+  },
+  "actions": {
+    "share": "共有",
+    "csvLabel": "CSVでダウンロード",
+    "icsLabel": "ICSでカレンダーに追加",
+    "edit": "編集"
+  },
+  "share": {
+    "text": "「{name}」の日程調整にご回答ください",
+    "copied": "URLをコピーしました",
+    "copiedShort": "コピーしました",
+    "tooltip": "URLを共有"
+  },
+  "error": {
+    "notFound": "イベントが見つかりませんでした",
+    "notFoundHint": "URLが正しいか、イベントが削除されていないかご確認ください。",
+    "loadFailed": "イベントを読み込めませんでした",
+    "createNew": "新しくイベントを作成する"
+  },
+  "finalized": {
+    "title": "日程が確定しました",
+    "addIcs": "カレンダーに追加（ICS）",
+    "googleCalendar": "Googleカレンダーに登録"
+  },
+  "closed": {
+    "title": "回答を締め切りました",
+    "byOrganizer": "{date} に主催者が回答を締め切りました。日程の確定をお待ちください。",
+    "waiting": "日程の確定をお待ちください。",
+    "expired": "回答期限（{date}）を過ぎました。日程の確定をお待ちください。"
+  },
+  "meeting": {
+    "join": "会議に参加",
+    "provider": {
+      "google_meet": "Google Meet でオンライン開催",
+      "teams": "Microsoft Teams でオンライン開催",
+      "zoom": "Zoom でオンライン開催",
+      "other": "オンライン会議"
+    }
+  },
+  "organizer": {
+    "owner": "あなたが作成したイベントです。",
+    "editKey": "このタブでは主催者として認証済みです。",
+    "editPage": "編集ページへ",
+    "close": "回答を締め切る",
+    "reopen": "回答受付を再開"
+  },
+  "tabs": {
+    "responses": "回答状況",
+    "respond": "回答する",
+    "editMine": "自分の回答を編集",
+    "summary": "集計結果"
+  },
+  "respond": {
+    "cta": "出欠を回答する",
+    "closedFinalized": "このイベントは日程が確定したため、回答を締め切りました",
+    "closedByOrganizer": "このイベントは回答を締め切りました。主催者の確定をお待ちください",
+    "closedExpired": "回答期限が過ぎているため、回答できません",
+    "closedInactive": "このイベントは現在回答を受け付けていません"
+  },
+  "reminder": {
+    "title": "未回答の人にリマインド",
+    "titleEmpty": "参加者にURLを共有しましょう",
+    "body": "現在 {count}名が回答済みです。まだの人にURLを再送して回答を促しましょう。",
+    "bodyEmpty": "まだ回答がありません。URLを共有して回答を集めましょう。",
+    "deadline": "回答期限: {date}",
+    "deadlineSoon": "回答期限まで24時間を切りました（{date}）",
+    "share": "URLを共有"
+  },
+  "summary": {
+    "empty": "回答があると集計結果が表示されます",
+    "title": "候補日ごとの回答状況",
+    "scoreHelp": "スコア = {yes}×2 + {maybe}×1。スコアが最も高い候補を「おすすめ」として表示します。",
+    "listLabel": "候補日の一覧（スコア順）",
+    "recommended": "おすすめ",
+    "finalized": "確定",
+    "answered": "回答 {count}/{total}名",
+    "reasonsTitle": "おすすめの理由",
+    "reason": {
+      "allOk": "全員が参加できます",
+      "mostOk": "「{symbol}」が最も多い候補です（{count}名）",
+      "noNg": "「{symbol}」（参加不可）の人がいません",
+      "fewestNg": "「{symbol}」が最も少ない候補です（{count}名）",
+      "topScore": "スコアが最も高い候補です",
+      "earliestTie": "同じスコアの候補の中で最も早い日程です"
+    },
+    "finalizeCta": "この候補で確定",
+    "addToCalendar": "カレンダーに追加（ICS）",
+    "kpi": {
+      "participants": "回答者数",
+      "maxOk": "最大「{symbol}」数",
+      "candidates": "候補日数"
+    }
+  },
+  "fix": {
+    "title": "この日時で確定しますか？",
+    "breakdown": "回答の内訳",
+    "warning": "確定すると回答の受付を終了します。確定は編集ページから解除できます。",
+    "confirm": "確定する"
+  },
+  "toast": {
+    "authRequired": "編集キーを再入力してください（編集ページで認証できます）",
+    "finalized": "日程を確定しました",
+    "finalizedHint": "参加者に確定をお知らせください",
+    "closed": "回答を締め切りました",
+    "reopened": "回答の受付を再開しました"
+  },
+  "delete": {
+    "title": "回答を削除しますか？",
+    "body": "{name}さんの回答を削除します。この操作は取り消せません。",
+    "bodyOwn": "あなたの回答を削除します。この操作は取り消せません。",
+    "confirm": "削除する",
+    "done": "回答を削除しました"
+  },
+  "created": {
+    "title": "イベントを作成しました",
+    "description": "このURLを参加者に共有して、回答を集めましょう。",
+    "shareUrl": "共有URL",
+    "editKey": "編集キー",
+    "editKeyWarning": "編集キーはイベントの編集・日程確定・削除に必要です。再表示できないため、必ずメモしておいてください。",
+    "copy": "コピー",
+    "copied": "コピー済",
+    "copyLabel": "{label}をコピー",
+    "ok": "OK"
+  },
+  "success": {
+    "submitted": "回答を送信しました",
+    "updated": "回答を更新しました",
+    "thanks": "ご回答ありがとうございます",
+    "ctaTitle": "あなたもイベントを作成しませんか？",
+    "ctaFree": "登録不要 / 無料",
+    "ctaExport": "CSV・ICSで結果を持ち出し可能",
+    "ctaButton": "イベントを作成する"
+  }
+}

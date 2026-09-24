@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Alert,
     AlertDialog,
@@ -22,6 +22,7 @@ import {
     Heading,
     HStack,
     Input,
+    Link,
     Radio,
     RadioGroup,
     Skeleton,
@@ -35,31 +36,36 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, CheckCircle2, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ExternalLink, Lock, LockOpen, Save, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CandidateManager } from './CandidateManager';
 import { EditKeyModal } from './EditKeyModal';
+import { StatusPill, getDetailStatus } from '@/components/event/StatusPill';
+import { safeMeetingUrl } from '@/components/event/meetingUrl';
 import {
+    useCloseSchedule,
     useDeleteSchedule,
     useFinalizeSchedule,
+    useReopenSchedule,
     useSchedule,
     useScheduleSummary,
     useUpdateSchedule,
 } from '@/hooks/useApi';
 import { ApiError } from '@/lib/api';
-import { formatDateRange, localInputToISO, toLocalDateTimeString } from '@/lib/date';
+import { useAvailabilitySymbols } from '@/lib/availabilitySymbols';
+import { formatDateRange, formatDateTime, localInputToISO, toLocalDateTimeString } from '@/lib/date';
+import { useI18n } from '@/providers/I18nProvider';
 import { useEditKeyStore } from '@/stores';
 import type { Schedule } from '@/types';
 
-const infoSchema = z.object({
-    name: z.string().trim().min(1, 'イベント名を入力してください').max(200, '200文字以内で入力してください'),
-    description: z.string().max(2000, '2000文字以内で入力してください'),
-    deadline: z.string(),
-    isActive: z.boolean(),
-    allowMaybe: z.boolean(),
-});
-type InfoValues = z.infer<typeof infoSchema>;
+type InfoValues = {
+    name: string;
+    description: string;
+    deadline: string;
+    isActive: boolean;
+    allowMaybe: boolean;
+};
 
 function isAuthError(error: unknown) {
     return (
@@ -68,11 +74,11 @@ function isAuthError(error: unknown) {
     );
 }
 
-function SectionCard({ title, children, tone }: { title: string; children: React.ReactNode; tone?: 'danger' }) {
+function SectionCard({ title, children, tone, testId }: { title: string; children: React.ReactNode; tone?: 'danger'; testId?: string }) {
     return (
-        <Card borderColor={tone === 'danger' ? 'red.300' : undefined}>
+        <Card as="section" borderColor={tone === 'danger' ? 'red.300' : undefined} data-testid={testId}>
             <CardBody>
-                <Heading as="h2" size="md" mb={4} color={tone === 'danger' ? 'red.500' : undefined}>
+                <Heading as="h2" size="md" mb={4} color={tone === 'danger' ? 'red.500' : undefined} _dark={tone === 'danger' ? { color: 'red.300' } : undefined}>
                     {title}
                 </Heading>
                 {children}
@@ -81,9 +87,29 @@ function SectionCard({ title, children, tone }: { title: string; children: React
     );
 }
 
-function EventInfoForm({ schedule, editKey, onAuthError }: { schedule: Schedule; editKey: string; onAuthError: (e: Error) => boolean }) {
+function EventInfoForm({
+    schedule,
+    editKey,
+    onAuthError,
+}: {
+    schedule: Schedule;
+    editKey?: string;
+    onAuthError: (e: Error) => boolean;
+}) {
     const toast = useToast();
+    const { t } = useI18n();
     const update = useUpdateSchedule(schedule.uuid);
+    const infoSchema = useMemo(
+        () =>
+            z.object({
+                name: z.string().trim().min(1, t('edit.info.nameRequired')).max(200, t('edit.info.nameTooLong')),
+                description: z.string().max(2000, t('edit.info.descriptionTooLong')),
+                deadline: z.string(),
+                isActive: z.boolean(),
+                allowMaybe: z.boolean(),
+            }),
+        [t]
+    );
     const {
         register,
         handleSubmit,
@@ -103,7 +129,7 @@ function EventInfoForm({ schedule, editKey, onAuthError }: { schedule: Schedule;
 
     const onSubmit = (values: InfoValues) => {
         if (dirtyFields.deadline && values.deadline && new Date(values.deadline) <= new Date()) {
-            setError('deadline', { message: '回答期限は未来の日時を指定してください' });
+            setError('deadline', { message: t('edit.info.deadlinePast') });
             return;
         }
         update.mutate(
@@ -120,7 +146,7 @@ function EventInfoForm({ schedule, editKey, onAuthError }: { schedule: Schedule;
             },
             {
                 onSuccess: (updated) => {
-                    toast({ title: '変更を保存しました', status: 'success', duration: 2000 });
+                    toast({ title: t('edit.info.saved'), status: 'success', duration: 2000 });
                     reset({
                         name: updated.name,
                         description: updated.description,
@@ -140,34 +166,34 @@ function EventInfoForm({ schedule, editKey, onAuthError }: { schedule: Schedule;
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <VStack spacing={4} align="stretch">
                 <FormControl isRequired isInvalid={!!errors.name}>
-                    <FormLabel>イベント名</FormLabel>
+                    <FormLabel>{t('edit.info.name')}</FormLabel>
                     <Input {...register('name')} />
                     <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.description}>
-                    <FormLabel>説明</FormLabel>
+                    <FormLabel>{t('edit.info.description')}</FormLabel>
                     <Textarea {...register('description')} rows={3} />
                     <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.deadline}>
-                    <FormLabel>回答期限</FormLabel>
+                    <FormLabel>{t('edit.info.deadline')}</FormLabel>
                     <Input type="datetime-local" {...register('deadline')} />
                     <FormErrorMessage>{errors.deadline?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl display="flex" alignItems="center" justifyContent="space-between">
                     <FormLabel htmlFor="is-active" mb={0}>
-                        回答を受け付ける
+                        {t('edit.info.isActive')}
                     </FormLabel>
                     <Switch id="is-active" {...register('isActive')} />
                 </FormControl>
                 <FormControl display="flex" alignItems="center" justifyContent="space-between">
                     <FormLabel htmlFor="edit-allow-maybe" mb={0}>
-                        「△（調整可能）」を許可
+                        {t('edit.info.allowMaybe')}
                     </FormLabel>
                     <Switch id="edit-allow-maybe" {...register('allowMaybe')} />
                 </FormControl>
                 <Button type="submit" leftIcon={<Save size={16} />} isLoading={update.isPending} isDisabled={!isDirty} alignSelf="end">
-                    変更を保存
+                    {t('edit.info.save')}
                 </Button>
             </VStack>
         </form>
@@ -177,6 +203,8 @@ function EventInfoForm({ schedule, editKey, onAuthError }: { schedule: Schedule;
 export function EditEventPage({ uuid }: { uuid: string }) {
     const router = useRouter();
     const toast = useToast();
+    const { t } = useI18n();
+    const symbols = useAvailabilitySymbols();
     const storedKey = useEditKeyStore((state) => state.keys[uuid]);
     const setKey = useEditKeyStore((state) => state.setKey);
     const clearKey = useEditKeyStore((state) => state.clearKey);
@@ -185,6 +213,8 @@ export function EditEventPage({ uuid }: { uuid: string }) {
     const { data: schedule, isLoading, error } = useSchedule(uuid);
     const { data: summary } = useScheduleSummary(uuid);
     const finalize = useFinalizeSchedule(uuid);
+    const closeSchedule = useCloseSchedule(uuid);
+    const reopenSchedule = useReopenSchedule(uuid);
     const deleteSchedule = useDeleteSchedule(uuid);
     const [selectedCandidate, setSelectedCandidate] = useState<string>('');
     const deleteDialog = useDisclosure();
@@ -203,48 +233,63 @@ export function EditEventPage({ uuid }: { uuid: string }) {
         );
     }, [schedule, summary]);
 
-    // Legacy events without an edit key can be edited with an empty key
-    const editKey = storedKey ?? (schedule && !schedule.has_edit_key ? '' : undefined);
-    const authenticated = editKey !== undefined;
+    // The signed-in creator needs no key (docs/11_integration.md §2.1); everyone else needs a verified key.
+    // Legacy events without an edit key can only be managed by their owner.
+    const editKey = storedKey;
+    const authenticated = Boolean(schedule?.is_owner) || storedKey !== undefined;
 
     const onAuthError = (err: Error) => {
         if (isAuthError(err)) {
             clearKey(uuid);
-            toast({ title: '編集キーを再入力してください', status: 'warning', duration: 3000 });
+            toast({ title: t('edit.toast.reenterKey'), status: 'warning', duration: 3000 });
             return true;
         }
         return false;
     };
 
+    const showError = (err: Error) => {
+        if (!onAuthError(err)) toast({ title: err.message, status: 'error', duration: 4000 });
+    };
+
     const handleFinalize = (candidateId: number | null) => {
-        if (editKey === undefined) return;
+        if (!authenticated) return;
         finalize.mutate(
             { candidateId, editKey },
             {
                 onSuccess: () =>
                     toast({
-                        title: candidateId ? '日程を確定しました' : '日程の確定を解除しました',
+                        title: candidateId ? t('edit.finalize.done') : t('edit.finalize.undone'),
                         status: 'success',
                         duration: 2500,
                     }),
-                onError: (err) => {
-                    if (!onAuthError(err)) toast({ title: err.message, status: 'error', duration: 4000 });
-                },
+                onError: showError,
             }
         );
     };
 
+    const handleClose = () =>
+        closeSchedule.mutate(editKey, {
+            onSuccess: () => toast({ title: t('edit.closing.closedToast'), status: 'success', duration: 2500 }),
+            onError: showError,
+        });
+
+    const handleReopen = () =>
+        reopenSchedule.mutate(editKey, {
+            onSuccess: () => toast({ title: t('edit.closing.reopenedToast'), status: 'success', duration: 2500 }),
+            onError: showError,
+        });
+
     const handleDelete = () => {
-        if (editKey === undefined) return;
+        if (!authenticated) return;
         deleteSchedule.mutate(editKey, {
             onSuccess: () => {
                 clearKey(uuid);
-                toast({ title: 'イベントを削除しました', status: 'success', duration: 3000 });
+                toast({ title: t('edit.danger.deleted'), status: 'success', duration: 3000 });
                 router.push('/');
             },
             onError: (err) => {
                 deleteDialog.onClose();
-                if (!onAuthError(err)) toast({ title: err.message, status: 'error', duration: 4000 });
+                showError(err);
             },
         });
     };
@@ -262,49 +307,119 @@ export function EditEventPage({ uuid }: { uuid: string }) {
             <Container maxW="container.md" py={16}>
                 <Alert status="warning" borderRadius="xl">
                     <AlertIcon />
-                    イベントが見つかりませんでした
+                    {t('edit.notFound')}
                 </Alert>
             </Container>
         );
     }
+
+    const status = getDetailStatus(schedule);
+    const finalizedCandidate = schedule.candidates.find((c) => c.id === schedule.finalized_candidate);
+    const meetingUrl = safeMeetingUrl(schedule.meeting_url);
 
     return (
         <Container maxW="container.md" py={{ base: 6, md: 8 }}>
             <VStack align="stretch" spacing={6}>
                 <Box>
                     <Button as={NextLink} href={`/event/${uuid}`} variant="link" leftIcon={<ArrowLeft size={16} />} mb={3}>
-                        イベントページに戻る
+                        {t('edit.back')}
                     </Button>
-                    <Heading as="h1" size="lg">
-                        イベント編集
-                    </Heading>
+                    <HStack spacing={3} flexWrap="wrap">
+                        <Heading as="h1" size="lg">
+                            {t('edit.title')}
+                        </Heading>
+                        <StatusPill status={status} />
+                    </HStack>
                     <Text color="text.muted" mt={1}>
                         {schedule.name}
                     </Text>
+                    {schedule.is_owner && storedKey === undefined && (
+                        <Text fontSize="sm" color="text.muted" mt={2} data-testid="owner-notice">
+                            {t('edit.ownerNotice')}
+                        </Text>
+                    )}
                 </Box>
 
                 {authenticated && (
                     <>
-                        <SectionCard title="イベント情報">
+                        <SectionCard title={t('edit.info.title')}>
                             <EventInfoForm schedule={schedule} editKey={editKey} onAuthError={onAuthError} />
                         </SectionCard>
 
-                        <SectionCard title="候補日の管理">
+                        <SectionCard title={t('edit.candidates.title')}>
                             <CandidateManager uuid={uuid} candidates={schedule.candidates} editKey={editKey} onAuthError={onAuthError} />
                         </SectionCard>
 
-                        <SectionCard title="日程確定">
-                            {schedule.is_finalized && (
+                        <SectionCard title={t('edit.closing.title')} testId="closing-section">
+                            {status === 'fixed' ? (
+                                <Text fontSize="sm" color="text.muted">
+                                    {t('edit.closing.finalized')}
+                                </Text>
+                            ) : schedule.is_closed ? (
+                                <VStack align="stretch" spacing={3}>
+                                    <Text fontSize="sm">
+                                        {schedule.closed_at
+                                            ? t('edit.closing.closedAt', { date: formatDateTime(schedule.closed_at) })
+                                            : t('edit.closing.closed')}
+                                    </Text>
+                                    {schedule.is_expired && (
+                                        <Text fontSize="sm" color="text.muted">
+                                            {t('edit.closing.expiredNote')}
+                                        </Text>
+                                    )}
+                                    <Button
+                                        alignSelf="end"
+                                        variant="outline"
+                                        leftIcon={<LockOpen size={16} />}
+                                        onClick={handleReopen}
+                                        isLoading={reopenSchedule.isPending}
+                                    >
+                                        {t('edit.closing.reopen')}
+                                    </Button>
+                                </VStack>
+                            ) : (
+                                <VStack align="stretch" spacing={3}>
+                                    <Text fontSize="sm">
+                                        {schedule.is_expired ? t('edit.closing.expired') : t('edit.closing.open')}
+                                    </Text>
+                                    <Text fontSize="sm" color="text.muted">
+                                        {t('edit.closing.help')}
+                                    </Text>
+                                    <Button
+                                        alignSelf="end"
+                                        colorScheme="orange"
+                                        variant="outline"
+                                        leftIcon={<Lock size={16} />}
+                                        onClick={handleClose}
+                                        isLoading={closeSchedule.isPending}
+                                    >
+                                        {t('edit.closing.close')}
+                                    </Button>
+                                </VStack>
+                            )}
+                        </SectionCard>
+
+                        <SectionCard title={t('edit.finalize.title')}>
+                            {schedule.is_finalized && finalizedCandidate && (
                                 <Alert status="success" borderRadius="md" mb={4}>
                                     <AlertIcon />
-                                    確定済み: {formatDateRange(
-                                        schedule.candidates.find((c) => c.id === schedule.finalized_candidate)?.start_at ?? '',
-                                        schedule.candidates.find((c) => c.id === schedule.finalized_candidate)?.end_at ?? ''
-                                    )}
+                                    {t('edit.finalize.current', {
+                                        date: formatDateRange(finalizedCandidate.start_at, finalizedCandidate.end_at),
+                                    })}
                                 </Alert>
                             )}
+                            {meetingUrl && (
+                                <Box mb={4} p={3} borderRadius="md" bg="bg.subtle" data-testid="meeting-url">
+                                    <Text fontSize="sm" fontWeight="semibold">
+                                        {t('edit.finalize.meetingUrl')}
+                                    </Text>
+                                    <Link href={meetingUrl} isExternal color="brand.fg" fontSize="sm" wordBreak="break-all">
+                                        {meetingUrl} <ExternalLink size={12} style={{ display: 'inline' }} aria-hidden />
+                                    </Link>
+                                </Box>
+                            )}
                             <Text fontSize="sm" color="text.muted" mb={3}>
-                                確定する候補日を選択してください。確定すると回答の受付を終了します。
+                                {t('edit.finalize.help')}
                             </Text>
                             <RadioGroup value={selectedCandidate} onChange={setSelectedCandidate}>
                                 <VStack align="stretch" spacing={2}>
@@ -312,21 +427,32 @@ export function EditEventPage({ uuid }: { uuid: string }) {
                                         <Radio key={candidate.id} value={String(candidate.id)}>
                                             <HStack spacing={2} flexWrap="wrap">
                                                 <Text>{formatDateRange(candidate.start_at, candidate.end_at)}</Text>
-                                                <Text fontSize="sm" color="text.muted">
-                                                    ◯{candidate.ok_count} △{candidate.maybe_count} ×{candidate.ng_count}
+                                                <Text
+                                                    fontSize="sm"
+                                                    color="text.muted"
+                                                    aria-label={t('edit.finalize.countsLabel', {
+                                                        ok: candidate.ok_count,
+                                                        maybe: candidate.maybe_count,
+                                                        ng: candidate.ng_count,
+                                                    })}
+                                                >
+                                                    {symbols.yes}
+                                                    {candidate.ok_count} {symbols.maybe}
+                                                    {candidate.maybe_count} {symbols.no}
+                                                    {candidate.ng_count}
                                                 </Text>
                                                 {summary?.recommended_candidate?.candidate_id === candidate.id && (
-                                                    <Badge colorScheme="green">おすすめ</Badge>
+                                                    <Badge colorScheme="green">{t('edit.finalize.recommended')}</Badge>
                                                 )}
                                             </HStack>
                                         </Radio>
                                     ))}
                                 </VStack>
                             </RadioGroup>
-                            <HStack justify="end" mt={4} spacing={3}>
+                            <HStack justify="end" mt={4} spacing={3} flexWrap="wrap">
                                 {schedule.is_finalized && (
                                     <Button variant="outline" colorScheme="gray" onClick={() => handleFinalize(null)} isLoading={finalize.isPending}>
-                                        確定を解除
+                                        {t('edit.finalize.undo')}
                                     </Button>
                                 )}
                                 <Button
@@ -336,17 +462,17 @@ export function EditEventPage({ uuid }: { uuid: string }) {
                                     isDisabled={!selectedCandidate || Number(selectedCandidate) === schedule.finalized_candidate}
                                     isLoading={finalize.isPending}
                                 >
-                                    日程を確定する
+                                    {t('edit.finalize.submit')}
                                 </Button>
                             </HStack>
                         </SectionCard>
 
-                        <SectionCard title="危険な操作" tone="danger">
+                        <SectionCard title={t('edit.danger.title')} tone="danger">
                             <Text fontSize="sm" color="text.muted" mb={4}>
-                                イベントを削除すると、すべての候補日と回答が完全に削除され、元に戻せません。
+                                {t('edit.danger.help')}
                             </Text>
                             <Button colorScheme="red" variant="outline" leftIcon={<Trash2 size={16} />} onClick={deleteDialog.onOpen}>
-                                イベントを削除する
+                                {t('edit.danger.delete')}
                             </Button>
                         </SectionCard>
                     </>
@@ -363,16 +489,16 @@ export function EditEventPage({ uuid }: { uuid: string }) {
             <AlertDialog isOpen={deleteDialog.isOpen} leastDestructiveRef={cancelRef} onClose={deleteDialog.onClose} isCentered>
                 <AlertDialogOverlay>
                     <AlertDialogContent mx={4}>
-                        <AlertDialogHeader>イベントを削除しますか？</AlertDialogHeader>
+                        <AlertDialogHeader>{t('edit.danger.confirmTitle')}</AlertDialogHeader>
                         <AlertDialogBody>
-                            「{schedule.name}」と、{schedule.participants.length}件の回答が完全に削除されます。この操作は取り消せません。
+                            {t('edit.danger.confirmBody', { name: schedule.name, count: schedule.participants.length })}
                         </AlertDialogBody>
                         <AlertDialogFooter gap={2}>
                             <Button ref={cancelRef} variant="ghost" colorScheme="gray" onClick={deleteDialog.onClose}>
-                                キャンセル
+                                {t('common.cancel')}
                             </Button>
                             <Button colorScheme="red" onClick={handleDelete} isLoading={deleteSchedule.isPending}>
-                                削除する
+                                {t('edit.danger.confirmDelete')}
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

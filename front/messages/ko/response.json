@@ -1,0 +1,47 @@
+{
+  "available": "◯",
+  "maybe": "△",
+  "unavailable": "×",
+  "yourName": "이름",
+  "submitted": "응답을 보냈습니다.",
+  "updated": "응답을 수정했습니다.",
+  "status": {
+    "ok": "참석 가능",
+    "maybe": "조정 가능",
+    "ng": "참석 불가",
+    "pending": "미응답"
+  },
+  "form": {
+    "ariaLabel": "참석 여부 응답 양식",
+    "name": "이름",
+    "namePlaceholder": "예: 김민지",
+    "nameRequired": "이름을 입력해 주세요",
+    "nameTooLong": "100자 이내로 입력해 주세요",
+    "commentTooLong": "1000자 이내로 입력해 주세요",
+    "attendanceLegend": "각 후보 날짜의 참석 여부를 선택해 주세요",
+    "candidateGroup": "{date} 참석 여부",
+    "optionLabel": "{date}: {status}",
+    "missing": "선택하지 않은 후보 날짜가 {count}개 있습니다",
+    "comment": "코멘트(선택)",
+    "commentPlaceholder": "그 밖에 전달할 내용이 있으면 적어 주세요",
+    "submit": "응답 보내기",
+    "update": "응답 수정하기",
+    "sending": "보내는 중...",
+    "error": "응답을 보내지 못했습니다"
+  },
+  "table": {
+    "caption": "참가자별 응답 현황",
+    "participant": "참가자",
+    "comment": "코멘트",
+    "actions": "작업",
+    "total": "집계",
+    "you": "나",
+    "finalized": "확정",
+    "recommended": "추천",
+    "empty": "아직 응답이 없습니다",
+    "emptyHint": "URL을 공유해서 응답을 모아 보세요",
+    "editResponse": "{name} 님의 응답 편집",
+    "deleteResponse": "{name} 님의 응답 삭제",
+    "countLabel": "{status} {count}명"
+  }
+}

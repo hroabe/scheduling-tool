@@ -1,0 +1,30 @@
+{
+  "title": "Programación",
+  "create": "Crear nuevo",
+  "myEvents": "Mis eventos",
+  "eventName": "Nombre del evento",
+  "description": "Descripción",
+  "deadline": "Fecha límite de respuesta",
+  "candidates": "Fechas propuestas",
+  "participants": "Participantes",
+  "finalize": "Confirmar",
+  "finalized": "Confirmado",
+  "notFinalized": "Sin confirmar",
+  "created": "Evento creado.",
+  "finalizedSuccess": "Fecha confirmada.",
+  "noEvents": "Todavía no hay eventos.",
+  "status": {
+    "open": "Abierto",
+    "closed": "Cerrado",
+    "expired": "Plazo vencido",
+    "fixed": "Confirmado",
+    "inactive": "En pausa"
+  },
+  "card": {
+    "candidates": "Fechas: {count}",
+    "responses": "Respuestas: {count}",
+    "deadline": "Límite: {date}",
+    "created": "Creado: {date}",
+    "open": "Abrir"
+  }
+}

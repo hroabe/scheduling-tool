@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} Min.",
+  "loadErrorTitle": "Laden fehlgeschlagen",
+  "status": {
+    "pending": "Wartet auf E-Mail-Bestätigung",
+    "published": "Veröffentlicht",
+    "paused": "Pausiert",
+    "unpublished": "Nicht veröffentlicht"
+  },
+  "bookingStatus": {
+    "pending": "In Prüfung",
+    "confirmed": "Bestätigt",
+    "cancelled": "Storniert",
+    "completed": "Abgeschlossen"
+  },
+  "confirm": {
+    "keep": "Abbrechen"
+  },
+  "invalidLink": {
+    "title": "Der Link ist ungültig",
+    "body": "Bitte öffnen Sie den Link aus der E-Mail erneut."
+  },
+  "generator": {
+    "pickDays": "Wählen Sie Tage im Kalender aus (Mehrfachauswahl möglich)",
+    "selectedDays": "{count} Tage ausgewählt",
+    "from": "Von",
+    "to": "Bis",
+    "invalidRange": "Die Endzeit muss nach der Startzeit liegen.",
+    "hint": "Für jeden ausgewählten Tag werden Zeitfenster zu je {minutes} Minuten erstellt. Zeiten in der Vergangenheit werden nicht hinzugefügt.",
+    "add": "Freie Zeitfenster hinzufügen",
+    "noSlots": "Keine Zeitfenster zum Hinzufügen. Bitte prüfen Sie Tage und Zeitraum."
+  },
+  "slots": {
+    "empty": "Noch keine freien Zeitfenster. Wählen Sie Tage und einen Zeitraum aus, um welche hinzuzufügen.",
+    "booked": "Gebucht",
+    "remove": "Zeitfenster {slot} entfernen"
+  },
+  "new": {
+    "title": "1:1-Buchungsseite erstellen",
+    "description": "Veröffentlichen Sie Ihre freien Zeitfenster und teilen Sie die URL. Ihr Gegenüber bucht ohne Anmeldung eine passende Zeit.",
+    "basics": "Grunddaten",
+    "fields": {
+      "title": "Titel der Buchungsseite",
+      "titlePlaceholder": "z. B. 30-minütiges Online-Gespräch",
+      "organizerName": "Name des Organisators",
+      "organizerEmail": "E-Mail-Adresse des Organisators",
+      "organizerEmailHelp": "An diese Adresse senden wir die Bestätigungs-E-Mail zur Veröffentlichung und den Verwaltungslink. Hierhin gehen auch die Benachrichtigungen über neue Buchungen.",
+      "duration": "Dauer",
+      "timezone": "Zeitzone"
+    },
+    "availability": "Freie Zeitfenster festlegen",
+    "slotsHeading": "Zu veröffentlichende Zeitfenster",
+    "slotCount": "{count} / {max}",
+    "slotLimit": "Es sind höchstens {max} Zeitfenster möglich. Weitere wurden nicht hinzugefügt (Sie können nach dem Erstellen auf der Verwaltungsseite weitere hinzufügen).",
+    "clearSlots": "Alle entfernen",
+    "submit": "Buchungsseite erstellen",
+    "verifyNote": "Nach dem Erstellen wird die Buchungsseite veröffentlicht, sobald Sie den Link in der Bestätigungs-E-Mail öffnen.",
+    "errors": {
+      "title": "Bitte geben Sie einen Titel ein.",
+      "organizerName": "Bitte geben Sie den Namen des Organisators ein.",
+      "organizerEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "slots": "Bitte fügen Sie mindestens ein Zeitfenster hinzu."
+    }
+  },
+  "host": {
+    "summary": "Organisator: {organizer} · {minutes} Min. · {timezone}",
+    "noToken": "In diesem Browser sind keine Verwaltungsdaten vorhanden",
+    "invalidToken": "Der Verwaltungslink ist ungültig",
+    "useEmailLink": "Bitte öffnen Sie die Seite über den „Verwaltungslink“ aus der E-Mail, die Sie beim Erstellen der Buchungsseite erhalten haben.",
+    "created": "Die Buchungsseite wurde erstellt.",
+    "pendingTitle": "Bestätigen Sie Ihre E-Mail-Adresse, um die Buchungsseite zu veröffentlichen",
+    "pendingBody": "Wir haben eine Bestätigungs-E-Mail an {email} gesendet. Sobald Sie den Link darin öffnen, wird die Buchungsseite veröffentlicht und Gäste können buchen.",
+    "resend": "Bestätigungs-E-Mail erneut senden",
+    "resent": "Bestätigungs-E-Mail wurde erneut an {email} gesendet",
+    "resendFailed": "Bestätigungs-E-Mail konnte nicht erneut gesendet werden",
+    "devVerify": "[Entwicklungsumgebung] Bestätigungslink öffnen",
+    "shareHeading": "Mit Gästen teilen",
+    "publicUrl": "URL der Buchungsseite",
+    "notPublicYet": "Bis zur Bestätigung Ihrer E-Mail-Adresse können Gäste diese Seite nicht öffnen.",
+    "copy": "URL kopieren",
+    "copied": "URL kopiert",
+    "copyFailed": "Kopieren fehlgeschlagen. Bitte markieren und kopieren Sie die URL manuell.",
+    "share": "Teilen",
+    "openPublic": "Gastansicht öffnen",
+    "settingsHeading": "Buchungseinstellungen",
+    "accepting": "Buchungen annehmen",
+    "acceptingHelp": "Wenn deaktiviert, wird die Buchungsseite vorübergehend ausgeblendet.",
+    "notify": "Bei neuen Buchungen per E-Mail benachrichtigen",
+    "notifyHelp": "Empfänger: {email}",
+    "saved": "Einstellungen wurden gespeichert",
+    "saveFailed": "Einstellungen konnten nicht gespeichert werden",
+    "tabs": {
+      "slots": "Zeitfenster ({count})",
+      "bookings": "Buchungen ({count})"
+    },
+    "addSlots": "Freie Zeitfenster hinzufügen",
+    "currentSlots": "Eingetragene Zeitfenster",
+    "slotsAdded": "{count} Zeitfenster hinzugefügt",
+    "slotsSkipped": "{count} wurden nicht hinzugefügt, da sie doppelt sind oder in der Vergangenheit liegen",
+    "slotsAddFailed": "Zeitfenster konnten nicht hinzugefügt werden",
+    "slotDeleteFailed": "Zeitfenster konnte nicht entfernt werden",
+    "noBookings": "Noch keine Buchungen.",
+    "cancelBooking": "Buchung stornieren",
+    "cancelConfirmTitle": "Buchung stornieren?",
+    "cancelConfirmBody": "Die Buchung von {name} wird storniert, und die Stornierungsmitteilung wird per E-Mail versendet. Dies kann nicht rückgängig gemacht werden.",
+    "bookingCancelled": "Buchung wurde storniert",
+    "cancelFailed": "Buchung konnte nicht storniert werden",
+    "secretNote": "Diese Seite ist nur für den Organisator bestimmt. Bitte geben Sie den Verwaltungslink nicht an andere weiter."
+  },
+  "guest": {
+    "unavailableTitle": "Diese Buchungsseite ist derzeit nicht verfügbar",
+    "unavailableBody": "Sie ist möglicherweise noch nicht veröffentlicht, Buchungen sind pausiert oder die URL ist falsch. Bitte wenden Sie sich an den Organisator.",
+    "loadErrorTitle": "Buchungsseite konnte nicht geladen werden",
+    "organizer": "Organisator: {name}",
+    "timezone": "Zeiten in {timezone}",
+    "pickHeading": "Termin wählen",
+    "noSlots": "Derzeit sind keine freien Zeitfenster verfügbar.",
+    "formHeading": "Ihre Angaben",
+    "noSelection": "Wählen Sie einen Termin aus der Liste",
+    "pickSlot": "Bitte wählen Sie einen Termin aus.",
+    "name": "Name",
+    "email": "E-Mail-Adresse",
+    "message": "Nachricht (optional)",
+    "submit": "Diesen Termin buchen",
+    "privacy": "Ihre Angaben werden nur mit dem Organisator geteilt. Die Bestätigungs-E-Mail enthält einen Link zum Stornieren.",
+    "slotTaken": "Dieses Zeitfenster wurde soeben gebucht. Bitte wählen Sie einen anderen Termin.",
+    "errors": {
+      "name": "Bitte geben Sie Ihren Namen ein.",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+    }
+  },
+  "done": {
+    "title": "Ihre Buchung ist bestätigt",
+    "cancelledTitle": "Diese Buchung wurde storniert",
+    "emailSent": "Wir haben eine Bestätigungs-E-Mail an {email} gesendet.",
+    "backToPage": "Zurück zur Buchungsseite",
+    "cancelViaEmail": "Zum Stornieren verwenden Sie bitte den Link in der Bestätigungs-E-Mail."
+  },
+  "cancel": {
+    "title": "Buchung stornieren",
+    "description": "Sie können die folgende Buchung stornieren.",
+    "alreadyCancelled": "Diese Buchung wurde bereits storniert.",
+    "notCancellable": "Diese Buchung kann nicht storniert werden.",
+    "button": "Buchung stornieren",
+    "confirmTitle": "Buchung stornieren?",
+    "confirmBody": "Der Organisator wird über die Stornierung benachrichtigt. Dies kann nicht rückgängig gemacht werden.",
+    "done": "Die Buchung wurde storniert",
+    "failed": "Stornierung fehlgeschlagen"
+  },
+  "summary": {
+    "title": "Buchung",
+    "when": "Datum und Uhrzeit",
+    "organizer": "Organisator",
+    "guest": "Gebucht von",
+    "status": "Status",
+    "meeting": "Meeting-Link",
+    "message": "Nachricht"
+  },
+  "verify": {
+    "loading": "E-Mail-Adresse wird bestätigt…",
+    "successTitle": "Ihre Buchungsseite ist veröffentlicht",
+    "successBody": "Gäste können jetzt buchen. Teilen Sie die URL Ihrer Buchungsseite.",
+    "linkInEmail": "Die Verwaltungsseite öffnen Sie über den „Verwaltungslink“, den Sie zusammen mit der Bestätigungs-E-Mail erhalten haben.",
+    "openHost": "Verwaltungsseite öffnen",
+    "openPublic": "Buchungsseite ansehen",
+    "errorTitle": "Bestätigung fehlgeschlagen",
+    "invalid": "Der Link ist ungültig oder abgelaufen. Öffnen Sie den Link aus der E-Mail erneut oder senden Sie die Bestätigungs-E-Mail über die Verwaltungsseite erneut.",
+    "createNew": "Buchungsseite erstellen"
+  }
+}

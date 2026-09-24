@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "EEE d/M",
+    "dayLong": "EEE, d 'de' MMM"
+  },
+  "meta": {
+    "pageTitle": "Programación: {name}",
+    "pageTitleFallback": "Programación",
+    "pageDescription": "{owner} está buscando fecha para \"{name}\". {state}",
+    "pageStateOpen": "Responde con ◯△× para cada fecha propuesta (sin registro).",
+    "pageStateFinalized": "La fecha ya está confirmada.",
+    "owner": "Organiza: {name}",
+    "candidates": "Fechas: {count}",
+    "responses": "Respuestas: {count}",
+    "deadline": "Límite: {date}",
+    "deadlineUntil": "Responde antes del {date}",
+    "created": "Creado: {date}"
+  },
+  "actions": {
+    "share": "Compartir",
+    "csvLabel": "Descargar en CSV",
+    "icsLabel": "Añadir al calendario (ICS)",
+    "edit": "Editar"
+  },
+  "share": {
+    "text": "Indica tu disponibilidad para \"{name}\"",
+    "copied": "URL copiada",
+    "copiedShort": "Copiado",
+    "tooltip": "Compartir la URL"
+  },
+  "error": {
+    "notFound": "No se encontró el evento",
+    "notFoundHint": "Comprueba que la URL sea correcta y que el evento no se haya eliminado.",
+    "loadFailed": "No se pudo cargar el evento",
+    "createNew": "Crear un evento nuevo"
+  },
+  "finalized": {
+    "title": "La fecha está confirmada",
+    "addIcs": "Añadir al calendario (ICS)",
+    "googleCalendar": "Añadir a Google Calendar"
+  },
+  "closed": {
+    "title": "Las respuestas están cerradas",
+    "byOrganizer": "El organizador cerró las respuestas el {date}. Espera a que se confirme la fecha.",
+    "waiting": "Espera a que se confirme la fecha.",
+    "expired": "La fecha límite de respuesta ({date}) ya pasó. Espera a que se confirme la fecha."
+  },
+  "meeting": {
+    "join": "Unirse a la reunión",
+    "provider": {
+      "google_meet": "En línea por Google Meet",
+      "teams": "En línea por Microsoft Teams",
+      "zoom": "En línea por Zoom",
+      "other": "Reunión en línea"
+    }
+  },
+  "organizer": {
+    "owner": "Tú creaste este evento.",
+    "editKey": "En esta pestaña estás autenticado como organizador.",
+    "editPage": "Ir a la página de edición",
+    "close": "Cerrar respuestas",
+    "reopen": "Volver a aceptar respuestas"
+  },
+  "tabs": {
+    "responses": "Respuestas",
+    "respond": "Responder",
+    "editMine": "Editar mi respuesta",
+    "summary": "Resumen"
+  },
+  "respond": {
+    "cta": "Indicar mi disponibilidad",
+    "closedFinalized": "La fecha de este evento ya está confirmada, así que las respuestas están cerradas",
+    "closedByOrganizer": "Las respuestas de este evento están cerradas. Espera a que el organizador confirme la fecha",
+    "closedExpired": "La fecha límite de respuesta ya pasó, así que no puedes responder",
+    "closedInactive": "Este evento no está aceptando respuestas en este momento"
+  },
+  "reminder": {
+    "title": "Recuerda a quienes no han respondido",
+    "titleEmpty": "Comparte la URL con los participantes",
+    "body": "Por ahora han respondido {count} personas. Reenvía la URL a los demás para animarlos a responder.",
+    "bodyEmpty": "Todavía no hay respuestas. Comparte la URL para empezar a recopilarlas.",
+    "deadline": "Fecha límite: {date}",
+    "deadlineSoon": "Quedan menos de 24 horas para la fecha límite ({date})",
+    "share": "Compartir la URL"
+  },
+  "summary": {
+    "empty": "El resumen aparecerá cuando haya respuestas",
+    "title": "Respuestas por fecha propuesta",
+    "scoreHelp": "Puntuación = {yes}×2 + {maybe}×1. La fecha con la puntuación más alta se marca como \"Recomendada\".",
+    "listLabel": "Fechas propuestas (por puntuación)",
+    "recommended": "Recomendada",
+    "finalized": "Confirmada",
+    "answered": "Han respondido {count}/{total}",
+    "reasonsTitle": "Por qué se recomienda",
+    "reason": {
+      "allOk": "Todos pueden asistir",
+      "mostOk": "Es la fecha con más \"{symbol}\" ({count})",
+      "noNg": "Nadie respondió \"{symbol}\" (no puede asistir)",
+      "fewestNg": "Es la fecha con menos \"{symbol}\" ({count})",
+      "topScore": "Es la fecha con la puntuación más alta",
+      "earliestTie": "Es la más temprana entre las fechas con la misma puntuación"
+    },
+    "finalizeCta": "Confirmar esta fecha",
+    "addToCalendar": "Añadir al calendario (ICS)",
+    "kpi": {
+      "participants": "Participantes",
+      "maxOk": "Máximo de \"{symbol}\"",
+      "candidates": "Fechas propuestas"
+    }
+  },
+  "fix": {
+    "title": "¿Confirmar esta fecha y hora?",
+    "breakdown": "Desglose de respuestas",
+    "warning": "Al confirmar, se dejarán de aceptar respuestas. Puedes anular la confirmación desde la página de edición.",
+    "confirm": "Confirmar"
+  },
+  "toast": {
+    "authRequired": "Vuelve a introducir la clave de edición (puedes hacerlo en la página de edición)",
+    "finalized": "Fecha confirmada",
+    "finalizedHint": "Avisa a los participantes de la fecha confirmada",
+    "closed": "Respuestas cerradas",
+    "reopened": "Se vuelven a aceptar respuestas"
+  },
+  "delete": {
+    "title": "¿Eliminar esta respuesta?",
+    "body": "Se eliminará la respuesta de {name}. Esta acción no se puede deshacer.",
+    "bodyOwn": "Se eliminará tu respuesta. Esta acción no se puede deshacer.",
+    "confirm": "Eliminar",
+    "done": "Respuesta eliminada"
+  },
+  "created": {
+    "title": "Evento creado",
+    "description": "Comparte esta URL con los participantes para recopilar sus respuestas.",
+    "shareUrl": "URL para compartir",
+    "editKey": "Clave de edición",
+    "editKeyWarning": "Necesitas la clave de edición para editar el evento, confirmar la fecha o eliminarlo. No se volverá a mostrar, así que guárdala bien.",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copyLabel": "Copiar {label}",
+    "ok": "Aceptar"
+  },
+  "success": {
+    "submitted": "Respuesta enviada",
+    "updated": "Respuesta actualizada",
+    "thanks": "¡Gracias por responder!",
+    "ctaTitle": "¿Quieres crear tu propio evento?",
+    "ctaFree": "Sin registro / gratis",
+    "ctaExport": "Exporta los resultados en CSV o ICS",
+    "ctaButton": "Crear un evento"
+  }
+}

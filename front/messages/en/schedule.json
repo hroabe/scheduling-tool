@@ -1,0 +1,30 @@
+{
+  "title": "Schedule",
+  "create": "Create New",
+  "myEvents": "My Events",
+  "eventName": "Event Name",
+  "description": "Description",
+  "deadline": "Deadline",
+  "candidates": "Candidates",
+  "participants": "Participants",
+  "finalize": "Finalize",
+  "finalized": "Finalized",
+  "notFinalized": "Not finalized",
+  "created": "Schedule created successfully.",
+  "finalizedSuccess": "Schedule finalized.",
+  "noEvents": "No events yet.",
+  "status": {
+    "open": "Open",
+    "closed": "Closed",
+    "expired": "Deadline passed",
+    "fixed": "Decided",
+    "inactive": "Paused"
+  },
+  "card": {
+    "candidates": "Candidates: {count}",
+    "responses": "Responses: {count}",
+    "deadline": "Deadline: {date}",
+    "created": "Created {date}",
+    "open": "Open"
+  }
+}

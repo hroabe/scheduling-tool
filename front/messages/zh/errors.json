@@ -1,0 +1,10 @@
+{
+  "invalidRequest": "请检查输入内容。",
+  "unauthorized": "需要登录。",
+  "notFound": "未找到。",
+  "permissionDenied": "您没有执行此操作的权限。",
+  "throttled": "访问量过大，请稍后再试。",
+  "serverError": "服务器发生错误，请稍后再试。",
+  "networkError": "无法连接到服务器，请检查网络环境。",
+  "unknown": "发生错误。"
+}

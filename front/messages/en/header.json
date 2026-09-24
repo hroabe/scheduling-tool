@@ -1,0 +1,23 @@
+{
+  "features": "Features",
+  "howToUse": "How it works",
+  "faq": "FAQ",
+  "skipToContent": "Skip to content",
+  "home": "{name} home",
+  "mainNav": "Main navigation",
+  "oneOnOne": "1-on-1 booking",
+  "language": "Language",
+  "theme": "Change theme",
+  "themeSystem": "Match system",
+  "theme_light": "Light",
+  "theme_dark": "Dark",
+  "theme_cute": "Cute",
+  "accountMenu": "Account menu",
+  "account": "Account",
+  "myEvents": "My events",
+  "integrations": "Calendar integrations",
+  "login": "Log in",
+  "logout": "Log out",
+  "create": "New event",
+  "openMenu": "Open menu"
+}

@@ -23,7 +23,9 @@ describe('ApiClient', () => {
         const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ uuid: 'x' }), { status: 200 }));
         vi.stubGlobal('fetch', fetchMock);
         await new ApiClient('http://api.test').updateSchedule('x', { name: 'n' }, 'secret');
-        const [url, init] = fetchMock.mock.calls[0];
+        // The first request bootstraps the CSRF cookie for unsafe methods
+        expect(fetchMock.mock.calls[0][0]).toBe('http://api.test/api/v1/accounts/csrf/');
+        const [url, init] = fetchMock.mock.calls[fetchMock.mock.calls.length - 1];
         expect(url).toBe('http://api.test/api/v1/schedules/x/');
         expect(url).not.toContain('secret');
         expect((init.headers as Record<string, string>)['X-Edit-Key']).toBe('secret');

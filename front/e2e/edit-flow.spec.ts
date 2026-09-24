@@ -24,7 +24,7 @@ test('edit_key認証→イベント編集→候補日追加→日程確定', asy
     await expect(modal).toBeHidden();
 
     // 4. イベント名変更→保存
-    await page.getByLabel('イベント名').fill('編集後の名前');
+    await page.getByRole('textbox', { name: 'イベント名' }).fill('編集後の名前');
     await page.getByRole('button', { name: '変更を保存' }).click();
     await expect(page.getByText('変更を保存しました').first()).toBeVisible();
 
@@ -63,12 +63,13 @@ test('作成者は同じタブで編集キーを再入力せずに編集でき�
     await expect(page.getByText('イベントが見つかりませんでした')).toBeVisible();
 });
 
-test('候補日を選ばずに作成しようとするとエラー', async ({ page }) => {
+test('候補日を選ばずに作成しようとすると不足項目が表示される', async ({ page }) => {
     await page.goto('/create');
-    await page.getByLabel('イベント名').fill('x');
-    await page.getByLabel('あなたの名前').fill('y');
-    await page.getByRole('button', { name: 'イベントを作成する' }).click();
-    await expect(page.getByText('候補日を1つ以上選択してください')).toBeVisible();
+    await page.getByRole('textbox', { name: 'イベント名' }).fill('x');
+    await page.getByLabel('主催者名').fill('y');
+    await expect(page.getByTestId('create-footer')).toContainText('候補日');
+    await page.getByRole('button', { name: '作成（リンク画面へ）' }).click();
+    await expect(page).toHaveURL(/\/create/);
     await pickDays(page, 1);
-    await expect(page.getByText('候補日を1つ以上選択してください')).toBeHidden();
+    await expect(page.getByTestId('create-footer')).not.toContainText('候補日');
 });

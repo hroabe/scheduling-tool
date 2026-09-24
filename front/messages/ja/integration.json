@@ -1,0 +1,38 @@
+{
+  "title": "カレンダー連携",
+  "description": "連携すると、日程が確定したときにカレンダーへ予定とオンライン会議の URL を自動で登録します。",
+  "providers": {
+    "google": {
+      "name": "Google カレンダー",
+      "description": "確定した日程を Google カレンダーに登録し、Google Meet の URL を発行します。"
+    },
+    "outlook": {
+      "name": "Outlook カレンダー",
+      "description": "確定した日程を Outlook（Microsoft 365）カレンダーに登録し、Teams の URL を発行します。"
+    }
+  },
+  "status": {
+    "connected": "連携中",
+    "notConnected": "未連携",
+    "expired": "再連携が必要",
+    "notConfigured": "利用不可"
+  },
+  "connect": "連携する",
+  "reconnect": "再連携する",
+  "disconnect": "連携を解除",
+  "connected": "{provider} と連携しました",
+  "connectError": "{provider} と連携できませんでした",
+  "connectFailed": "{provider} との連携を開始できませんでした",
+  "disconnected": "{provider} との連携を解除しました",
+  "disconnectFailed": "{provider} との連携を解除できませんでした",
+  "notConfigured": "このサーバーでは {provider} 連携が設定されていません。管理者にお問い合わせください。",
+  "lastUsed": "最終利用: {date}",
+  "loadError": "連携状態を取得できませんでした（{reason}）",
+  "reasons": {
+    "denied": "アクセスが許可されませんでした。",
+    "state": "連携リクエストの有効期限が切れました。もう一度お試しください。",
+    "code": "認可コードを受け取れませんでした。もう一度お試しください。",
+    "token": "アクセストークンを取得できませんでした。時間をおいて再度お試しください。",
+    "unknown": "時間をおいて再度お試しください。"
+  }
+}

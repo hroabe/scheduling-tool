@@ -1,0 +1,10 @@
+{
+  "invalidRequest": "Revisa los datos introducidos.",
+  "unauthorized": "Tienes que iniciar sesión.",
+  "notFound": "No se encontró.",
+  "permissionDenied": "No tienes permiso para realizar esta acción.",
+  "throttled": "Hay demasiadas solicitudes. Espera un momento y vuelve a intentarlo.",
+  "serverError": "Se produjo un error en el servidor. Vuelve a intentarlo más tarde.",
+  "networkError": "No se pudo conectar con el servidor. Revisa tu conexión.",
+  "unknown": "Se produjo un error."
+}

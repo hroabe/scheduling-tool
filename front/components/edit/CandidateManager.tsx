@@ -27,12 +27,14 @@ import {
 import { Plus, Trash2 } from 'lucide-react';
 import { useAddCandidate, useDeleteCandidate } from '@/hooks/useApi';
 import { formatDateRange, minutesBetween } from '@/lib/date';
+import { useI18n } from '@/providers/I18nProvider';
 import type { Candidate } from '@/types';
 
 interface CandidateManagerProps {
     uuid: string;
     candidates: Candidate[];
-    editKey: string;
+    /** undefined when the signed-in owner manages the event without a key */
+    editKey?: string;
     onAuthError: (error: Error) => boolean;
 }
 
@@ -42,6 +44,7 @@ function responseCount(candidate: Candidate) {
 
 export function CandidateManager({ uuid, candidates, editKey, onAuthError }: CandidateManagerProps) {
     const toast = useToast();
+    const { t } = useI18n();
     const [date, setDate] = useState('');
     const [startTime, setStartTime] = useState('10:00');
     const [endTime, setEndTime] = useState('11:00');
@@ -61,11 +64,11 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
 
     const handleAdd = () => {
         if (!date) {
-            setFormError('日付を選択してください');
+            setFormError(t('edit.candidates.dateRequired'));
             return;
         }
         if (minutesBetween(startTime, endTime) <= 0) {
-            setFormError('終了時刻は開始時刻より後にしてください');
+            setFormError(t('edit.candidates.endAfterStart'));
             return;
         }
         setFormError(null);
@@ -79,7 +82,7 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
             },
             {
                 onSuccess: () => {
-                    toast({ title: '候補日を追加しました', status: 'success', duration: 2000 });
+                    toast({ title: t('edit.candidates.added'), status: 'success', duration: 2000 });
                     setDate('');
                 },
                 onError: handleError,
@@ -91,7 +94,7 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
         deleteCandidate.mutate(
             { candidateId: candidate.id, editKey },
             {
-                onSuccess: () => toast({ title: '候補日を削除しました', status: 'success', duration: 2000 }),
+                onSuccess: () => toast({ title: t('edit.candidates.deleted'), status: 'success', duration: 2000 }),
                 onError: handleError,
                 onSettled: () => {
                     setPendingDelete(null);
@@ -113,7 +116,7 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
 
     return (
         <VStack align="stretch" spacing={4}>
-            <VStack as="ul" align="stretch" spacing={2} listStyleType="none" aria-label="候補日一覧">
+            <VStack as="ul" align="stretch" spacing={2} listStyleType="none" aria-label={t('edit.candidates.listLabel')}>
                 {candidates.map((candidate) => (
                     <Flex
                         as="li"
@@ -129,11 +132,11 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
                         <Box>
                             <Text fontWeight="medium">{formatDateRange(candidate.start_at, candidate.end_at)}</Text>
                             <Badge mt={1} colorScheme={responseCount(candidate) > 0 ? 'blue' : 'gray'}>
-                                回答{responseCount(candidate)}件
+                                {t('edit.candidates.responseCount', { count: responseCount(candidate) })}
                             </Badge>
                         </Box>
                         <IconButton
-                            aria-label={`${formatDateRange(candidate.start_at, candidate.end_at)}を削除`}
+                            aria-label={t('edit.candidates.deleteLabel', { date: formatDateRange(candidate.start_at, candidate.end_at) })}
                             icon={<Trash2 size={16} />}
                             size="sm"
                             variant="ghost"
@@ -147,37 +150,37 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
             </VStack>
             {candidates.length <= 1 && (
                 <Text fontSize="xs" color="text.muted">
-                    候補日は最低1つ必要です
+                    {t('edit.candidates.minOne')}
                 </Text>
             )}
 
             <Box p={4} borderRadius="lg" border="2px dashed" borderColor="border.default">
                 <Text fontWeight="semibold" mb={3}>
-                    候補日を追加
+                    {t('edit.candidates.addTitle')}
                 </Text>
                 <Stack direction={{ base: 'column', md: 'row' }} spacing={3} align={{ md: 'end' }}>
                     <FormControl isInvalid={!!formError} flex={2}>
                         <FormLabel fontSize="sm" htmlFor="new-candidate-date">
-                            日付
+                            {t('edit.candidates.date')}
                         </FormLabel>
                         <Input id="new-candidate-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                     </FormControl>
                     <HStack flex={2} align="end">
                         <FormControl>
                             <FormLabel fontSize="sm" htmlFor="new-candidate-start">
-                                開始
+                                {t('edit.candidates.start')}
                             </FormLabel>
                             <Input id="new-candidate-start" type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
                         </FormControl>
                         <FormControl>
                             <FormLabel fontSize="sm" htmlFor="new-candidate-end">
-                                終了
+                                {t('edit.candidates.end')}
                             </FormLabel>
                             <Input id="new-candidate-end" type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
                         </FormControl>
                     </HStack>
                     <Button leftIcon={<Plus size={16} />} onClick={handleAdd} isLoading={addCandidate.isPending} flexShrink={0}>
-                        追加
+                        {t('edit.candidates.add')}
                     </Button>
                 </Stack>
                 {formError && (
@@ -190,27 +193,27 @@ export function CandidateManager({ uuid, candidates, editKey, onAuthError }: Can
             <AlertDialog isOpen={confirm.isOpen} leastDestructiveRef={cancelRef} onClose={confirm.onClose} isCentered>
                 <AlertDialogOverlay>
                     <AlertDialogContent mx={4}>
-                        <AlertDialogHeader>候補日を削除しますか？</AlertDialogHeader>
+                        <AlertDialogHeader>{t('edit.candidates.confirmTitle')}</AlertDialogHeader>
                         <AlertDialogBody>
                             {pendingDelete && (
                                 <>
                                     <Text fontWeight="medium">{formatDateRange(pendingDelete.start_at, pendingDelete.end_at)}</Text>
                                     <Text mt={2} color="text.muted">
-                                        この候補日には{responseCount(pendingDelete)}件の回答があります。削除すると回答も失われます。
+                                        {t('edit.candidates.confirmBody', { count: responseCount(pendingDelete) })}
                                     </Text>
                                 </>
                             )}
                         </AlertDialogBody>
                         <AlertDialogFooter gap={2}>
                             <Button ref={cancelRef} variant="ghost" colorScheme="gray" onClick={confirm.onClose}>
-                                キャンセル
+                                {t('common.cancel')}
                             </Button>
                             <Button
                                 colorScheme="red"
                                 isLoading={deleteCandidate.isPending}
                                 onClick={() => pendingDelete && runDelete(pendingDelete)}
                             >
-                                削除する
+                                {t('edit.candidates.confirmDelete')}
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

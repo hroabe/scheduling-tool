@@ -1,0 +1,8 @@
+{
+  "title": "Configurações",
+  "language": "Idioma de exibição",
+  "timezone": "Fuso horário",
+  "notifications": "Notificações",
+  "emailNotifications": "Receber notificações por e-mail",
+  "emailNotificationsHelp": "Avisaremos você por e-mail quando alguém responder ou fizer um agendamento e quando uma data for definida."
+}

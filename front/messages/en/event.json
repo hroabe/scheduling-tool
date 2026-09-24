@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "EEE M/d",
+    "dayLong": "EEE, MMM d"
+  },
+  "meta": {
+    "pageTitle": "Scheduling: {name}",
+    "pageTitleFallback": "Scheduling",
+    "pageDescription": "{owner} is finding a date for \"{name}\". {state}",
+    "pageStateOpen": "Mark each candidate date as yes / maybe / no (no sign-up needed).",
+    "pageStateFinalized": "The date has been decided.",
+    "owner": "Organizer: {name}",
+    "candidates": "Candidates: {count}",
+    "responses": "Responses: {count}",
+    "deadline": "Deadline: {date}",
+    "deadlineUntil": "Please respond by {date}",
+    "created": "Created {date}"
+  },
+  "actions": {
+    "share": "Share",
+    "csvLabel": "Download as CSV",
+    "icsLabel": "Add to calendar (ICS)",
+    "edit": "Edit"
+  },
+  "share": {
+    "text": "Please tell us when you're available for \"{name}\"",
+    "copied": "Link copied",
+    "copiedShort": "Copied",
+    "tooltip": "Share the link"
+  },
+  "error": {
+    "notFound": "Event not found",
+    "notFoundHint": "Please check that the URL is correct and that the event hasn't been deleted.",
+    "loadFailed": "Couldn't load the event",
+    "createNew": "Create a new event"
+  },
+  "finalized": {
+    "title": "The date has been decided",
+    "addIcs": "Add to calendar (ICS)",
+    "googleCalendar": "Add to Google Calendar"
+  },
+  "closed": {
+    "title": "Responses are closed",
+    "byOrganizer": "The organizer closed responses on {date}. Please wait for the final date.",
+    "waiting": "Please wait for the organizer to decide the date.",
+    "expired": "The response deadline ({date}) has passed. Please wait for the final date."
+  },
+  "meeting": {
+    "join": "Join meeting",
+    "provider": {
+      "google_meet": "Online via Google Meet",
+      "teams": "Online via Microsoft Teams",
+      "zoom": "Online via Zoom",
+      "other": "Online meeting"
+    }
+  },
+  "organizer": {
+    "owner": "You created this event.",
+    "editKey": "You're signed in as the organizer in this tab.",
+    "editPage": "Go to the edit page",
+    "close": "Close responses",
+    "reopen": "Reopen responses"
+  },
+  "tabs": {
+    "responses": "Responses",
+    "respond": "Respond",
+    "editMine": "Edit my response",
+    "summary": "Summary"
+  },
+  "respond": {
+    "cta": "Add your availability",
+    "closedFinalized": "The date has been decided, so responses are closed.",
+    "closedByOrganizer": "Responses are closed. Please wait for the organizer to decide the date.",
+    "closedExpired": "The response deadline has passed.",
+    "closedInactive": "This event isn't accepting responses right now."
+  },
+  "reminder": {
+    "title": "Remind people who haven't responded",
+    "titleEmpty": "Share the link with participants",
+    "body": "{count} people have responded so far. Resend the link to nudge the others.",
+    "bodyEmpty": "No responses yet. Share the link to start collecting them.",
+    "deadline": "Deadline: {date}",
+    "deadlineSoon": "Less than 24 hours until the deadline ({date})",
+    "share": "Share link"
+  },
+  "summary": {
+    "empty": "The summary appears once people respond.",
+    "title": "Responses by candidate",
+    "scoreHelp": "Score = {yes}×2 + {maybe}×1. The candidate with the highest score is marked as recommended.",
+    "listLabel": "Candidates (by score)",
+    "recommended": "Recommended",
+    "finalized": "Decided",
+    "answered": "{count}/{total} responded",
+    "reasonsTitle": "Why it's recommended",
+    "reason": {
+      "allOk": "Everyone can make it",
+      "mostOk": "Most \"{symbol}\" answers ({count})",
+      "noNg": "Nobody answered \"{symbol}\" (can't attend)",
+      "fewestNg": "Fewest \"{symbol}\" answers ({count})",
+      "topScore": "Highest score",
+      "earliestTie": "Earliest of the top-scoring candidates"
+    },
+    "finalizeCta": "Decide on this date",
+    "addToCalendar": "Add to calendar (ICS)",
+    "kpi": {
+      "participants": "Respondents",
+      "maxOk": "Most \"{symbol}\"",
+      "candidates": "Candidates"
+    }
+  },
+  "fix": {
+    "title": "Decide on this date?",
+    "breakdown": "Responses",
+    "warning": "Responses will be closed once the date is decided. You can undo this from the edit page.",
+    "confirm": "Decide"
+  },
+  "toast": {
+    "authRequired": "Please enter the edit key again (you can do this on the edit page).",
+    "finalized": "Date decided",
+    "finalizedHint": "Let the participants know.",
+    "closed": "Responses closed",
+    "reopened": "Responses reopened"
+  },
+  "delete": {
+    "title": "Delete this response?",
+    "body": "{name}'s response will be deleted. This can't be undone.",
+    "bodyOwn": "Your response will be deleted. This can't be undone.",
+    "confirm": "Delete",
+    "done": "Response deleted"
+  },
+  "created": {
+    "title": "Your event is ready",
+    "description": "Share this link with participants to collect their availability.",
+    "shareUrl": "Share link",
+    "editKey": "Edit key",
+    "editKeyWarning": "You need the edit key to edit, decide or delete the event. It won't be shown again, so be sure to save it.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyLabel": "Copy {label}",
+    "ok": "OK"
+  },
+  "success": {
+    "submitted": "Response sent",
+    "updated": "Response updated",
+    "thanks": "Thanks for responding!",
+    "ctaTitle": "Want to schedule your own event?",
+    "ctaFree": "Free, no sign-up needed",
+    "ctaExport": "Export results as CSV or ICS",
+    "ctaButton": "Create an event"
+  }
+}

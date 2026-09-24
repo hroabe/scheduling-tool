@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useI18n } from '@/providers/I18nProvider';
 
 interface ResponseSuccessModalProps {
     isOpen: boolean;
@@ -25,6 +26,7 @@ interface ResponseSuccessModalProps {
 
 /** Shown after a response is submitted; invites the respondent to create their own event (viral loop) */
 export function ResponseSuccessModal({ isOpen, onClose, isUpdate = false }: ResponseSuccessModalProps) {
+    const { t } = useI18n();
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm" motionPreset="scale">
             <ModalOverlay />
@@ -32,27 +34,27 @@ export function ResponseSuccessModal({ isOpen, onClose, isUpdate = false }: Resp
                 <ModalCloseButton />
                 <ModalBody pt={10} pb={2}>
                     <VStack spacing={3} textAlign="center">
-                        <Icon as={CheckCircle2} boxSize={14} color="green.500" />
+                        <Icon as={CheckCircle2} boxSize={14} color="green.500" aria-hidden />
                         <Text fontSize="xl" fontWeight="bold">
-                            {isUpdate ? '回答を更新しました' : '回答を送信しました'}
+                            {isUpdate ? t('event.success.updated') : t('event.success.submitted')}
                         </Text>
-                        <Text color="text.muted">ご回答ありがとうございます</Text>
+                        <Text color="text.muted">{t('event.success.thanks')}</Text>
 
                         <Divider my={3} />
 
-                        <Text fontWeight="semibold">あなたもイベントを作成しませんか？</Text>
+                        <Text fontWeight="semibold">{t('event.success.ctaTitle')}</Text>
                         <Box fontSize="sm" color="text.muted">
-                            <Text>登録不要 / 無料</Text>
-                            <Text>CSV・ICSで結果を持ち出し可能</Text>
+                            <Text>{t('event.success.ctaFree')}</Text>
+                            <Text>{t('event.success.ctaExport')}</Text>
                         </Box>
                     </VStack>
                 </ModalBody>
                 <ModalFooter flexDirection="column" gap={2}>
                     <Button as={NextLink} href="/create?ref=response_cta" w="full" rightIcon={<ArrowRight size={16} />}>
-                        イベントを作成する
+                        {t('event.success.ctaButton')}
                     </Button>
                     <Button variant="ghost" colorScheme="gray" w="full" onClick={onClose}>
-                        閉じる
+                        {t('common.close')}
                     </Button>
                 </ModalFooter>
             </ModalContent>

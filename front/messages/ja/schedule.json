@@ -1,0 +1,30 @@
+{
+  "title": "日程調整",
+  "create": "新規作成",
+  "myEvents": "マイイベント",
+  "eventName": "イベント名",
+  "description": "説明",
+  "deadline": "回答期限",
+  "candidates": "候補日",
+  "participants": "参加者",
+  "finalize": "確定する",
+  "finalized": "確定済み",
+  "notFinalized": "未確定",
+  "created": "日程を作成しました。",
+  "finalizedSuccess": "日程を確定しました。",
+  "noEvents": "まだイベントがありません。",
+  "status": {
+    "open": "回答受付中",
+    "closed": "回答締切",
+    "expired": "回答期限切れ",
+    "fixed": "確定済み",
+    "inactive": "受付停止中"
+  },
+  "card": {
+    "candidates": "候補: {count}件",
+    "responses": "回答: {count}名",
+    "deadline": "期限: {date}",
+    "created": "作成: {date}",
+    "open": "開く"
+  }
+}

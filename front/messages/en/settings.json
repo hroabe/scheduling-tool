@@ -1,0 +1,8 @@
+{
+  "title": "Settings",
+  "language": "Display language",
+  "timezone": "Time zone",
+  "notifications": "Notifications",
+  "emailNotifications": "Email notifications",
+  "emailNotificationsHelp": "Get an email when someone responds or books, and when a date is finalized."
+}

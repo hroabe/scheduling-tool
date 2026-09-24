@@ -1,0 +1,38 @@
+{
+  "title": "日历集成",
+  "description": "集成后，日程确定时会自动将日程和在线会议链接添加到您的日历中。",
+  "providers": {
+    "google": {
+      "name": "Google 日历",
+      "description": "将确定的日程添加到 Google 日历，并生成 Google Meet 链接。"
+    },
+    "outlook": {
+      "name": "Outlook 日历",
+      "description": "将确定的日程添加到 Outlook（Microsoft 365）日历，并生成 Teams 链接。"
+    }
+  },
+  "status": {
+    "connected": "已集成",
+    "notConnected": "未集成",
+    "expired": "需要重新集成",
+    "notConfigured": "不可用"
+  },
+  "connect": "集成",
+  "reconnect": "重新集成",
+  "disconnect": "取消集成",
+  "connected": "已与 {provider} 集成",
+  "connectError": "无法与 {provider} 集成",
+  "connectFailed": "无法开始与 {provider} 的集成",
+  "disconnected": "已取消与 {provider} 的集成",
+  "disconnectFailed": "无法取消与 {provider} 的集成",
+  "notConfigured": "此服务器未配置 {provider} 集成。请联系管理员。",
+  "lastUsed": "上次使用：{date}",
+  "loadError": "无法获取集成状态（{reason}）",
+  "reasons": {
+    "denied": "访问未获授权。",
+    "state": "集成请求已过期，请重试。",
+    "code": "未能收到授权码，请重试。",
+    "token": "无法获取访问令牌，请稍后再试。",
+    "unknown": "请稍后再试。"
+  }
+}

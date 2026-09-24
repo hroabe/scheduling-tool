@@ -1,0 +1,23 @@
+{
+  "features": "Recursos",
+  "howToUse": "Como funciona",
+  "faq": "Perguntas frequentes",
+  "skipToContent": "Pular para o conteúdo",
+  "home": "Página inicial do {name}",
+  "mainNav": "Navegação principal",
+  "oneOnOne": "Agendamento 1:1",
+  "language": "Idioma",
+  "theme": "Alterar tema",
+  "themeSystem": "Usar configuração do sistema",
+  "theme_light": "Claro",
+  "theme_dark": "Escuro",
+  "theme_cute": "Fofo",
+  "accountMenu": "Menu da conta",
+  "account": "Conta",
+  "myEvents": "Meus eventos",
+  "integrations": "Integração de calendário",
+  "login": "Entrar",
+  "logout": "Sair",
+  "create": "Novo evento",
+  "openMenu": "Abrir menu"
+}

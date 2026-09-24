@@ -1,0 +1,47 @@
+{
+  "available": "◯",
+  "maybe": "△",
+  "unavailable": "×",
+  "yourName": "お名前",
+  "submitted": "回答を送信しました。",
+  "updated": "回答を更新しました。",
+  "status": {
+    "ok": "参加可能",
+    "maybe": "調整可能",
+    "ng": "参加不可",
+    "pending": "未回答"
+  },
+  "form": {
+    "ariaLabel": "出欠回答フォーム",
+    "name": "お名前",
+    "namePlaceholder": "例: 佐藤花子",
+    "nameRequired": "お名前を入力してください",
+    "nameTooLong": "100文字以内で入力してください",
+    "commentTooLong": "1000文字以内で入力してください",
+    "attendanceLegend": "各候補日の出欠を選択してください",
+    "candidateGroup": "{date}の出欠",
+    "optionLabel": "{date}: {status}",
+    "missing": "未選択の候補日が{count}件あります",
+    "comment": "コメント（任意）",
+    "commentPlaceholder": "その他連絡事項があればご記入ください",
+    "submit": "回答を送信する",
+    "update": "回答を更新する",
+    "sending": "送信中...",
+    "error": "回答を送信できませんでした"
+  },
+  "table": {
+    "caption": "参加者ごとの回答状況",
+    "participant": "参加者",
+    "comment": "コメント",
+    "actions": "操作",
+    "total": "集計",
+    "you": "あなた",
+    "finalized": "確定",
+    "recommended": "おすすめ",
+    "empty": "まだ回答がありません",
+    "emptyHint": "URLを共有して回答を集めましょう",
+    "editResponse": "{name}さんの回答を編集",
+    "deleteResponse": "{name}さんの回答を削除",
+    "countLabel": "{status} {count}名"
+  }
+}

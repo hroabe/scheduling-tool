@@ -10,9 +10,9 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
 
     return (
         <StatusPage
-            title="エラーが発生しました"
-            message="一時的な問題が発生しました。時間をおいて再度お試しください。"
-            action={{ label: '再読み込み', onClick: reset }}
+            title="home.errorTitle"
+            message="home.errorMessage"
+            action={{ label: 'home.errorRetry', onClick: reset }}
         />
     );
 }

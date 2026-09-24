@@ -1,0 +1,8 @@
+{
+  "title": "设置",
+  "language": "显示语言",
+  "timezone": "时区",
+  "notifications": "通知设置",
+  "emailNotifications": "接收邮件通知",
+  "emailNotificationsHelp": "有新的回复或预约、日程确定时，我们会通过邮件通知您。"
+}

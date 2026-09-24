@@ -1,0 +1,38 @@
+{
+  "title": "캘린더 연동",
+  "description": "연동하면 일정이 확정되었을 때 캘린더에 일정과 온라인 회의 URL을 자동으로 등록합니다.",
+  "providers": {
+    "google": {
+      "name": "Google 캘린더",
+      "description": "확정된 일정을 Google 캘린더에 등록하고 Google Meet URL을 발급합니다."
+    },
+    "outlook": {
+      "name": "Outlook 캘린더",
+      "description": "확정된 일정을 Outlook(Microsoft 365) 캘린더에 등록하고 Teams URL을 발급합니다."
+    }
+  },
+  "status": {
+    "connected": "연동됨",
+    "notConnected": "연동 안 됨",
+    "expired": "재연동 필요",
+    "notConfigured": "사용 불가"
+  },
+  "connect": "연동하기",
+  "reconnect": "다시 연동하기",
+  "disconnect": "연동 해제",
+  "connected": "{provider}와(과) 연동했습니다",
+  "connectError": "{provider}와(과) 연동하지 못했습니다",
+  "connectFailed": "{provider} 연동을 시작하지 못했습니다",
+  "disconnected": "{provider} 연동을 해제했습니다",
+  "disconnectFailed": "{provider} 연동을 해제하지 못했습니다",
+  "notConfigured": "이 서버에는 {provider} 연동이 설정되어 있지 않습니다. 관리자에게 문의해 주세요.",
+  "lastUsed": "마지막 사용: {date}",
+  "loadError": "연동 상태를 가져오지 못했습니다({reason})",
+  "reasons": {
+    "denied": "접근이 허용되지 않았습니다.",
+    "state": "연동 요청이 만료되었습니다. 다시 시도해 주세요.",
+    "code": "인증 코드를 받지 못했습니다. 다시 시도해 주세요.",
+    "token": "액세스 토큰을 가져오지 못했습니다. 잠시 후 다시 시도해 주세요.",
+    "unknown": "잠시 후 다시 시도해 주세요."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "编辑活动"
+  },
+  "title": "编辑活动",
+  "back": "返回活动页面",
+  "notFound": "未找到该活动",
+  "ownerNotice": "此活动由当前登录的账户创建，无需编辑密钥即可管理。",
+  "toast": {
+    "reenterKey": "请重新输入编辑密钥"
+  },
+  "keyModal": {
+    "title": "输入编辑密钥",
+    "description": "要编辑此活动，请输入创建时设置（或生成）的编辑密钥。",
+    "label": "编辑密钥",
+    "helper": "验证在关闭此标签页之前一直有效",
+    "required": "请输入编辑密钥",
+    "invalid": "编辑密钥不正确",
+    "verifying": "验证中...",
+    "submit": "验证"
+  },
+  "info": {
+    "title": "活动信息",
+    "name": "活动名称",
+    "description": "说明",
+    "deadline": "回复截止时间",
+    "isActive": "接受回复",
+    "allowMaybe": "允许“可以调整”的回复",
+    "save": "保存更改",
+    "saved": "更改已保存",
+    "nameRequired": "请输入活动名称",
+    "nameTooLong": "请输入 200 个字符以内",
+    "descriptionTooLong": "请输入 2000 个字符以内",
+    "deadlinePast": "回复截止时间必须是将来的日期和时间"
+  },
+  "candidates": {
+    "title": "管理候选日期",
+    "listLabel": "候选日期列表",
+    "responseCount": "{count} 条回复",
+    "deleteLabel": "删除 {date}",
+    "minOne": "至少需要 1 个候选日期",
+    "addTitle": "添加候选日期",
+    "date": "日期",
+    "start": "开始",
+    "end": "结束",
+    "add": "添加",
+    "added": "已添加候选日期",
+    "deleted": "已删除候选日期",
+    "dateRequired": "请选择日期",
+    "endAfterStart": "结束时间必须晚于开始时间",
+    "confirmTitle": "要删除此候选日期吗？",
+    "confirmBody": "此候选日期已有 {count} 条回复。删除后，这些回复也将丢失。",
+    "confirmDelete": "删除"
+  },
+  "closing": {
+    "title": "截止回复",
+    "open": "当前正在接受回复。",
+    "expired": "已过回复截止时间。延长截止时间后可再次接受回复。",
+    "help": "截止后将无法提交新回复或修改回复。之后可以重新开放。",
+    "close": "截止回复",
+    "closed": "已截止回复。",
+    "closedAt": "已于 {date} 截止回复。",
+    "expiredNote": "由于回复截止时间也已过，重新开放后仍需延长截止时间才能回复。",
+    "reopen": "重新开放回复",
+    "finalized": "日程已确定，无法截止或重新开放。取消确定后即可再次操作。",
+    "closedToast": "已截止回复",
+    "reopenedToast": "已重新开放回复"
+  },
+  "finalize": {
+    "title": "确定日程",
+    "current": "已确定：{date}",
+    "meetingUrl": "在线会议链接",
+    "help": "请选择要确定的候选日期。确定后将停止接受回复。",
+    "countsLabel": "可以参加 {ok} 人，可以调整 {maybe} 人，无法参加 {ng} 人",
+    "recommended": "推荐",
+    "undo": "取消确定",
+    "submit": "确定日程",
+    "done": "日程已确定",
+    "undone": "已取消日程确定"
+  },
+  "danger": {
+    "title": "危险操作",
+    "help": "删除活动后，所有候选日期和回复都将被永久删除，且无法恢复。",
+    "delete": "删除活动",
+    "deleted": "活动已删除",
+    "confirmTitle": "要删除此活动吗？",
+    "confirmBody": "“{name}”及其 {count} 条回复将被永久删除。此操作无法撤销。",
+    "confirmDelete": "删除"
+  }
+}

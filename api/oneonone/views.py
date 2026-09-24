@@ -1,0 +1,656 @@
+"""
+1-on-1 Scheduling Views
+RFC-0005: 1対1日程調整モード
+"""
+
+import secrets
+from datetime import timedelta
+from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from django.utils.text import slugify
+from django.db import transaction
+from rest_framework import viewsets, status, generics
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.views import APIView
+
+from schedule.async_tasks import enqueue
+from schedule.throttling import EditKeyRateThrottle
+
+from .models import AvailabilityPage, AvailabilitySlot, Booking
+from .tasks import (
+    send_booking_notifications,
+    send_cancellation_notification,
+    send_page_verification_email,
+)
+from .serializers import (
+    AvailabilityPageListSerializer,
+    AvailabilityPageDetailSerializer,
+    AvailabilityPageCreateSerializer,
+    AvailabilityPagePublicSerializer,
+    AvailabilitySlotSerializer,
+    AvailabilitySlotCreateSerializer,
+    BookingSerializer,
+    BookingCreateSerializer,
+    BookingCancelSerializer,
+    AnonymousBookingPageCreateSerializer,
+    AnonymousBookingPageHostSerializer,
+    AvailabilityPagePublicSerializerV2,
+)
+
+
+class AvailabilityPageViewSet(viewsets.ModelViewSet):
+    """
+    予約ページ管理
+
+    オーナーの予約ページCRUD操作
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return AvailabilityPage.objects.filter(owner=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return AvailabilityPageListSerializer
+        elif self.action in ('create', 'update', 'partial_update'):
+            return AvailabilityPageCreateSerializer
+        return AvailabilityPageDetailSerializer
+
+    @action(detail=True, methods=['post'])
+    def add_slots(self, request, pk=None):
+        """
+        空き枠を一括追加
+
+        POST /api/v1/oneonone/pages/{id}/add_slots/
+        """
+        page = self.get_object()
+
+        slots_data = request.data.get('slots', [])
+        if not slots_data:
+            return Response(
+                {'error': 'slots フィールドが必要です'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        created_slots = []
+        errors = []
+
+        for i, slot_data in enumerate(slots_data):
+            serializer = AvailabilitySlotCreateSerializer(data=slot_data)
+            if serializer.is_valid():
+                slot = AvailabilitySlot.objects.create(
+                    page=page,
+                    **serializer.validated_data
+                )
+                created_slots.append(slot)
+            else:
+                errors.append({'index': i, 'errors': serializer.errors})
+
+        return Response({
+            'created': AvailabilitySlotSerializer(created_slots, many=True).data,
+            'errors': errors,
+        }, status=status.HTTP_201_CREATED if created_slots else status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['get'])
+    def bookings(self, request, pk=None):
+        """
+        予約一覧（ホスト向け）
+
+        GET /api/v1/oneonone/pages/{id}/bookings/
+        """
+        page = self.get_object()
+        bookings = Booking.objects.filter(
+            slot__page=page
+        ).select_related('slot').order_by('-created_at')
+
+        status_filter = request.query_params.get('status')
+        if status_filter:
+            bookings = bookings.filter(status=status_filter)
+
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data)
+
+
+class AvailabilitySlotViewSet(viewsets.ModelViewSet):
+    """
+    空き枠管理（ページ配下）
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = AvailabilitySlotSerializer
+
+    def get_queryset(self):
+        page_id = self.kwargs.get('page_pk')
+        return AvailabilitySlot.objects.filter(
+            page_id=page_id,
+            page__owner=self.request.user
+        )
+
+    def perform_create(self, serializer):
+        page_id = self.kwargs.get('page_pk')
+        page = get_object_or_404(
+            AvailabilityPage,
+            id=page_id,
+            owner=self.request.user
+        )
+        serializer.save(page=page)
+
+
+class PublicAvailabilityPageView(APIView):
+    """
+    公開予約ページ（ゲスト向け）
+
+    GET /api/v1/oneonone/p/{slug}/
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, slug):
+        page = get_object_or_404(
+            AvailabilityPage,
+            slug=slug,
+            status='PUBLISHED',
+            is_active=True
+        )
+
+        # Parse date range from query params
+        from_date = request.query_params.get('from')
+        to_date = request.query_params.get('to')
+
+        context = {'request': request}
+        if from_date:
+            try:
+                context['from_date'] = timezone.datetime.fromisoformat(
+                    from_date.replace('Z', '+00:00')
+                )
+            except ValueError:
+                pass
+        if to_date:
+            try:
+                context['to_date'] = timezone.datetime.fromisoformat(
+                    to_date.replace('Z', '+00:00')
+                )
+            except ValueError:
+                pass
+
+        serializer = AvailabilityPagePublicSerializer(page, context=context)
+        return Response(serializer.data)
+
+
+class BookingCreateView(generics.CreateAPIView):
+    """
+    予約作成（ゲスト向け）
+
+    POST /api/v1/oneonone/p/{slug}/book/
+    """
+    permission_classes = [AllowAny]
+    serializer_class = BookingCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        slug = self.kwargs.get('slug')
+        page = get_object_or_404(
+            AvailabilityPage,
+            slug=slug,
+            status='PUBLISHED',
+            is_active=True
+        )
+
+        # Validate slot belongs to this page
+        data = request.data.copy()
+        slot_id = data.get('slot')
+
+        if slot_id:
+            slot = get_object_or_404(AvailabilitySlot, id=slot_id, page=page)
+            data['slot'] = slot.id
+
+        return _create_booking_response(self, data)
+
+
+class BookingDetailView(APIView):
+    """
+    予約詳細・キャンセル（ゲスト向け）
+
+    GET /api/v1/oneonone/bookings/{uuid}/
+    POST /api/v1/oneonone/bookings/{uuid}/cancel/
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, uuid):
+        booking = get_object_or_404(Booking, uuid=uuid)
+        data = BookingSerializer(booking).data
+        # 予約者本人（キャンセルトークン保持者）以外にはゲストの連絡先を返さない
+        token = request.headers.get('X-Cancel-Token') or ''
+        if not booking.check_cancel_token(token):
+            data.pop('guest_email', None)
+            data.pop('guest_message', None)
+        return Response(data)
+
+    def post(self, request, uuid):
+        """Cancel booking"""
+        booking = get_object_or_404(Booking, uuid=uuid)
+
+        serializer = BookingCancelSerializer(
+            data=request.data,
+            context={'booking': booking}
+        )
+        serializer.is_valid(raise_exception=True)
+
+        if booking.status not in ('pending', 'confirmed'):
+            return Response(
+                {'error': 'この予約はキャンセルできません'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        booking.cancel()
+        enqueue(send_cancellation_notification, booking.id, 'guest')
+
+        return Response({
+            'message': '予約をキャンセルしました',
+            'booking': BookingSerializer(booking).data
+        })
+
+
+class HostBookingViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ホストの予約一覧
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = BookingSerializer
+    lookup_field = 'uuid'
+
+    def get_queryset(self):
+        return Booking.objects.filter(
+            slot__page__owner=self.request.user
+        ).select_related('slot', 'slot__page').order_by('-created_at')
+
+    @action(detail=True, methods=['post'])
+    def confirm(self, request, uuid=None, pk=None):
+        """予約を確定"""
+        booking = self.get_object()
+        if booking.status != 'pending':
+            return Response(
+                {'error': '確認中の予約のみ確定できます'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        booking.confirm()
+        return Response({
+            'message': '予約を確定しました',
+            'booking': BookingSerializer(booking).data
+        })
+
+    @action(detail=True, methods=['post'])
+    def cancel(self, request, uuid=None, pk=None):
+        """予約をキャンセル（ホスト側）"""
+        booking = self.get_object()
+        if booking.status not in ('pending', 'confirmed'):
+            return Response(
+                {'error': 'この予約はキャンセルできません'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        booking.cancel()
+        enqueue(send_cancellation_notification, booking.id, 'host')
+        return Response({
+            'message': '予約をキャンセルしました',
+            'booking': BookingSerializer(booking).data
+        })
+
+
+def _create_booking_response(view, data):
+    """ゲストの予約作成（共通）: 通知メールを送り、キャンセルトークンを1回だけ返す"""
+    serializer = view.get_serializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    booking = serializer.save()
+    raw_token = booking._raw_cancel_token
+    enqueue(send_booking_notifications, booking.id, raw_token)
+    return Response({
+        'booking': BookingSerializer(booking).data,
+        'cancel_token': raw_token,
+        'message': '予約が完了しました'
+    }, status=status.HTTP_201_CREATED)
+
+
+def _get_host_token(request):
+    """管理トークンは X-Host-Token ヘッダー（推奨）またはクエリで受け付ける"""
+    return request.headers.get('X-Host-Token') or request.query_params.get('token')
+
+
+# =========================================================
+# Anonymous Booking Views (Login-free mode)
+# =========================================================
+
+class AnonymousBookingCreateView(APIView):
+    """
+    匿名で予約ページを作成
+
+    POST /api/v1/booking/
+    """
+    permission_classes = [AllowAny]
+
+    @transaction.atomic
+    def post(self, request):
+        serializer = AnonymousBookingPageCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        # Generate unique slug
+        # URL で使える英数字の slug + 推測されにくいランダム接尾辞
+        # （日本語タイトルをそのまま slug にすると <slug:> パターンに一致せず 404 になる）
+        base_slug = slugify(data['title'])[:40].strip('-') or 'booking'
+        slug = f"{base_slug}-{secrets.token_hex(4)}"
+        while AvailabilityPage.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{secrets.token_hex(4)}"
+
+        # Generate tokens
+        host_token = secrets.token_urlsafe(32)
+        verify_token = secrets.token_urlsafe(32)
+
+        # Create page
+        page = AvailabilityPage.objects.create(
+            slug=slug,
+            title=data['title'],
+            organizer_name=data['organizer_name'],
+            organizer_email=data['organizer_email'],
+            duration_minutes=data['duration_minutes'],
+            timezone_name=data.get('timezone_name', 'Asia/Tokyo'),
+            status='PENDING_VERIFY',
+            is_public=False,  # Not public until verified
+            is_active=True,
+        )
+        page.set_host_token(host_token)
+        page.set_verify_token(verify_token)
+        page.save()
+
+        # Create slots
+        for slot_data in data['slots']:
+            AvailabilitySlot.objects.create(
+                page=page,
+                start_at=slot_data['start_at'],
+                end_at=slot_data['end_at'],
+            )
+
+        # 認証リンクと管理リンクを主催者にメール送信
+        enqueue(send_page_verification_email, page.id, verify_token, host_token)
+
+        response = {
+            'slug': slug,
+            'status': page.status,
+            'message': '認証メールを送信しました。メールのリンクから予約ページを公開してください。',
+            # 作成者のブラウザで管理画面を開けるよう、管理トークンはこのレスポンスで1回だけ返す
+            'host_token': host_token,
+            'host_url': f"/booking/{slug}/host",
+        }
+        if settings.DEBUG:
+            # 開発環境ではメールを見なくても認証できるようにする
+            response['verify_url'] = f"/booking/verify?slug={slug}&token={verify_token}"
+        return Response(response, status=status.HTTP_201_CREATED)
+
+
+class AnonymousBookingVerifyView(APIView):
+    """
+    メール認証で予約ページを公開
+
+    POST /api/v1/oneonone/booking/verify/
+    """
+    permission_classes = [AllowAny]
+    throttle_classes = [EditKeyRateThrottle]
+
+    def post(self, request):
+        token = request.data.get('token')
+        slug = request.data.get('slug')
+
+        if not token or not slug:
+            return Response(
+                {'error': 'token と slug が必要です'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        page = get_object_or_404(AvailabilityPage, slug=slug)
+
+        if not page.verify_verify_token(token):
+            return Response(
+                {'error': '無効な認証トークンです'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        if page.status == 'PENDING_VERIFY':
+            # Verify and publish
+            page.status = 'PUBLISHED'
+            page.is_public = True
+            page.save(update_fields=['status', 'is_public', 'updated_at'])
+            message = '認証が完了しました。予約ページが公開されました。'
+        else:
+            # リンクを2回開いても成功扱い（冪等）
+            message = 'このページは認証済みです。'
+
+        return Response({
+            'slug': slug,
+            'status': page.status,
+            'message': message,
+        })
+
+
+class AnonymousBookingHostView(APIView):
+    """
+    匿名予約ページの管理（ホスト向け）
+
+    GET/PATCH /api/v1/booking/{slug}/host/
+    """
+    permission_classes = [AllowAny]
+
+    def _verify_host(self, request, slug):
+        return _verify_host(request, slug)
+
+    def get(self, request, slug):
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+
+        serializer = AnonymousBookingPageHostSerializer(page)
+        return Response(serializer.data)
+
+    def patch(self, request, slug):
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+
+        serializer = AnonymousBookingPageHostSerializer(page, data={
+            key: request.data[key]
+            for key in ('title', 'description', 'is_active', 'notify_on_booking')
+            if key in request.data
+        }, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        serializer = AnonymousBookingPageHostSerializer(page)
+        return Response(serializer.data)
+
+
+class AnonymousBookingHostSlotsView(APIView):
+    """
+    空き枠の追加・削除（ホスト向け）
+
+    POST/DELETE /api/v1/booking/{slug}/host/slots/
+    """
+    permission_classes = [AllowAny]
+
+    def _verify_host(self, request, slug):
+        return _verify_host(request, slug)
+
+    def post(self, request, slug):
+        """空き枠を追加"""
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+
+        slots_data = request.data.get('slots', [])
+        if not slots_data:
+            return Response(
+                {'error': 'slots フィールドが必要です'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        created_slots = []
+        errors = []
+        for i, slot_data in enumerate(slots_data):
+            serializer = AvailabilitySlotCreateSerializer(data=slot_data)
+            if not serializer.is_valid():
+                errors.append({'index': i, 'errors': serializer.errors})
+                continue
+            slot, created = AvailabilitySlot.objects.get_or_create(
+                page=page,
+                start_at=serializer.validated_data['start_at'],
+                defaults={'end_at': serializer.validated_data['end_at']},
+            )
+            if created:
+                created_slots.append(slot)
+            else:
+                errors.append({'index': i, 'errors': {'start_at': ['同じ開始時刻の枠が既にあります']}})
+
+        return Response({
+            'created': AvailabilitySlotSerializer(created_slots, many=True).data,
+            'errors': errors,
+        }, status=status.HTTP_201_CREATED if created_slots else status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, slug, slot_id=None):
+        """空き枠を削除"""
+        page, error = self._verify_host(request, slug)
+        if error:
+            return error
+
+        if not slot_id:
+            slot_id = request.data.get('slot_id')
+
+        slot = get_object_or_404(AvailabilitySlot, id=slot_id, page=page)
+
+        if slot.is_booked:
+            return Response(
+                {'error': '予約済みの枠は削除できません'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        slot.delete()
+        return Response({'message': '枠を削除しました'})
+
+
+class PublicBookingPageViewV2(APIView):
+    """
+    公開予約ページ（ゲスト向け）V2
+
+    匿名モードにも対応
+    GET /api/v1/booking/{slug}/
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, slug):
+        page = get_object_or_404(
+            AvailabilityPage,
+            slug=slug,
+            status='PUBLISHED',
+            is_active=True
+        )
+
+        context = {'request': request}
+
+        # Parse date range from query params
+        from_date = request.query_params.get('from')
+        to_date = request.query_params.get('to')
+
+        if from_date:
+            try:
+                context['from_date'] = timezone.datetime.fromisoformat(
+                    from_date.replace('Z', '+00:00')
+                )
+            except ValueError:
+                pass
+        if to_date:
+            try:
+                context['to_date'] = timezone.datetime.fromisoformat(
+                    to_date.replace('Z', '+00:00')
+                )
+            except ValueError:
+                pass
+
+        serializer = AvailabilityPagePublicSerializerV2(page, context=context)
+        return Response(serializer.data)
+
+
+class ReservationCreateView(generics.CreateAPIView):
+    """
+    予約作成（ゲスト向け）V2
+
+    POST /api/v1/booking/{slug}/reserve/
+    """
+    permission_classes = [AllowAny]
+    serializer_class = BookingCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        slug = self.kwargs.get('slug')
+        page = get_object_or_404(
+            AvailabilityPage,
+            slug=slug,
+            status='PUBLISHED',
+            is_active=True
+        )
+
+        # Validate slot belongs to this page
+        data = request.data.copy()
+        slot_id = data.get('slot')
+
+        if slot_id:
+            slot = get_object_or_404(AvailabilitySlot, id=slot_id, page=page)
+            data['slot'] = slot.id
+
+        return _create_booking_response(self, data)
+
+
+
+def _verify_host(request, slug):
+    """管理トークンを検証して (page, None) か (None, 403 Response) を返す"""
+    page = get_object_or_404(AvailabilityPage, slug=slug)
+    if not page.verify_host_token(_get_host_token(request)):
+        return None, Response({'error': '管理権限がありません'}, status=status.HTTP_403_FORBIDDEN)
+    return page, None
+
+
+class AnonymousBookingResendVerificationView(APIView):
+    """
+    認証メールを再送（管理トークンが必要）
+
+    POST /api/v1/oneonone/booking/{slug}/host/resend-verification/
+    """
+    permission_classes = [AllowAny]
+    throttle_classes = [EditKeyRateThrottle]
+
+    def post(self, request, slug):
+        page, error = _verify_host(request, slug)
+        if error:
+            return error
+        if page.status != 'PENDING_VERIFY':
+            return Response({'error': 'このページは既に認証済みです'}, status=status.HTTP_400_BAD_REQUEST)
+        # 管理トークンは再発行しない（ハッシュのみ保存しているため）。リクエストのトークンを再掲する
+        verify_token = secrets.token_urlsafe(32)
+        page.set_verify_token(verify_token)
+        page.save(update_fields=['verify_token_hash', 'updated_at'])
+        enqueue(send_page_verification_email, page.id, verify_token, _get_host_token(request))
+        return Response({'message': '認証メールを再送しました。'})
+
+
+class AnonymousBookingHostBookingCancelView(APIView):
+    """
+    予約をキャンセル（匿名ページの主催者）
+
+    POST /api/v1/oneonone/booking/{slug}/host/bookings/{uuid}/cancel/
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request, slug, uuid):
+        page, error = _verify_host(request, slug)
+        if error:
+            return error
+        booking = get_object_or_404(Booking, uuid=uuid, slot__page=page)
+        if booking.status not in ('pending', 'confirmed'):
+            return Response({'error': 'この予約はキャンセルできません'}, status=status.HTTP_400_BAD_REQUEST)
+        booking.cancel()
+        enqueue(send_cancellation_notification, booking.id, 'host')
+        return Response({'message': '予約をキャンセルしました', 'booking': BookingSerializer(booking).data})

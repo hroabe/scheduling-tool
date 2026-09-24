@@ -1,0 +1,66 @@
+{
+  "title": "Häufige Fragen",
+  "lead": "Antworten auf häufige Fragen zur Bedienung und zu den Funktionen des Terminplaners.",
+  "questionPrefix": "F.",
+  "ctaLead": "Starten Sie jetzt mit der Terminabstimmung",
+  "ctaCreate": "Termin erstellen (kostenlos)",
+  "ctaBooking": "1:1-Buchungsseite erstellen",
+  "items": {
+    "noLogin": {
+      "q": "Muss ich mich registrieren oder anmelden?",
+      "a": "Nein. Sowohl wer einen Termin erstellt als auch wer antwortet, kann den Dienst ohne Konto nutzen. Teilen Sie einfach den Link zum Termin, um Antworten zu sammeln. Auch eine 1:1-Buchungsseite können Sie veröffentlichen, indem Sie lediglich Ihre E-Mail-Adresse bestätigen."
+    },
+    "price": {
+      "q": "Fallen Kosten an?",
+      "a": "Alle Funktionen sind kostenlos. Sie müssen sich keine Gedanken über Obergrenzen bei der Anzahl der Termine oder Antwortenden machen."
+    },
+    "oneOnOne": {
+      "q": "Was ist eine 1:1-Buchungsseite?",
+      "a": "Diese Funktion ist für Einzeltermine wie Gespräche oder Kundentermine gedacht. Der Organisator trägt freie Zeitfenster ein und veröffentlicht die Seite; sobald ein Gast ein passendes Zeitfenster auswählt, ist die Buchung bestätigt. An die beim Erstellen angegebene E-Mail-Adresse werden ein Bestätigungslink und ein Link zur Verwaltungsseite gesendet. Bei Buchungen und Stornierungen werden sowohl Organisator als auch Gast per E-Mail benachrichtigt. Gäste können ihre Buchung über den Link in der Bestätigungs-E-Mail stornieren."
+    },
+    "account": {
+      "q": "Was kann ich mit einem Konto tun?",
+      "a": "Wenn Sie ein Konto mit Benutzername, E-Mail-Adresse und Passwort erstellen und sich anmelden, sehen Sie eine Liste Ihrer erstellten Termine (Meine Termine) und können Google Kalender oder Outlook anbinden. Auch ohne Anmeldung stehen alle Grundfunktionen zur Verfügung: Termine erstellen, antworten, auswerten sowie CSV-/ICS-Export."
+    },
+    "calendarSync": {
+      "q": "Kann ich Google Kalender oder Outlook anbinden?",
+      "a": "Ja. Melden Sie sich an und verbinden Sie unter „Kalenderanbindung“ Ihr Google- oder Microsoft-Konto (Outlook). Wenn Sie dann einen Termin festlegen, wird er automatisch in Ihren Kalender eingetragen, und es kann ein Google-Meet- oder Microsoft-Teams-Link erstellt werden. Für die Anbindung ist eine Anmeldung erforderlich. Sie können die Verbindung jederzeit trennen."
+    },
+    "csv": {
+      "q": "Kann ich die Ergebnisse in Excel verwalten?",
+      "a": "Ja. Über die Schaltfläche „CSV“ auf der Terminseite laden Sie die Antworten und Kommentare aller Teilnehmenden sowie die Auswertung pro Terminvorschlag als CSV herunter. Die Datei wird in UTF-8 (mit BOM) ausgegeben und lässt sich daher direkt in Excel öffnen."
+    },
+    "ics": {
+      "q": "Kann ich den festgelegten Termin in Google Kalender oder Outlook eintragen?",
+      "a": "Ja, auch ohne Anmeldung. Die über die Schaltfläche „ICS“ heruntergeladene Datei können Sie in Google Kalender, Outlook, Apple Kalender und andere gängige Kalender-Apps importieren. Nach der Festlegung wird nur der festgelegte Termin exportiert, und es wird zusätzlich ein Link zum Eintragen in Google Kalender angezeigt."
+    },
+    "editAfter": {
+      "q": "Kann ich nach dem Erstellen Terminvorschläge hinzufügen oder löschen?",
+      "a": "Ja. Wenn Sie auf der Terminseite unter „Bearbeiten“ den Bearbeitungsschlüssel eingeben, können Sie Name, Beschreibung und Antwortfrist ändern, Terminvorschläge hinzufügen oder löschen, die Abstimmung beenden oder wieder öffnen und den Termin festlegen. Termine, die Sie angemeldet erstellt haben, verwalten Sie ohne Bearbeitungsschlüssel."
+    },
+    "editKey": {
+      "q": "Was ist der Bearbeitungsschlüssel, und was tue ich, wenn ich ihn vergessen habe?",
+      "a": "Er ist das Passwort zum Bearbeiten und Löschen eines Termins. Sie können ihn beim Erstellen selbst festlegen; lassen Sie das Feld leer, wird er automatisch vergeben. Bearbeitungsschlüssel werden verschlüsselt (gehasht) gespeichert, sodass selbst der Betreiber sie nicht einsehen kann. Bitte notieren Sie ihn sich, damit Sie ihn nicht vergessen."
+    },
+    "editResponse": {
+      "q": "Kann ich meine Antwort später ändern?",
+      "a": "Ja, sofern Sie dasselbe Gerät und denselben Browser verwenden, mit dem Sie geantwortet haben. Über „Eigene Antwort bearbeiten“ auf der Terminseite können Sie Ihre Antwort ändern oder löschen."
+    },
+    "languages": {
+      "q": "Kann ich den Dienst auch in anderen Sprachen als Japanisch nutzen?",
+      "a": "Es werden 8 Sprachen unterstützt: Japanisch, Englisch, Chinesisch (vereinfacht), Koreanisch, Spanisch, Französisch, Deutsch und Portugiesisch. Sie können die Sprache jederzeit über das Sprachmenü oben auf der Seite wechseln; Ihre Auswahl wird für die nächsten Besuche gespeichert."
+    },
+    "theme": {
+      "q": "Was ist das Design „Niedlich“?",
+      "a": "Ein Design in sanften Farben, das Sie zusätzlich zu Hell und Dunkel auswählen können. Die Antwortsymbole werden dabei als Smileys (😊🤔😢) angezeigt. Sie wählen es über den Design-Umschalter oben auf der Seite. Die Bedeutung der Symbole wird auch als Text angegeben, sodass das Design auch mit Screenreadern funktioniert."
+    },
+    "mobile": {
+      "q": "Funktioniert der Dienst auch auf Smartphones?",
+      "a": "Ja. Dank responsivem Design funktioniert er auf Smartphones, Tablets und PCs. Sie können ihn außerdem zum Startbildschirm hinzufügen und wie eine App starten (PWA)."
+    },
+    "visibility": {
+      "q": "Können andere die von mir eingegebenen Informationen sehen?",
+      "a": "Termindetails und Antworten sind nur für Personen sichtbar, die den Link zum Termin kennen. Es gibt keine öffentliche Terminliste, und Terminseiten werden von Suchmaschinen nicht erfasst. Auf 1:1-Buchungsseiten werden Namen und E-Mail-Adressen der Gäste nicht auf der öffentlichen Seite angezeigt; nur der Organisator und die buchende Person selbst können sie sehen."
+    }
+  }
+}

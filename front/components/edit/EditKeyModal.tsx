@@ -17,6 +17,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { useVerifyEditKey } from '@/hooks/useApi';
+import { useI18n } from '@/providers/I18nProvider';
 
 interface EditKeyModalProps {
     uuid: string;
@@ -27,6 +28,7 @@ interface EditKeyModalProps {
 
 /** Asks for the event's edit key and verifies it against the API */
 export function EditKeyModal({ uuid, isOpen, onVerified, onCancel }: EditKeyModalProps) {
+    const { t } = useI18n();
     const [editKey, setEditKey] = useState('');
     const [error, setError] = useState<string | null>(null);
     const { mutate: verify, isPending } = useVerifyEditKey(uuid);
@@ -34,7 +36,7 @@ export function EditKeyModal({ uuid, isOpen, onVerified, onCancel }: EditKeyModa
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (!editKey) {
-            setError('編集キーを入力してください');
+            setError(t('edit.keyModal.required'));
             return;
         }
         verify(editKey, {
@@ -43,7 +45,7 @@ export function EditKeyModal({ uuid, isOpen, onVerified, onCancel }: EditKeyModa
                     setError(null);
                     onVerified(editKey);
                 } else {
-                    setError('編集キーが正しくありません');
+                    setError(t('edit.keyModal.invalid'));
                 }
             },
             onError: (err) => setError(err.message),
@@ -54,13 +56,13 @@ export function EditKeyModal({ uuid, isOpen, onVerified, onCancel }: EditKeyModa
         <Modal isOpen={isOpen} onClose={onCancel} isCentered closeOnOverlayClick={false}>
             <ModalOverlay />
             <ModalContent mx={4} as="form" onSubmit={handleSubmit} data-testid="edit-key-modal">
-                <ModalHeader>編集キーを入力</ModalHeader>
+                <ModalHeader>{t('edit.keyModal.title')}</ModalHeader>
                 <ModalBody>
                     <Text color="text.muted" fontSize="sm" mb={4}>
-                        このイベントを編集するには、作成時に設定（または発行）された編集キーを入力してください。
+                        {t('edit.keyModal.description')}
                     </Text>
                     <FormControl isInvalid={!!error}>
-                        <FormLabel htmlFor="edit-key-input">編集キー</FormLabel>
+                        <FormLabel htmlFor="edit-key-input">{t('edit.keyModal.label')}</FormLabel>
                         <Input
                             id="edit-key-input"
                             type="password"
@@ -75,16 +77,16 @@ export function EditKeyModal({ uuid, isOpen, onVerified, onCancel }: EditKeyModa
                         {error ? (
                             <FormErrorMessage role="alert">{error}</FormErrorMessage>
                         ) : (
-                            <FormHelperText>認証はこのタブを閉じるまで有効です</FormHelperText>
+                            <FormHelperText>{t('edit.keyModal.helper')}</FormHelperText>
                         )}
                     </FormControl>
                 </ModalBody>
                 <ModalFooter gap={2}>
                     <Button variant="ghost" colorScheme="gray" onClick={onCancel}>
-                        キャンセル
+                        {t('common.cancel')}
                     </Button>
-                    <Button type="submit" isLoading={isPending} loadingText="確認中...">
-                        認証
+                    <Button type="submit" isLoading={isPending} loadingText={t('edit.keyModal.verifying')}>
+                        {t('edit.keyModal.submit')}
                     </Button>
                 </ModalFooter>
             </ModalContent>

@@ -1,0 +1,38 @@
+{
+  "title": "Integración de calendarios",
+  "description": "Al conectar tu calendario, cuando se confirme una fecha se añadirán automáticamente el evento y el enlace de la reunión en línea.",
+  "providers": {
+    "google": {
+      "name": "Google Calendar",
+      "description": "Añade las fechas confirmadas a Google Calendar y genera un enlace de Google Meet."
+    },
+    "outlook": {
+      "name": "Calendario de Outlook",
+      "description": "Añade las fechas confirmadas a tu calendario de Outlook (Microsoft 365) y genera un enlace de Teams."
+    }
+  },
+  "status": {
+    "connected": "Conectado",
+    "notConnected": "No conectado",
+    "expired": "Hay que volver a conectar",
+    "notConfigured": "No disponible"
+  },
+  "connect": "Conectar",
+  "reconnect": "Volver a conectar",
+  "disconnect": "Desconectar",
+  "connected": "Conectado con {provider}",
+  "connectError": "No se pudo conectar con {provider}",
+  "connectFailed": "No se pudo iniciar la conexión con {provider}",
+  "disconnected": "Desconectado de {provider}",
+  "disconnectFailed": "No se pudo desconectar de {provider}",
+  "notConfigured": "La integración con {provider} no está configurada en este servidor. Ponte en contacto con el administrador.",
+  "lastUsed": "Último uso: {date}",
+  "loadError": "No se pudo obtener el estado de la conexión ({reason})",
+  "reasons": {
+    "denied": "No se concedió el acceso.",
+    "state": "La solicitud de conexión caducó. Vuelve a intentarlo.",
+    "code": "No se recibió el código de autorización. Vuelve a intentarlo.",
+    "token": "No se pudo obtener el token de acceso. Vuelve a intentarlo más tarde.",
+    "unknown": "Vuelve a intentarlo más tarde."
+  }
+}

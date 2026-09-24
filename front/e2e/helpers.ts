@@ -13,6 +13,8 @@ export async function pickDays(page: Page, count: number) {
     for (let i = 0; i < count; i++) {
         await enabledDays.nth(total - 1 - i).click();
     }
+    // Selected days become candidates with the default duration via the "add" button
+    await page.getByRole('button', { name: count > 1 ? `選択した${count}日を追加` : '追加', exact: true }).click();
     await expect(page.getByTestId('candidate-item')).toHaveCount(count);
 }
 
@@ -22,16 +24,16 @@ export async function createEvent(
     { name = 'E2Eミーティング', owner = '山田太郎', days = 3, editKey = EDIT_KEY }: { name?: string; owner?: string; days?: number; editKey?: string | null } = {}
 ) {
     await page.goto('/create');
-    await page.getByLabel('イベント名').fill(name);
-    await page.getByLabel('あなたの名前').fill(owner);
+    await page.getByRole('textbox', { name: 'イベント名' }).fill(name);
+    await page.getByLabel('主催者名').fill(owner);
     await pickDays(page, days);
 
     if (editKey) {
-        await page.getByRole('button', { name: '詳細設定（任意）' }).click();
+        await page.getByRole('button', { name: /詳細設定（任意）/ }).click();
         await page.getByLabel('編集キー', { exact: true }).fill(editKey);
     }
 
-    await page.getByRole('button', { name: 'イベントを作成する' }).click();
+    await page.getByRole('button', { name: '作成（リンク画面へ）' }).click();
     await page.waitForURL(/\/event\/[0-9a-f-]{36}/);
     const uuid = page.url().match(/\/event\/([0-9a-f-]{36})/)![1];
 

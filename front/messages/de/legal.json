@@ -1,0 +1,127 @@
+{
+  "effectiveDate": "Gültig ab: 24. September 2026",
+  "languageNote": "Bei Abweichungen zwischen dieser Übersetzung und der japanischen Fassung ist die japanische Fassung maßgeblich.",
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "lead": "Diese Erklärung beschreibt, wie {siteName} (im Folgenden „der Dienst“) mit personenbezogenen Daten und Nutzerdaten umgeht.",
+    "collect": {
+      "heading": "1. Erhobene Daten",
+      "p1": "Der Dienst kann ohne Registrierung genutzt werden. Je nach genutzter Funktion erheben wir die folgenden Daten.",
+      "item1": "Beim Erstellen eines Termins eingegebene Daten (Name des Termins, Beschreibung, Name des Organisators, vorgeschlagene Daten und Uhrzeiten, Antwortfrist sowie die E-Mail-Adresse des Organisators, falls Benachrichtigungen über Antworten gewünscht sind)",
+      "item2": "Beim Antworten eingegebene Daten (Name, Verfügbarkeit für jeden Terminvorschlag, Kommentar)",
+      "item3": "Beim Erstellen einer 1:1-Buchungsseite eingegebene Daten (E-Mail-Adresse des Organisators, Titel und Beschreibung der Seite, Datum und Uhrzeit der freien Zeitfenster)",
+      "item4": "Bei einer 1:1-Buchung eingegebene Daten (Name, E-Mail-Adresse und Nachricht des Gastes sowie das gebuchte Datum und die Uhrzeit)",
+      "item5": "Bei Erstellung eines Kontos: Benutzername, E-Mail-Adresse, Passwort (in einen nicht umkehrbaren Hashwert umgewandelt gespeichert, niemals im Klartext) sowie Einstellungen wie Anzeigesprache und Zeitzone",
+      "item6": "Bei aktivierter Kalenderanbindung: OAuth-Zugriffstoken und Aktualisierungstoken von Google oder Microsoft (verschlüsselt gespeichert) sowie die Kennungen und Meeting-Links der über die Anbindung erstellten Kalendereinträge",
+      "item7": "Bearbeitungsschlüssel, Token zum Bearbeiten von Antworten und Token zum Stornieren von Buchungen (jeweils in Hashwerte umgewandelt gespeichert, niemals im Klartext)",
+      "item8": "Aufzeichnungen über versendete Benachrichtigungs-E-Mails (Art der Benachrichtigung, Empfänger, Versandzeitpunkt) und Zugriffsprotokolle (IP-Adresse, User-Agent, Zugriffszeitpunkt, Referrer usw.)"
+    },
+    "purpose": {
+      "heading": "2. Verwendungszwecke",
+      "item1": "Bereitstellung der Terminabstimmung (Anzeige von Terminen, Auswertung der Antworten, Export von CSV- und ICS-Dateien usw.) und der 1:1-Buchung",
+      "item2": "Versand von Benachrichtigungs-E-Mails (Bestätigung der E-Mail-Adresse, Mitteilungen über bestätigte und stornierte Buchungen, Benachrichtigungen über Antworten, Erinnerungen an die Antwortfrist, Mitteilungen über festgelegte Termine usw.)",
+      "item3": "Authentifizierung von Konten sowie – über die Kalenderanbindung – Eintragen von Terminen und Erstellen von Meeting-Links (einschließlich der Abfrage der Kalenderverfügbarkeit, soweit hierfür erforderlich)",
+      "item4": "Gewährleistung der Sicherheit, etwa durch Verhinderung unbefugter Zugriffe und übermäßiger Anfragen",
+      "item5": "Erfassung der Nutzung und Verbesserung der Qualität des Dienstes (in Form statistischer Daten, die keine Identifizierung einzelner Personen ermöglichen)",
+      "item6": "Bearbeitung von Anfragen"
+    },
+    "visibility": {
+      "heading": "3. Sichtbarkeit der Daten",
+      "p1": "Die Details eines Termins und die Antworten kann jede Person einsehen, die die URL des Termins kennt. Bitte achten Sie darauf, mit wem Sie die URL teilen. Die E-Mail-Adresse des Organisators wird nicht veröffentlicht.",
+      "p2": "Auf 1:1-Buchungsseiten werden nur die vom Organisator veröffentlichten freien Zeitfenster angezeigt. Name, E-Mail-Adresse und Nachricht der Gäste werden nicht auf der öffentlichen Seite angezeigt; nur der Organisator und die buchende Person selbst können sie einsehen.",
+      "p3": "Es gibt keine Funktion zur Veröffentlichung einer Terminliste, und Termin- sowie Buchungsseiten sind so eingestellt, dass sie nicht von Suchmaschinen indexiert werden.",
+      "p4": "Beim Antworten können Sie statt Ihres echten Namens auch einen Spitznamen verwenden. Bitte geben Sie keine sensiblen Daten ein, die eine Identifizierung einzelner Personen ermöglichen."
+    },
+    "storage": {
+      "heading": "4. Cookies und Speicherung im Browser",
+      "p1": "Der Dienst verwendet Cookies sowie den lokalen Speicher (Local Storage) und den Sitzungsspeicher (Session Storage) Ihres Browsers für die folgenden Zwecke. Diese werden ausschließlich für die Funktionen des Dienstes verwendet; wir nutzen weder Tracking zu Werbezwecken noch Cookies von Drittanbietern.",
+      "item1": "Ein Sitzungscookie, das Sie angemeldet hält (bzw. ein Authentifizierungstoken, wenn Sie sich über einen externen Authentifizierungsdienst anmelden), sowie ein CSRF-Schutz-Cookie zur Abwehr gefälschter Anfragen",
+      "item2": "Einstellung der Anzeigesprache (Cookie)",
+      "item3": "Einstellung des Designs (Hell, Dunkel oder Niedlich)",
+      "item4": "Token zum späteren Bearbeiten Ihrer abgesendeten Antworten und Verwaltungstoken für von Ihnen erstellte 1:1-Buchungsseiten",
+      "item5": "In diesem Tab eingegebene Bearbeitungsschlüssel (werden beim Schließen des Tabs gelöscht)",
+      "item6": "Wie Sie auf den Dienst aufmerksam geworden sind (ref-Parameter)"
+    },
+    "thirdParty": {
+      "heading": "5. Weitergabe an Dritte und externe Dienste",
+      "p1": "Außer in gesetzlich vorgeschriebenen Fällen geben wir erhobene Daten nicht ohne Ihre Einwilligung an Dritte weiter. Für den Betrieb von Servern und Datenbank sowie den E-Mail-Versand können wir Hosting-Anbieter und E-Mail-Versanddienstleister mit der Verarbeitung von Daten beauftragen.",
+      "p2": "Wenn Sie die Kalenderanbindung aktivieren, werden Termindaten (Name des Termins, Datum und Uhrzeit, Beschreibung usw.) im erforderlichen Umfang an Google LLC (Google Kalender, Google Meet) oder Microsoft Corporation (Outlook, Microsoft Teams) übermittelt, um Termine einzutragen und Meeting-Links zu erstellen. Für die Verarbeitung der Daten durch diese Unternehmen gelten deren jeweilige Datenschutzerklärungen."
+    },
+    "retention": {
+      "heading": "6. Speicherdauer und Löschung",
+      "p1": "Termine und Antworten werden gespeichert, bis der Organisator sie über die Bearbeitungsseite löscht. Der Organisator kann einen Termin jederzeit mithilfe des Bearbeitungsschlüssels (bzw. seines Kontos, falls der Termin angemeldet erstellt wurde) löschen.",
+      "p2": "Antwortende können ihre eigenen Antworten auf dem Gerät, mit dem sie geantwortet haben, ändern oder löschen. Wenn Sie eine Löschung auf anderem Weg wünschen, wenden Sie sich bitte an den Organisator oder an unsere Kontaktstelle.",
+      "p3": "1:1-Buchungsseiten und Buchungsdaten werden als Aufzeichnung der Buchungen gespeichert. Die Annahme von Buchungen kann jederzeit beendet werden, und Buchungen können sowohl vom Organisator als auch vom Gast storniert werden. Wenn Sie eine Löschung wünschen, wenden Sie sich bitte an unsere Kontaktstelle.",
+      "p4": "Die Kalenderanbindung kann jederzeit in den Verbindungseinstellungen Ihres Kontos getrennt werden; danach werden die gespeicherten Token nicht mehr verwendet. Wenn Sie die Löschung Ihres Kontos wünschen, wenden Sie sich bitte an unsere Kontaktstelle.",
+      "p5": "Termine und Buchungsseiten, die längere Zeit nicht aktualisiert wurden, können ohne Vorankündigung gelöscht werden."
+    },
+    "security": {
+      "heading": "7. Datensicherheit",
+      "p1": "Wir treffen angemessene Sicherheitsmaßnahmen, um das Abfließen und die Manipulation von Daten zu verhindern. So wird die Kommunikation per HTTPS verschlüsselt, Passwörter, Bearbeitungsschlüssel und sonstige Token werden gehasht und die OAuth-Token der Kalenderanbindung verschlüsselt gespeichert."
+    },
+    "contact": {
+      "heading": "8. Kontakt und Änderungen",
+      "p1Email": "Bei Fragen zu dieser Erklärung wenden Sie sich bitte an {email}.",
+      "p1NoEmail": "Bei Fragen zu dieser Erklärung wenden Sie sich bitte an den Betreiber des Dienstes.",
+      "p2": "Wir können diese Erklärung bei Bedarf ändern. Über wesentliche Änderungen informieren wir auf dieser Seite."
+    }
+  },
+  "terms": {
+    "title": "Nutzungsbedingungen",
+    "lead": "Dies sind die Nutzungsbedingungen von {siteName} (im Folgenden „der Dienst“).",
+    "scope": {
+      "heading": "§ 1 (Geltungsbereich)",
+      "p1": "Diese Bedingungen legen die Voraussetzungen für die Nutzung des Dienstes fest. Mit der Nutzung des Dienstes gilt Ihre Zustimmung zu diesen Bedingungen als erteilt."
+    },
+    "service": {
+      "heading": "§ 2 (Leistungsumfang)",
+      "p1": "Der Dienst stellt kostenlos eine Terminabstimmung für mehrere Personen (Erstellen von Terminen, Antworten, Auswerten, Export von CSV- und ICS-Dateien sowie Bearbeiten von Terminen) und 1:1-Buchungsseiten zur Annahme von Einzelterminen bereit. Diese können ohne Registrierung genutzt werden.",
+      "p2": "Wenn Sie freiwillig ein Konto erstellen, können Sie zusätzliche Funktionen wie eine Liste Ihrer erstellten Termine und die Kalenderanbindung nutzen."
+    },
+    "account": {
+      "heading": "§ 3 (Konten)",
+      "p1": "Wenn Sie ein Konto erstellen, geben Sie bitte zutreffende Daten an. Sie sind selbst für die Verwaltung Ihres Passworts verantwortlich und dürfen es Dritten nicht zur Nutzung überlassen. Für Schäden aus einer unbefugten Nutzung Ihres Kontos haftet der Betreiber nicht, es sei denn, sie beruhen auf Vorsatz oder grober Fahrlässigkeit des Betreibers."
+    },
+    "keys": {
+      "heading": "§ 4 (Verwaltung von Bearbeitungsschlüsseln und Verwaltungslinks)",
+      "p1": "Sie sind selbst für die Verwaltung der Bearbeitungsschlüssel von Terminen, der Verwaltungslinks von 1:1-Buchungsseiten und der Stornierungslinks von Buchungen verantwortlich. Für Schäden aus deren Verlust oder Offenlegung haftet der Betreiber nicht. Der Betreiber kann Bearbeitungsschlüssel nicht wiederherstellen."
+    },
+    "integrations": {
+      "heading": "§ 5 (Anbindung externer Dienste)",
+      "p1": "Die Kalenderanbindung nutzt externe Dienste wie Google und Microsoft. Für die Nutzung externer Dienste gelten die Nutzungsbedingungen der jeweiligen Anbieter. Aufgrund von Änderungen oder Störungen externer Dienste kann die Anbindungsfunktion unter Umständen nicht verfügbar sein; für daraus entstehende Schäden haftet der Betreiber nicht."
+    },
+    "booking": {
+      "heading": "§ 6 (1:1-Buchungen)",
+      "p1": "Eine über eine 1:1-Buchungsseite vorgenommene Buchung ist eine Vereinbarung zwischen dem Organisator und dem Gast. Der Betreiber ist nicht Partei der Buchung und haftet nicht für Streitigkeiten zwischen Nutzern in Bezug auf die Einhaltung, Änderung oder Stornierung von Buchungen."
+    },
+    "prohibited": {
+      "heading": "§ 7 (Verbotene Handlungen)",
+      "item1": "Handlungen, die gegen Gesetze oder die öffentliche Ordnung und die guten Sitten verstoßen",
+      "item2": "Das Veröffentlichen von Inhalten, die Rechte anderer verletzen, von diskriminierenden oder gewaltverherrlichenden Inhalten sowie von sensiblen Daten, die eine Identifizierung einzelner Personen ermöglichen",
+      "item3": "Das Registrieren der E-Mail-Adresse einer anderen Person ohne deren Einwilligung sowie die Nutzung zum Versand von Spam",
+      "item4": "Das übermäßige Belasten der Server des Dienstes, unbefugte Zugriffe sowie automatisierte Massenanfragen",
+      "item5": "Vertrieb, Werbung oder Akquise mithilfe des Dienstes (sofern nicht vom Betreiber genehmigt)",
+      "item6": "Sonstige Handlungen, die der Betreiber als unangemessen erachtet"
+    },
+    "removal": {
+      "heading": "§ 8 (Löschung von Inhalten und Nutzungssperre)",
+      "p1": "Verstößt ein Nutzer gegen diese Bedingungen oder hält der Betreiber es für den Betrieb für erforderlich, kann der Betreiber ohne vorherige Ankündigung Termine, Antworten, Buchungsseiten oder Konten löschen oder die Nutzung des Dienstes einschränken."
+    },
+    "changes": {
+      "heading": "§ 9 (Änderung und Einstellung des Dienstes)",
+      "p1": "Der Betreiber kann den Inhalt des Dienstes ohne vorherige Ankündigung ändern oder dessen Bereitstellung unterbrechen oder beenden. Für daraus entstehende Schäden der Nutzer haftet der Betreiber nicht."
+    },
+    "disclaimer": {
+      "heading": "§ 10 (Haftungsausschluss)",
+      "p1": "Der Betreiber übernimmt keine Gewähr dafür, dass der Dienst frei von tatsächlichen oder rechtlichen Mängeln ist. Für Datenverluste, verzögerte oder nicht zugestellte Benachrichtigungs-E-Mails, die Ergebnisse von Terminabstimmungen oder Buchungen, Streitigkeiten zwischen Nutzern und Ähnliches haftet der Betreiber nicht, es sei denn, sie beruhen auf Vorsatz oder grober Fahrlässigkeit des Betreibers."
+    },
+    "amendment": {
+      "heading": "§ 11 (Änderung der Bedingungen)",
+      "p1": "Der Betreiber kann diese Bedingungen bei Bedarf ändern. Die geänderten Bedingungen treten mit ihrer Veröffentlichung auf dieser Seite in Kraft."
+    },
+    "law": {
+      "heading": "§ 12 (Anwendbares Recht und Gerichtsstand)",
+      "p1": "Für die Auslegung dieser Bedingungen gilt japanisches Recht. Für Streitigkeiten im Zusammenhang mit dem Dienst ist ausschließlich das für den Sitz des Betreibers zuständige Gericht als vereinbarter Gerichtsstand zuständig."
+    }
+  }
+}

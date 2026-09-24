@@ -1,0 +1,66 @@
+{
+  "title": "Preguntas frecuentes",
+  "lead": "Respuestas a las preguntas más habituales sobre el uso y las funciones de la herramienta de programación.",
+  "questionPrefix": "P.",
+  "ctaLead": "¡Empieza a programar ya!",
+  "ctaCreate": "Crear un evento (gratis)",
+  "ctaBooking": "Crear una página de reservas 1 a 1",
+  "items": {
+    "noLogin": {
+      "q": "¿Necesito registrarme o iniciar sesión?",
+      "a": "No. Tanto quien crea el evento como quienes responden pueden usarla sin cuenta. Basta con compartir el enlace del evento para empezar a recopilar respuestas. Las páginas de reservas 1 a 1 también se pueden publicar solo con verificar tu dirección de correo."
+    },
+    "price": {
+      "q": "¿Tiene algún coste?",
+      "a": "Todas las funciones son gratuitas. Úsala sin preocuparte por límites en el número de eventos o de participantes."
+    },
+    "oneOnOne": {
+      "q": "¿Qué es una página de reservas 1 a 1?",
+      "a": "Es una función pensada para citas individuales, como entrevistas o reuniones comerciales. El organizador añade sus huecos libres y publica la página, y la reserva se confirma en cuanto un invitado elige el hueco que le viene bien. A la dirección de correo que introduzcas al crearla recibirás un enlace de verificación y el enlace a tu página de gestión, y tanto el organizador como el invitado reciben un correo cada vez que hay una reserva o una cancelación. El invitado puede cancelar la reserva desde el enlace del correo de confirmación."
+    },
+    "account": {
+      "q": "¿Qué puedo hacer con una cuenta?",
+      "a": "Si creas una cuenta con nombre de usuario, correo electrónico y contraseña e inicias sesión, podrás ver la lista de eventos que has creado (Mis eventos) y conectar Google Calendar u Outlook. Sin iniciar sesión puedes usar todas las funciones básicas: crear eventos, responder, ver el recuento y exportar en CSV/ICS."
+    },
+    "calendarSync": {
+      "q": "¿Puedo conectar Google Calendar u Outlook?",
+      "a": "Sí. Inicia sesión y conecta tu cuenta de Google o Microsoft (Outlook) desde \"Integración de calendarios\". Al confirmar una fecha, el evento se añadirá automáticamente a tu calendario y se podrá generar un enlace de reunión de Google Meet o Microsoft Teams. Para la integración es necesario iniciar sesión, y puedes desconectarla en cualquier momento."
+    },
+    "csv": {
+      "q": "¿Puedo gestionar los resultados en Excel?",
+      "a": "Sí. Con el botón \"CSV\" de la página del evento puedes descargar en CSV la disponibilidad y los comentarios de cada participante, junto con los totales por fecha. El archivo se genera en UTF-8 (con BOM), así que se abre directamente en Excel."
+    },
+    "ics": {
+      "q": "¿Puedo añadir la fecha elegida a Google Calendar u Outlook?",
+      "a": "Sí, incluso sin iniciar sesión. El archivo que descargas con el botón \"ICS\" se puede importar en Google Calendar, Outlook, Apple Calendar y las principales aplicaciones de calendario. Una vez confirmada la fecha, solo se exporta la fecha confirmada y también se muestra un enlace para añadirla a Google Calendar."
+    },
+    "editAfter": {
+      "q": "¿Puedo añadir o eliminar fechas después de crear el evento?",
+      "a": "Sí. Desde \"Editar\" en la página del evento, introduce la clave de edición para cambiar el nombre, la descripción y la fecha límite, añadir o eliminar fechas propuestas, cerrar o reabrir las respuestas y confirmar la fecha. Los eventos que creaste con la sesión iniciada se pueden gestionar sin clave de edición."
+    },
+    "editKey": {
+      "q": "¿Qué es la clave de edición? ¿Y si la olvido?",
+      "a": "Es la contraseña para editar y eliminar el evento. Puedes definirla tú al crear el evento o, si la dejas en blanco, se genera automáticamente. Las claves de edición se guardan cifradas (con hash), así que ni siquiera el operador puede consultarlas. Apúntala para no olvidarla."
+    },
+    "editResponse": {
+      "q": "¿Puedo modificar mi respuesta más tarde?",
+      "a": "Sí, desde el mismo dispositivo y navegador con el que respondiste: usa \"Editar mi respuesta\" en la página del evento para modificarla o eliminarla."
+    },
+    "languages": {
+      "q": "¿Está disponible en otros idiomas además del japonés?",
+      "a": "Está disponible en 8 idiomas: japonés, inglés, chino (simplificado), coreano, español, francés, alemán y portugués. Puedes cambiarlo en cualquier momento desde el menú de idioma de la parte superior de la pantalla, y tu elección se recordará la próxima vez."
+    },
+    "theme": {
+      "q": "¿Qué es el tema \"Adorable\"?",
+      "a": "Es un tema de colores suaves que puedes elegir además de los temas claro y oscuro. Los símbolos de disponibilidad se muestran como caritas (😊🤔😢). Selecciónalo desde el selector de tema de la parte superior de la pantalla. El significado de cada símbolo también aparece como texto, así que funciona con lectores de pantalla."
+    },
+    "mobile": {
+      "q": "¿Funciona en smartphones?",
+      "a": "Sí. Su diseño adaptable funciona en móviles, tabletas y ordenadores. También puedes añadirla a la pantalla de inicio y abrirla como una app (compatible con PWA)."
+    },
+    "visibility": {
+      "q": "¿Pueden otras personas ver la información que introduzco?",
+      "a": "El contenido del evento y las respuestas solo pueden verlos quienes conozcan el enlace del evento. No existe ninguna lista pública de eventos, y las páginas de eventos están configuradas para no aparecer en los buscadores. En las páginas de reservas 1 a 1, el nombre y el correo de los invitados nunca se muestran en la página pública; solo pueden verlos el organizador y la persona que hizo la reserva."
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "title": "Kontoeinstellungen",
+  "nav": {
+    "label": "Kontomenü",
+    "profile": "Profil",
+    "events": "Meine Termine",
+    "integrations": "Kalenderanbindung"
+  },
+  "links": {
+    "events": "Alle Termine, die Sie angemeldet erstellt haben",
+    "integrations": "Anbindung an Google- oder Outlook-Kalender"
+  },
+  "profile": {
+    "heading": "Profil",
+    "username": "Benutzername: {username}",
+    "lastName": "Nachname",
+    "firstName": "Vorname",
+    "email": "E-Mail-Adresse",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "save": "Speichern",
+    "saved": "Profil wurde gespeichert",
+    "saveFailed": "Speichern fehlgeschlagen"
+  },
+  "password": {
+    "heading": "Passwort ändern",
+    "old_password": "Aktuelles Passwort",
+    "new_password": "Neues Passwort",
+    "new_password_confirm": "Neues Passwort bestätigen",
+    "submit": "Passwort ändern",
+    "changed": "Passwort wurde geändert",
+    "required": "Bitte geben Sie Ihr aktuelles und ein neues Passwort ein.",
+    "mismatch": "Die neuen Passwörter stimmen nicht überein.",
+    "sso": "Sie sind per Single Sign-On (SSO) angemeldet. Ihr Passwort wird daher beim Anmeldedienst verwaltet."
+  },
+  "events": {
+    "title": "Meine Termine",
+    "create": "Termin erstellen",
+    "total": "{count} Termine insgesamt",
+    "empty": "Noch keine Termine vorhanden",
+    "emptyDescription": "Termine, die Sie angemeldet erstellen, werden hier angezeigt.",
+    "participants": "{count} Antworten",
+    "candidates": "{count} Vorschläge",
+    "deadline": "Frist {date}",
+    "created": "Erstellt {date}",
+    "pagination": "Seitennavigation",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "page": "Seite {page} von {total}",
+    "loadError": "Termine konnten nicht geladen werden ({reason})",
+    "retry": "Erneut laden"
+  }
+}

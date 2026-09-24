@@ -1,30 +1,59 @@
 'use client';
 
-import { Badge, Box, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, VisuallyHidden, VStack } from '@chakra-ui/react';
-import { Trophy } from 'lucide-react';
-import type { AttendanceStatus, Schedule } from '@/types';
+import {
+    Badge,
+    Box,
+    HStack,
+    IconButton,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tooltip,
+    Tr,
+    VisuallyHidden,
+    VStack,
+} from '@chakra-ui/react';
+import { Pencil, Trash2, Trophy } from 'lucide-react';
 import { formatDate, formatTime } from '@/lib/date';
+import { useAvailabilitySymbols, type AvailabilitySymbols } from '@/lib/availabilitySymbols';
+import { useI18n } from '@/providers/I18nProvider';
+import type { AttendanceStatus, Participant, Schedule } from '@/types';
 
 interface ResponseTableProps {
     schedule: Schedule;
     /** candidate_id flagged as recommended by the summary API */
     recommendedId?: number | null;
-    /** participant id of the viewer's own response (highlighted) */
+    /** participant id of the viewer's own response (highlighted, editable) */
     myParticipantId?: number | null;
+    /** Organizers (owner or edit key) may delete any response */
+    isOrganizer?: boolean;
+    /** Edit the viewer's own response */
+    onEdit?: (participant: Participant) => void;
+    /** Delete a response (own response, or any response for organizers) */
+    onDelete?: (participant: Participant) => void;
 }
 
-const STATUS_STYLE: Record<AttendanceStatus, { colorScheme: string; text: string; label: string }> = {
-    ok: { colorScheme: 'green', text: '◯', label: '参加可能' },
-    maybe: { colorScheme: 'yellow', text: '△', label: '調整可能' },
-    ng: { colorScheme: 'red', text: '×', label: '参加不可' },
-    pending: { colorScheme: 'gray', text: '-', label: '未回答' },
+const COLOR_SCHEME: Record<AttendanceStatus, string> = {
+    ok: 'green',
+    maybe: 'yellow',
+    ng: 'red',
+    pending: 'gray',
 };
 
-function StatusCell({ status }: { status: AttendanceStatus }) {
-    const style = STATUS_STYLE[status];
+function symbolFor(status: AttendanceStatus, symbols: AvailabilitySymbols) {
+    if (status === 'ok') return symbols.yes;
+    if (status === 'maybe') return symbols.maybe;
+    if (status === 'ng') return symbols.no;
+    return '-';
+}
+
+function StatusCell({ status, symbols, label }: { status: AttendanceStatus; symbols: AvailabilitySymbols; label: string }) {
     return (
         <Badge
-            colorScheme={style.colorScheme}
+            colorScheme={COLOR_SCHEME[status]}
             variant="subtle"
             fontSize="md"
             minW={8}
@@ -33,14 +62,16 @@ function StatusCell({ status }: { status: AttendanceStatus }) {
             alignItems="center"
             justifyContent="center"
             borderRadius="lg"
-            aria-label={style.label}
+            aria-label={label}
         >
-            {style.text}
+            {symbolFor(status, symbols)}
         </Badge>
     );
 }
 
-export function ResponseTable({ schedule, recommendedId, myParticipantId }: ResponseTableProps) {
+export function ResponseTable({ schedule, recommendedId, myParticipantId, isOrganizer = false, onEdit, onDelete }: ResponseTableProps) {
+    const { t } = useI18n();
+    const symbols = useAvailabilitySymbols();
     const { candidates, participants } = schedule;
 
     const statusMap = new Map<string, AttendanceStatus>();
@@ -50,15 +81,20 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
         }
     }
 
+    const canEdit = (participant: Participant) => Boolean(onEdit) && participant.id === myParticipantId;
+    const canDelete = (participant: Participant) =>
+        Boolean(onDelete) && (participant.id === myParticipantId || isOrganizer);
+    const showActions = participants.some((p) => canEdit(p) || canDelete(p));
+
     if (participants.length === 0) {
         return (
             <Box bg="bg.card" borderRadius="xl" border="1px solid" borderColor="border.default" p={12} textAlign="center">
                 <VStack spacing={2}>
                     <Text fontSize="lg" color="text.muted">
-                        まだ回答がありません
+                        {t('response.table.empty')}
                     </Text>
                     <Text fontSize="sm" color="text.muted">
-                        URLを共有して回答を集めましょう
+                        {t('response.table.emptyHint')}
                     </Text>
                 </VStack>
             </Box>
@@ -66,14 +102,14 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
     }
 
     return (
-        <Box bg="bg.card" borderRadius="xl" border="1px solid" borderColor="border.default" overflow="hidden">
+        <Box bg="bg.card" borderRadius="xl" border="1px solid" borderColor="border.default" overflow="hidden" boxShadow="sm">
             <Box overflowX="auto">
                 <Table variant="simple" size="sm" data-testid="response-table">
-                    <VisuallyHidden as="caption">参加者ごとの回答状況</VisuallyHidden>
+                    <VisuallyHidden as="caption">{t('response.table.caption')}</VisuallyHidden>
                     <Thead bg="bg.subtle">
                         <Tr>
-                            <Th position="sticky" left={0} bg="bg.subtle" zIndex={1} minW="110px" scope="col">
-                                参加者
+                            <Th position="sticky" left={0} bg="bg.subtle" zIndex={1} minW="120px" scope="col" textTransform="none">
+                                {t('response.table.participant')}
                             </Th>
                             {candidates.map((candidate) => {
                                 const isFinalized = schedule.finalized_candidate === candidate.id;
@@ -82,21 +118,22 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
                                     <Th
                                         key={candidate.id}
                                         textAlign="center"
-                                        minW="84px"
+                                        minW="88px"
                                         scope="col"
+                                        textTransform="none"
                                         bg={isFinalized ? 'green.50' : undefined}
-                                        _dark={isFinalized ? { bg: 'green.900' } : undefined}
+                                        _dark={isFinalized ? { bg: 'rgba(72, 187, 120, 0.16)' } : undefined}
                                     >
                                         <VStack spacing={0}>
                                             <Text fontSize="xs" fontWeight="bold">
-                                                {formatDate(candidate.start_at, 'M/d(E)')}
+                                                {formatDate(candidate.start_at, t('event.format.dayShort'))}
                                             </Text>
                                             <Text fontSize="xs" fontWeight="normal">
-                                                {formatTime(candidate.start_at)}〜
+                                                {formatTime(candidate.start_at)}-{formatTime(candidate.end_at)}
                                             </Text>
                                             {isFinalized ? (
                                                 <Badge colorScheme="green" variant="solid" fontSize="2xs" mt={1}>
-                                                    確定
+                                                    {t('response.table.finalized')}
                                                 </Badge>
                                             ) : (
                                                 isRecommended && (
@@ -110,7 +147,7 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
                                                         data-testid="recommended-badge"
                                                     >
                                                         <Trophy size={10} aria-hidden />
-                                                        おすすめ
+                                                        {t('response.table.recommended')}
                                                     </Badge>
                                                 )
                                             )}
@@ -118,9 +155,14 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
                                     </Th>
                                 );
                             })}
-                            <Th scope="col" minW="120px">
-                                コメント
+                            <Th scope="col" minW="120px" textTransform="none">
+                                {t('response.table.comment')}
                             </Th>
+                            {showActions && (
+                                <Th scope="col" textTransform="none">
+                                    <VisuallyHidden>{t('response.table.actions')}</VisuallyHidden>
+                                </Th>
+                            )}
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -144,15 +186,22 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
                                         {participant.name}
                                         {isMine && (
                                             <Badge ml={1} fontSize="2xs" colorScheme="brand">
-                                                あなた
+                                                {t('response.table.you')}
                                             </Badge>
                                         )}
                                     </Th>
-                                    {candidates.map((candidate) => (
-                                        <Td key={candidate.id} textAlign="center">
-                                            <StatusCell status={statusMap.get(`${participant.id}:${candidate.id}`) ?? 'pending'} />
-                                        </Td>
-                                    ))}
+                                    {candidates.map((candidate) => {
+                                        const status = statusMap.get(`${participant.id}:${candidate.id}`) ?? 'pending';
+                                        return (
+                                            <Td key={candidate.id} textAlign="center">
+                                                <StatusCell
+                                                    status={status}
+                                                    symbols={symbols}
+                                                    label={t(`response.status.${status}`)}
+                                                />
+                                            </Td>
+                                        );
+                                    })}
                                     <Td maxW="240px">
                                         <Tooltip label={participant.comment} isDisabled={!participant.comment} placement="top">
                                             <Text noOfLines={2} fontSize="sm" color="text.muted">
@@ -160,6 +209,31 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
                                             </Text>
                                         </Tooltip>
                                     </Td>
+                                    {showActions && (
+                                        <Td className="no-print">
+                                            <HStack spacing={1} justify="end">
+                                                {canEdit(participant) && (
+                                                    <IconButton
+                                                        aria-label={t('response.table.editResponse', { name: participant.name })}
+                                                        icon={<Pencil size={14} />}
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        onClick={() => onEdit?.(participant)}
+                                                    />
+                                                )}
+                                                {canDelete(participant) && (
+                                                    <IconButton
+                                                        aria-label={t('response.table.deleteResponse', { name: participant.name })}
+                                                        icon={<Trash2 size={14} />}
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        colorScheme="red"
+                                                        onClick={() => onDelete?.(participant)}
+                                                    />
+                                                )}
+                                            </HStack>
+                                        </Td>
+                                    )}
                                 </Tr>
                             );
                         })}
@@ -172,27 +246,50 @@ export function ResponseTable({ schedule, recommendedId, myParticipantId }: Resp
                                 bg="bg.subtle"
                                 borderRight="1px solid"
                                 borderColor="border.default"
+                                textTransform="none"
                             >
-                                集計
+                                {t('response.table.total')}
                             </Th>
                             {candidates.map((candidate) => (
                                 <Td key={candidate.id} textAlign="center">
                                     <VStack spacing={0.5}>
-                                        <Badge colorScheme="green" fontSize="xs">
-                                            ◯ {candidate.ok_count}
+                                        <Badge
+                                            colorScheme="green"
+                                            fontSize="xs"
+                                            aria-label={t('response.table.countLabel', {
+                                                status: t('response.status.ok'),
+                                                count: candidate.ok_count,
+                                            })}
+                                        >
+                                            {symbols.yes} {candidate.ok_count}
                                         </Badge>
                                         {schedule.allow_maybe && (
-                                            <Badge colorScheme="yellow" fontSize="xs">
-                                                △ {candidate.maybe_count}
+                                            <Badge
+                                                colorScheme="yellow"
+                                                fontSize="xs"
+                                                aria-label={t('response.table.countLabel', {
+                                                    status: t('response.status.maybe'),
+                                                    count: candidate.maybe_count,
+                                                })}
+                                            >
+                                                {symbols.maybe} {candidate.maybe_count}
                                             </Badge>
                                         )}
-                                        <Badge colorScheme="red" fontSize="xs">
-                                            × {candidate.ng_count}
+                                        <Badge
+                                            colorScheme="red"
+                                            fontSize="xs"
+                                            aria-label={t('response.table.countLabel', {
+                                                status: t('response.status.ng'),
+                                                count: candidate.ng_count,
+                                            })}
+                                        >
+                                            {symbols.no} {candidate.ng_count}
                                         </Badge>
                                     </VStack>
                                 </Td>
                             ))}
                             <Td />
+                            {showActions && <Td />}
                         </Tr>
                     </Tbody>
                 </Table>

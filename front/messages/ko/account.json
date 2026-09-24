@@ -1,0 +1,52 @@
+{
+  "title": "계정 설정",
+  "nav": {
+    "label": "계정 메뉴",
+    "profile": "프로필",
+    "events": "내 이벤트",
+    "integrations": "캘린더 연동"
+  },
+  "links": {
+    "events": "로그인 중에 만든 이벤트 목록",
+    "integrations": "Google / Outlook 캘린더 연동"
+  },
+  "profile": {
+    "heading": "프로필",
+    "username": "사용자 이름: {username}",
+    "lastName": "성",
+    "firstName": "이름",
+    "email": "이메일 주소",
+    "invalidEmail": "올바른 이메일 주소를 입력해 주세요.",
+    "save": "저장하기",
+    "saved": "프로필을 저장했습니다",
+    "saveFailed": "저장하지 못했습니다"
+  },
+  "password": {
+    "heading": "비밀번호 변경",
+    "old_password": "현재 비밀번호",
+    "new_password": "새 비밀번호",
+    "new_password_confirm": "새 비밀번호(확인)",
+    "submit": "비밀번호 변경",
+    "changed": "비밀번호를 변경했습니다",
+    "required": "현재 비밀번호와 새 비밀번호를 입력해 주세요.",
+    "mismatch": "새 비밀번호가 일치하지 않습니다.",
+    "sso": "싱글 사인온(SSO)으로 로그인했기 때문에 비밀번호는 로그인한 서비스에서 관리됩니다."
+  },
+  "events": {
+    "title": "내 이벤트",
+    "create": "이벤트 만들기",
+    "total": "총 {count}개",
+    "empty": "아직 이벤트가 없습니다",
+    "emptyDescription": "로그인 중에 만든 이벤트가 여기에 표시됩니다.",
+    "participants": "응답 {count}명",
+    "candidates": "후보 {count}개",
+    "deadline": "마감 {date}",
+    "created": "생성 {date}",
+    "pagination": "페이지 이동",
+    "prev": "이전",
+    "next": "다음",
+    "page": "{page} / {total} 페이지",
+    "loadError": "이벤트를 불러오지 못했습니다({reason})",
+    "retry": "다시 불러오기"
+  }
+}

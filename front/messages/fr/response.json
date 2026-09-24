@@ -1,0 +1,47 @@
+{
+  "available": "◯",
+  "maybe": "△",
+  "unavailable": "×",
+  "yourName": "Votre nom",
+  "submitted": "Réponse envoyée.",
+  "updated": "Réponse mise à jour.",
+  "status": {
+    "ok": "Disponible",
+    "maybe": "Peut-être",
+    "ng": "Indisponible",
+    "pending": "Sans réponse"
+  },
+  "form": {
+    "ariaLabel": "Formulaire de disponibilité",
+    "name": "Votre nom",
+    "namePlaceholder": "ex. : Camille Martin",
+    "nameRequired": "Veuillez saisir votre nom",
+    "nameTooLong": "100 caractères maximum",
+    "commentTooLong": "1000 caractères maximum",
+    "attendanceLegend": "Indiquez votre disponibilité pour chaque date",
+    "candidateGroup": "Disponibilité pour le {date}",
+    "optionLabel": "{date} : {status}",
+    "missing": "{count} date(s) sans réponse",
+    "comment": "Commentaire (facultatif)",
+    "commentPlaceholder": "Toute information utile pour l'organisateur",
+    "submit": "Envoyer la réponse",
+    "update": "Mettre à jour la réponse",
+    "sending": "Envoi en cours...",
+    "error": "Impossible d'envoyer votre réponse"
+  },
+  "table": {
+    "caption": "Réponses par participant",
+    "participant": "Participant",
+    "comment": "Commentaire",
+    "actions": "Actions",
+    "total": "Total",
+    "you": "Vous",
+    "finalized": "Confirmée",
+    "recommended": "Recommandée",
+    "empty": "Aucune réponse pour le moment",
+    "emptyHint": "Partagez le lien pour recueillir des réponses",
+    "editResponse": "Modifier la réponse de {name}",
+    "deleteResponse": "Supprimer la réponse de {name}",
+    "countLabel": "{status} : {count}"
+  }
+}

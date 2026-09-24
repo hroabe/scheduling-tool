@@ -1,0 +1,30 @@
+{
+  "title": "Planification",
+  "create": "Nouveau",
+  "myEvents": "Mes événements",
+  "eventName": "Nom de l'événement",
+  "description": "Description",
+  "deadline": "Date limite de réponse",
+  "candidates": "Dates proposées",
+  "participants": "Participants",
+  "finalize": "Confirmer",
+  "finalized": "Confirmé",
+  "notFinalized": "Non confirmé",
+  "created": "Événement créé.",
+  "finalizedSuccess": "Date confirmée.",
+  "noEvents": "Aucun événement pour le moment.",
+  "status": {
+    "open": "Ouvert",
+    "closed": "Clôturé",
+    "expired": "Délai dépassé",
+    "fixed": "Confirmé",
+    "inactive": "En pause"
+  },
+  "card": {
+    "candidates": "Dates : {count}",
+    "responses": "Réponses : {count}",
+    "deadline": "Limite : {date}",
+    "created": "Créé le {date}",
+    "open": "Ouvrir"
+  }
+}

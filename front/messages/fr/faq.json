@@ -1,0 +1,66 @@
+{
+  "title": "Questions fréquentes",
+  "lead": "Les réponses aux questions les plus courantes sur l'utilisation et les fonctionnalités de l'outil de planification.",
+  "questionPrefix": "Q.",
+  "ctaLead": "Prêt à planifier ?",
+  "ctaCreate": "Créer un événement (gratuit)",
+  "ctaBooking": "Créer une page de réservation individuelle",
+  "items": {
+    "noLogin": {
+      "q": "Faut-il s'inscrire ou se connecter ?",
+      "a": "Non. La personne qui crée l'événement comme celles qui répondent peuvent l'utiliser sans compte. Il suffit de partager le lien de l'événement pour recueillir des réponses. Une page de réservation individuelle peut aussi être publiée en vérifiant simplement votre adresse e-mail."
+    },
+    "price": {
+      "q": "Est-ce payant ?",
+      "a": "Toutes les fonctionnalités sont gratuites. Utilisez-le sans vous soucier d'une limite sur le nombre d'événements ou de participants."
+    },
+    "oneOnOne": {
+      "q": "Qu'est-ce qu'une page de réservation individuelle ?",
+      "a": "C'est une fonctionnalité conçue pour les rendez-vous individuels, comme les entretiens ou les rendez-vous commerciaux. L'organisateur enregistre ses créneaux libres et publie la page ; la réservation est confirmée dès qu'un invité choisit le créneau qui lui convient. Un lien de vérification et le lien de votre page de gestion sont envoyés à l'adresse e-mail saisie lors de la création, et l'organisateur comme l'invité sont prévenus par e-mail de chaque réservation ou annulation. L'invité peut annuler sa réservation depuis le lien de l'e-mail de confirmation."
+    },
+    "account": {
+      "q": "Que puis-je faire avec un compte ?",
+      "a": "En créant un compte avec un nom d'utilisateur, une adresse e-mail et un mot de passe, puis en vous connectant, vous pouvez consulter la liste des événements que vous avez créés (Mes événements) et connecter Google Agenda ou Outlook. Sans connexion, toutes les fonctionnalités de base restent disponibles : création d'événements, réponses, décompte et export CSV/ICS."
+    },
+    "calendarSync": {
+      "q": "Puis-je connecter Google Agenda ou Outlook ?",
+      "a": "Oui. Connectez-vous, puis reliez votre compte Google ou Microsoft (Outlook) depuis « Connexion des agendas ». Lorsque vous confirmez une date, l'événement est automatiquement ajouté à votre agenda et un lien de réunion Google Meet ou Microsoft Teams peut être généré. La connexion d'un agenda nécessite d'être connecté, et vous pouvez la supprimer à tout moment."
+    },
+    "csv": {
+      "q": "Puis-je gérer les résultats dans Excel ?",
+      "a": "Oui. Le bouton « CSV » de la page de l'événement permet de télécharger en CSV les disponibilités et commentaires de chaque participant, ainsi que les totaux par date. Le fichier est encodé en UTF-8 (avec BOM) et s'ouvre donc directement dans Excel."
+    },
+    "ics": {
+      "q": "Puis-je ajouter la date retenue à Google Agenda ou Outlook ?",
+      "a": "Oui, même sans être connecté. Le fichier téléchargé avec le bouton « ICS » peut être importé dans Google Agenda, Outlook, Calendrier Apple et les principales applications d'agenda. Une fois la date confirmée, seule la date confirmée est exportée et un lien d'ajout à Google Agenda s'affiche également."
+    },
+    "editAfter": {
+      "q": "Puis-je ajouter ou supprimer des dates après avoir créé l'événement ?",
+      "a": "Oui. Depuis « Modifier » sur la page de l'événement, saisissez la clé de modification pour changer le nom, la description et la date limite, ajouter ou supprimer des dates proposées, clôturer ou rouvrir les réponses et confirmer la date. Les événements créés en étant connecté peuvent être gérés sans clé de modification."
+    },
+    "editKey": {
+      "q": "Qu'est-ce que la clé de modification ? Et si je l'oublie ?",
+      "a": "C'est le mot de passe qui permet de modifier et de supprimer l'événement. Vous pouvez la définir vous-même lors de la création ou, si vous laissez le champ vide, elle est générée automatiquement. Les clés de modification sont stockées sous forme chiffrée (hachée) : même l'exploitant ne peut pas les consulter. Pensez à la noter."
+    },
+    "editResponse": {
+      "q": "Puis-je modifier ma réponse par la suite ?",
+      "a": "Oui, depuis l'appareil et le navigateur utilisés pour répondre : utilisez « Modifier ma réponse » sur la page de l'événement pour la modifier ou la supprimer."
+    },
+    "languages": {
+      "q": "Est-il disponible dans d'autres langues que le japonais ?",
+      "a": "Il est disponible en 8 langues : japonais, anglais, chinois (simplifié), coréen, espagnol, français, allemand et portugais. Vous pouvez changer de langue à tout moment depuis le menu des langues en haut de l'écran, et votre choix est conservé pour vos prochaines visites."
+    },
+    "theme": {
+      "q": "Qu'est-ce que le thème « Mignon » ?",
+      "a": "C'est un thème aux couleurs douces, proposé en plus des thèmes clair et sombre. Les symboles de disponibilité s'affichent sous forme de frimousses (😊🤔😢). Sélectionnez-le depuis le sélecteur de thème en haut de l'écran. La signification de chaque symbole est également indiquée en texte, ce qui le rend compatible avec les lecteurs d'écran."
+    },
+    "mobile": {
+      "q": "Fonctionne-t-il sur smartphone ?",
+      "a": "Oui. Son design adaptatif fonctionne sur smartphone, tablette et ordinateur. Vous pouvez aussi l'ajouter à votre écran d'accueil pour le lancer comme une application (compatible PWA)."
+    },
+    "visibility": {
+      "q": "Les informations que je saisis sont-elles visibles par d'autres personnes ?",
+      "a": "Le contenu de l'événement et les réponses ne sont visibles que par les personnes qui connaissent le lien de l'événement. Il n'existe aucune liste publique des événements, et les pages d'événement sont configurées pour ne pas apparaître dans les moteurs de recherche. Sur les pages de réservation individuelle, le nom et l'adresse e-mail des invités ne sont jamais affichés sur la page publique : seuls l'organisateur et la personne ayant réservé peuvent les consulter."
+    }
+  }
+}

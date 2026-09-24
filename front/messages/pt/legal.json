@@ -1,0 +1,127 @@
+{
+  "effectiveDate": "Data de vigência: 24 de setembro de 2026",
+  "languageNote": "Em caso de divergência entre esta tradução e a versão em japonês, prevalece a versão em japonês.",
+  "privacy": {
+    "title": "Política de Privacidade",
+    "lead": "Esta política explica como {siteName} (doravante, o \"Serviço\") trata informações pessoais e dados dos usuários.",
+    "collect": {
+      "heading": "1. Informações coletadas",
+      "p1": "O Serviço pode ser usado sem cadastro. Dependendo dos recursos utilizados, coletamos as informações a seguir.",
+      "item1": "Informações inseridas ao criar um evento (nome do evento, descrição, nome do organizador, datas e horários sugeridos, prazo para respostas e, caso o organizador queira receber avisos de respostas, o e-mail do organizador, entre outras)",
+      "item2": "Informações inseridas ao responder (nome, disponibilidade para cada data sugerida e comentário)",
+      "item3": "Informações inseridas ao criar uma página de agendamento 1:1 (e-mail do organizador, título e descrição da página, datas e horários dos horários livres)",
+      "item4": "Informações inseridas ao fazer um agendamento 1:1 (nome, e-mail e mensagem do convidado, além da data e do horário agendados)",
+      "item5": "Se você criar uma conta: nome de usuário, e-mail, senha (convertida em um hash irreversível e nunca armazenada em texto simples) e configurações como idioma de exibição e fuso horário",
+      "item6": "Se você ativar a integração de calendário: tokens de acesso e de atualização OAuth do Google ou da Microsoft (armazenados de forma criptografada), além dos identificadores e links de reunião dos compromissos criados pela integração",
+      "item7": "Chaves de edição, tokens para editar respostas e tokens para cancelar agendamentos (todos convertidos em hash e nunca armazenados em texto simples)",
+      "item8": "Registros dos e-mails de notificação enviados (tipo de notificação, destinatário e data e hora do envio) e registros de acesso (endereço IP, user agent, data e hora do acesso, origem da visita etc.)"
+    },
+    "purpose": {
+      "heading": "2. Finalidades de uso",
+      "item1": "Oferecer o recurso de agendamento (exibição de eventos, contabilização de respostas, exportação de arquivos CSV e ICS etc.) e o recurso de agendamento 1:1",
+      "item2": "Enviar e-mails de notificação (confirmação de e-mail, avisos de agendamentos confirmados e cancelados, avisos de respostas, lembretes de prazo, avisos de data definida etc.)",
+      "item3": "Autenticar contas e, por meio da integração de calendário, adicionar compromissos e gerar links de reunião (incluindo a consulta da disponibilidade da agenda, apenas na medida necessária para isso)",
+      "item4": "Garantir a segurança, por exemplo, impedindo acessos não autorizados e solicitações excessivas",
+      "item5": "Entender o uso do Serviço e melhorar sua qualidade (na forma de estatísticas que não identificam pessoas)",
+      "item6": "Responder a solicitações de contato"
+    },
+    "visibility": {
+      "heading": "3. Quem pode ver as informações",
+      "p1": "Qualquer pessoa que conheça a URL do evento pode ver os detalhes dele e as respostas. Tenha cuidado com quem você compartilha a URL. O e-mail do organizador não é divulgado.",
+      "p2": "Na página de agendamento 1:1, são exibidos apenas os horários livres publicados pelo organizador. O nome, o e-mail e a mensagem dos convidados não aparecem na página pública; apenas o organizador e a própria pessoa que agendou podem vê-los.",
+      "p3": "Não existe um recurso para publicar a lista de eventos, e as páginas de eventos e de agendamento são configuradas para não serem indexadas por mecanismos de busca.",
+      "p4": "Ao responder, você pode usar um apelido em vez do seu nome real. Não insira informações sensíveis que permitam identificar pessoas."
+    },
+    "storage": {
+      "heading": "4. Cookies e armazenamento no navegador",
+      "p1": "O Serviço usa cookies e o armazenamento local (local storage) e de sessão (session storage) do navegador para as finalidades abaixo. Eles são usados somente para o funcionamento do Serviço; não fazemos rastreamento para fins publicitários nem usamos cookies de terceiros.",
+      "item1": "Um cookie de sessão para manter você conectado (ou um token de autenticação, se você entrar por um serviço de autenticação externo) e um cookie de proteção contra CSRF para impedir solicitações forjadas",
+      "item2": "Configuração do idioma de exibição (cookie)",
+      "item3": "Configuração do tema de exibição (claro, escuro ou fofo)",
+      "item4": "Tokens para editar depois as respostas que você enviou e tokens de gerenciamento das páginas de agendamento 1:1 que você criou",
+      "item5": "Chaves de edição inseridas nesta aba (excluídas quando você fecha a aba)",
+      "item6": "Como você conheceu o Serviço (parâmetro ref)"
+    },
+    "thirdParty": {
+      "heading": "5. Compartilhamento com terceiros e serviços externos",
+      "p1": "Exceto quando exigido por lei, não fornecemos as informações coletadas a terceiros sem o consentimento do titular. Para operar os servidores e o banco de dados e enviar e-mails, podemos confiar o tratamento de informações a provedores de hospedagem e de envio de e-mails.",
+      "p2": "Se você ativar a integração de calendário, as informações do compromisso (nome do evento, data e horário, descrição etc.) são enviadas, apenas na medida necessária, à Google LLC (Google Agenda e Google Meet) ou à Microsoft Corporation (Outlook e Microsoft Teams) para adicionar compromissos e gerar links de reunião. O tratamento dessas informações por essas empresas segue as respectivas políticas de privacidade."
+    },
+    "retention": {
+      "heading": "6. Período de armazenamento e exclusão",
+      "p1": "Eventos e respostas ficam armazenados até que o organizador os exclua pela página de edição. O organizador pode excluir o evento a qualquer momento usando a chave de edição (ou a conta, se o evento tiver sido criado com login).",
+      "p2": "Os participantes podem alterar ou excluir as próprias respostas no dispositivo em que responderam. Se quiser solicitar a exclusão de outra forma, entre em contato com o organizador ou com nosso canal de atendimento.",
+      "p3": "As páginas de agendamento 1:1 e as informações dos agendamentos ficam armazenadas como registro dos agendamentos. O recebimento de agendamentos pode ser interrompido a qualquer momento, e os agendamentos podem ser cancelados tanto pelo organizador quanto pelo convidado. Se quiser solicitar a exclusão, entre em contato com nosso canal de atendimento.",
+      "p4": "A integração de calendário pode ser desfeita a qualquer momento nas configurações de integração da conta; depois disso, os tokens armazenados deixam de ser usados. Se quiser excluir sua conta, entre em contato com nosso canal de atendimento.",
+      "p5": "Eventos e páginas de agendamento sem atualização por um longo período podem ser excluídos sem aviso prévio."
+    },
+    "security": {
+      "heading": "7. Segurança",
+      "p1": "Adotamos medidas de segurança razoáveis para evitar vazamentos e adulteração de informações, como criptografar a comunicação com HTTPS, armazenar senhas, chaves de edição e demais tokens em forma de hash e armazenar de forma criptografada os tokens OAuth da integração de calendário."
+    },
+    "contact": {
+      "heading": "8. Contato e alterações",
+      "p1Email": "Em caso de dúvidas sobre esta política, entre em contato pelo e-mail {email}.",
+      "p1NoEmail": "Em caso de dúvidas sobre esta política, entre em contato com o operador do Serviço.",
+      "p2": "Esta política pode ser alterada quando necessário. Alterações importantes serão comunicadas nesta página."
+    }
+  },
+  "terms": {
+    "title": "Termos de Uso",
+    "lead": "Estes são os Termos de Uso de {siteName} (doravante, o \"Serviço\").",
+    "scope": {
+      "heading": "Artigo 1 (Aplicação)",
+      "p1": "Estes Termos estabelecem as condições de uso do Serviço. Ao usar o Serviço, considera-se que você concordou com estes Termos."
+    },
+    "service": {
+      "heading": "Artigo 2 (Conteúdo do Serviço)",
+      "p1": "O Serviço oferece gratuitamente um recurso de agendamento para várias pessoas (criação de eventos, respostas, contabilização, exportação de arquivos CSV e ICS e edição de eventos) e páginas de agendamento 1:1 para receber compromissos individuais. Ambos podem ser usados sem cadastro.",
+      "p2": "Se você optar por criar uma conta, poderá usar recursos adicionais, como a lista dos eventos que criou e a integração de calendário."
+    },
+    "account": {
+      "heading": "Artigo 3 (Conta)",
+      "p1": "Ao criar uma conta, cadastre informações corretas. A guarda da senha é de responsabilidade do usuário, que não deve permitir que terceiros usem sua conta. O operador não se responsabiliza por danos decorrentes do uso não autorizado da conta, exceto em caso de dolo ou culpa grave do operador."
+    },
+    "keys": {
+      "heading": "Artigo 4 (Guarda de chaves de edição e links de gerenciamento)",
+      "p1": "A guarda das chaves de edição de eventos, dos links de gerenciamento das páginas de agendamento 1:1 e dos links de cancelamento de agendamentos é de responsabilidade do usuário. O operador não se responsabiliza por danos decorrentes da perda ou do vazamento desses itens. O operador não consegue recuperar chaves de edição."
+    },
+    "integrations": {
+      "heading": "Artigo 5 (Integração com serviços externos)",
+      "p1": "A integração de calendário utiliza serviços externos, como os do Google e da Microsoft. O uso desses serviços está sujeito aos termos de uso de cada empresa. A integração pode ficar indisponível devido a mudanças ou falhas nos serviços externos, e o operador não se responsabiliza por danos daí decorrentes."
+    },
+    "booking": {
+      "heading": "Artigo 6 (Agendamentos 1:1)",
+      "p1": "Um agendamento feito por meio de uma página de agendamento 1:1 é um compromisso entre o organizador e o convidado. O operador não é parte do agendamento e não se responsabiliza por conflitos entre usuários relacionados ao cumprimento, à alteração ou ao cancelamento de agendamentos."
+    },
+    "prohibited": {
+      "heading": "Artigo 7 (Condutas proibidas)",
+      "item1": "Atos que violem leis, a ordem pública ou os bons costumes",
+      "item2": "Publicação de informações que violem direitos de terceiros, conteúdo discriminatório ou violento, ou informações sensíveis que permitam identificar pessoas",
+      "item3": "Cadastrar o e-mail de outra pessoa sem o consentimento dela ou usar o Serviço para enviar spam",
+      "item4": "Sobrecarregar excessivamente os servidores do Serviço, fazer acessos não autorizados ou enviar solicitações automatizadas em massa",
+      "item5": "Vendas, publicidade ou captação de clientes por meio do Serviço (exceto quando autorizadas pelo operador)",
+      "item6": "Outras condutas que o operador considere inadequadas"
+    },
+    "removal": {
+      "heading": "Artigo 8 (Exclusão de conteúdo e suspensão de uso)",
+      "p1": "Se o usuário violar estes Termos, ou se o operador julgar necessário para a operação do Serviço, o operador poderá, sem aviso prévio, excluir eventos, respostas, páginas de agendamento ou contas, ou restringir o uso do Serviço."
+    },
+    "changes": {
+      "heading": "Artigo 9 (Alteração e suspensão do Serviço)",
+      "p1": "O operador poderá alterar o conteúdo do Serviço, ou interromper ou encerrar sua oferta, sem aviso prévio. O operador não se responsabiliza por danos causados aos usuários em decorrência disso."
+    },
+    "disclaimer": {
+      "heading": "Artigo 10 (Isenção de responsabilidade)",
+      "p1": "O operador não garante que o Serviço esteja livre de defeitos de fato ou de direito. Exceto em caso de dolo ou culpa grave do operador, ele não se responsabiliza por perda de dados, atraso ou não entrega de e-mails de notificação, resultados de agendamentos ou reservas, conflitos entre usuários e situações semelhantes."
+    },
+    "amendment": {
+      "heading": "Artigo 11 (Alteração dos Termos)",
+      "p1": "O operador poderá alterar estes Termos quando necessário. Os Termos alterados entram em vigor no momento em que forem publicados nesta página."
+    },
+    "law": {
+      "heading": "Artigo 12 (Lei aplicável e foro)",
+      "p1": "Estes Termos são regidos e interpretados de acordo com as leis do Japão. Em caso de conflito relacionado ao Serviço, fica eleito como foro exclusivo o tribunal com jurisdição sobre a localidade do operador."
+    }
+  }
+}

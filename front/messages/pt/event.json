@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "EEE, d/M",
+    "dayLong": "EEE, d 'de' MMM"
+  },
+  "meta": {
+    "pageTitle": "Agendamento: {name}",
+    "pageTitleFallback": "Agendamento",
+    "pageDescription": "{owner} está buscando uma data para \"{name}\". {state}",
+    "pageStateOpen": "Responda às datas sugeridas com ◯△× (sem cadastro).",
+    "pageStateFinalized": "A data foi definida.",
+    "owner": "Organizador: {name}",
+    "candidates": "Datas: {count}",
+    "responses": "Respostas: {count}",
+    "deadline": "Prazo: {date}",
+    "deadlineUntil": "Responda até {date}",
+    "created": "Criado em {date}"
+  },
+  "actions": {
+    "share": "Compartilhar",
+    "csvLabel": "Baixar em CSV",
+    "icsLabel": "Adicionar ao calendário (ICS)",
+    "edit": "Editar"
+  },
+  "share": {
+    "text": "Informe sua disponibilidade para \"{name}\"",
+    "copied": "URL copiada",
+    "copiedShort": "Copiado",
+    "tooltip": "Compartilhar URL"
+  },
+  "error": {
+    "notFound": "Evento não encontrado",
+    "notFoundHint": "Verifique se a URL está correta e se o evento não foi excluído.",
+    "loadFailed": "Não foi possível carregar o evento",
+    "createNew": "Criar um novo evento"
+  },
+  "finalized": {
+    "title": "A data foi definida",
+    "addIcs": "Adicionar ao calendário (ICS)",
+    "googleCalendar": "Adicionar ao Google Agenda"
+  },
+  "closed": {
+    "title": "As respostas foram encerradas",
+    "byOrganizer": "O organizador encerrou as respostas em {date}. Aguarde a definição da data.",
+    "waiting": "Aguarde a definição da data.",
+    "expired": "O prazo para respostas ({date}) já passou. Aguarde a definição da data."
+  },
+  "meeting": {
+    "join": "Entrar na reunião",
+    "provider": {
+      "google_meet": "Online pelo Google Meet",
+      "teams": "Online pelo Microsoft Teams",
+      "zoom": "Online pelo Zoom",
+      "other": "Reunião online"
+    }
+  },
+  "organizer": {
+    "owner": "Você criou este evento.",
+    "editKey": "Nesta aba, você está autenticado como organizador.",
+    "editPage": "Ir para a página de edição",
+    "close": "Encerrar respostas",
+    "reopen": "Reabrir respostas"
+  },
+  "tabs": {
+    "responses": "Respostas",
+    "respond": "Responder",
+    "editMine": "Editar minha resposta",
+    "summary": "Resultado"
+  },
+  "respond": {
+    "cta": "Informar disponibilidade",
+    "closedFinalized": "A data deste evento já foi definida, por isso as respostas foram encerradas",
+    "closedByOrganizer": "As respostas deste evento foram encerradas. Aguarde a definição da data pelo organizador",
+    "closedExpired": "O prazo para respostas já passou, então não é possível responder",
+    "closedInactive": "Este evento não está recebendo respostas no momento"
+  },
+  "reminder": {
+    "title": "Lembre quem ainda não respondeu",
+    "titleEmpty": "Compartilhe a URL com os participantes",
+    "body": "{count} pessoas já responderam. Reenvie a URL para lembrar quem ainda não respondeu.",
+    "bodyEmpty": "Ainda não há respostas. Compartilhe a URL para começar a recebê-las.",
+    "deadline": "Prazo para respostas: {date}",
+    "deadlineSoon": "Faltam menos de 24 horas para o fim do prazo ({date})",
+    "share": "Compartilhar URL"
+  },
+  "summary": {
+    "empty": "O resultado aparece quando houver respostas",
+    "title": "Respostas por data sugerida",
+    "scoreHelp": "Pontuação = {yes}×2 + {maybe}×1. A data com a maior pontuação é exibida como \"Recomendado\".",
+    "listLabel": "Datas sugeridas (por pontuação)",
+    "recommended": "Recomendado",
+    "finalized": "Definido",
+    "answered": "{count}/{total} responderam",
+    "reasonsTitle": "Por que é recomendado",
+    "reason": {
+      "allOk": "Todos podem participar",
+      "mostOk": "Data com mais respostas \"{symbol}\" ({count})",
+      "noNg": "Ninguém respondeu \"{symbol}\" (indisponível)",
+      "fewestNg": "Data com menos respostas \"{symbol}\" ({count})",
+      "topScore": "Maior pontuação",
+      "earliestTie": "A data mais próxima entre as de mesma pontuação"
+    },
+    "finalizeCta": "Definir esta data",
+    "addToCalendar": "Adicionar ao calendário (ICS)",
+    "kpi": {
+      "participants": "Participantes que responderam",
+      "maxOk": "Máximo de \"{symbol}\"",
+      "candidates": "Datas sugeridas"
+    }
+  },
+  "fix": {
+    "title": "Definir esta data e horário?",
+    "breakdown": "Detalhamento das respostas",
+    "warning": "Ao definir a data, o evento deixa de receber respostas. A definição pode ser desfeita na página de edição.",
+    "confirm": "Definir"
+  },
+  "toast": {
+    "authRequired": "Informe a chave de edição novamente (é possível fazer isso na página de edição)",
+    "finalized": "Data definida",
+    "finalizedHint": "Avise os participantes sobre a data definida",
+    "closed": "Respostas encerradas",
+    "reopened": "Respostas reabertas"
+  },
+  "delete": {
+    "title": "Excluir esta resposta?",
+    "body": "A resposta de {name} será excluída. Esta ação não pode ser desfeita.",
+    "bodyOwn": "Sua resposta será excluída. Esta ação não pode ser desfeita.",
+    "confirm": "Excluir",
+    "done": "Resposta excluída"
+  },
+  "created": {
+    "title": "Evento criado",
+    "description": "Compartilhe esta URL com os participantes para receber as respostas.",
+    "shareUrl": "URL para compartilhar",
+    "editKey": "Chave de edição",
+    "editKeyWarning": "A chave de edição é necessária para editar, definir a data e excluir o evento. Ela não será exibida novamente, então anote-a.",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copyLabel": "Copiar {label}",
+    "ok": "OK"
+  },
+  "success": {
+    "submitted": "Resposta enviada",
+    "updated": "Resposta atualizada",
+    "thanks": "Obrigado por responder!",
+    "ctaTitle": "Que tal criar o seu próprio evento?",
+    "ctaFree": "Sem cadastro / grátis",
+    "ctaExport": "Exporte os resultados em CSV ou ICS",
+    "ctaButton": "Criar evento"
+  }
+}

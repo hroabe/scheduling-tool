@@ -1,0 +1,23 @@
+{
+  "features": "功能",
+  "howToUse": "使用方法",
+  "faq": "常见问题",
+  "skipToContent": "跳到正文",
+  "home": "返回 {name} 首页",
+  "mainNav": "主导航",
+  "oneOnOne": "1对1预约",
+  "language": "语言",
+  "theme": "切换主题",
+  "themeSystem": "跟随系统设置",
+  "theme_light": "浅色",
+  "theme_dark": "深色",
+  "theme_cute": "可爱",
+  "accountMenu": "账户菜单",
+  "account": "账户",
+  "myEvents": "我的活动",
+  "integrations": "日历集成",
+  "login": "登录",
+  "logout": "退出登录",
+  "create": "新建",
+  "openMenu": "打开菜单"
+}

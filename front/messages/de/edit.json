@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Termin bearbeiten"
+  },
+  "title": "Termin bearbeiten",
+  "back": "Zurück zur Terminseite",
+  "notFound": "Termin nicht gefunden",
+  "ownerNotice": "Sie haben diesen Termin mit Ihrem angemeldeten Konto erstellt und können ihn daher ohne Bearbeitungsschlüssel verwalten.",
+  "toast": {
+    "reenterKey": "Bitte geben Sie den Bearbeitungsschlüssel erneut ein"
+  },
+  "keyModal": {
+    "title": "Bearbeitungsschlüssel eingeben",
+    "description": "Um diesen Termin zu bearbeiten, geben Sie den Bearbeitungsschlüssel ein, der beim Erstellen festgelegt (oder vergeben) wurde.",
+    "label": "Bearbeitungsschlüssel",
+    "helper": "Die Freigabe gilt, bis Sie diesen Tab schließen",
+    "required": "Bitte geben Sie den Bearbeitungsschlüssel ein",
+    "invalid": "Der Bearbeitungsschlüssel ist falsch",
+    "verifying": "Wird geprüft...",
+    "submit": "Bestätigen"
+  },
+  "info": {
+    "title": "Termindetails",
+    "name": "Name des Termins",
+    "description": "Beschreibung",
+    "deadline": "Antwortfrist",
+    "isActive": "Antworten annehmen",
+    "allowMaybe": "Antwort „Eventuell“ zulassen",
+    "save": "Änderungen speichern",
+    "saved": "Änderungen wurden gespeichert",
+    "nameRequired": "Bitte geben Sie einen Namen für den Termin ein",
+    "nameTooLong": "Bitte höchstens 200 Zeichen eingeben",
+    "descriptionTooLong": "Bitte höchstens 2000 Zeichen eingeben",
+    "deadlinePast": "Die Antwortfrist muss in der Zukunft liegen"
+  },
+  "candidates": {
+    "title": "Terminvorschläge verwalten",
+    "listLabel": "Liste der Terminvorschläge",
+    "responseCount": "{count} Antworten",
+    "deleteLabel": "{date} löschen",
+    "minOne": "Mindestens ein Terminvorschlag ist erforderlich",
+    "addTitle": "Terminvorschlag hinzufügen",
+    "date": "Datum",
+    "start": "Beginn",
+    "end": "Ende",
+    "add": "Hinzufügen",
+    "added": "Terminvorschlag wurde hinzugefügt",
+    "deleted": "Terminvorschlag wurde gelöscht",
+    "dateRequired": "Bitte wählen Sie ein Datum aus",
+    "endAfterStart": "Die Endzeit muss nach der Startzeit liegen",
+    "confirmTitle": "Terminvorschlag löschen?",
+    "confirmBody": "Zu diesem Terminvorschlag gibt es {count} Antworten. Beim Löschen gehen diese Antworten ebenfalls verloren.",
+    "confirmDelete": "Löschen"
+  },
+  "closing": {
+    "title": "Abstimmung beenden",
+    "open": "Derzeit werden Antworten angenommen.",
+    "expired": "Die Antwortfrist ist abgelaufen. Verlängern Sie die Frist, um wieder Antworten anzunehmen.",
+    "help": "Nach dem Beenden können keine neuen Antworten abgegeben oder geändert werden. Sie können die Abstimmung später wieder öffnen.",
+    "close": "Abstimmung beenden",
+    "closed": "Die Abstimmung ist beendet.",
+    "closedAt": "Die Abstimmung wurde am {date} beendet.",
+    "expiredNote": "Da auch die Antwortfrist abgelaufen ist, müssen Sie sie verlängern, damit nach dem Wiederöffnen geantwortet werden kann.",
+    "reopen": "Abstimmung wieder öffnen",
+    "finalized": "Der Termin ist bereits festgelegt, daher kann die Abstimmung weder beendet noch wieder geöffnet werden. Heben Sie die Festlegung auf, um dies wieder zu ermöglichen.",
+    "closedToast": "Abstimmung wurde beendet",
+    "reopenedToast": "Abstimmung wurde wieder geöffnet"
+  },
+  "finalize": {
+    "title": "Termin festlegen",
+    "current": "Festgelegt: {date}",
+    "meetingUrl": "Link zum Online-Meeting",
+    "help": "Wählen Sie den Terminvorschlag, der festgelegt werden soll. Nach der Festlegung werden keine Antworten mehr angenommen.",
+    "countsLabel": "{ok} verfügbar, {maybe} eventuell, {ng} nicht verfügbar",
+    "recommended": "Empfohlen",
+    "undo": "Festlegung aufheben",
+    "submit": "Termin festlegen",
+    "done": "Termin wurde festgelegt",
+    "undone": "Festlegung wurde aufgehoben"
+  },
+  "danger": {
+    "title": "Gefahrenbereich",
+    "help": "Wenn Sie den Termin löschen, werden alle Terminvorschläge und Antworten endgültig entfernt. Dies kann nicht rückgängig gemacht werden.",
+    "delete": "Termin löschen",
+    "deleted": "Termin wurde gelöscht",
+    "confirmTitle": "Termin löschen?",
+    "confirmBody": "„{name}“ und {count} Antworten werden endgültig gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "confirmDelete": "Löschen"
+  }
+}

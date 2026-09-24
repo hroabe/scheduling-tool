@@ -10,6 +10,13 @@ dj-database-url==3.1.2
 # Environment
 python-decouple==3.8
 
+# Async tasks (optional broker: runs synchronously when REDIS_URL is unset)
+celery[redis]==5.6.3
+
+# Security / external APIs (OAuth token encryption, Google / Microsoft / Keycloak)
+cryptography==50.0.1
+requests==2.34.2
+
 # Production Server
 gunicorn==26.2.0
 whitenoise==6.12.0

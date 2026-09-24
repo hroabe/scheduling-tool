@@ -1,0 +1,38 @@
+{
+  "title": "Calendar integrations",
+  "description": "Once connected, the event and its online meeting link are added to your calendar automatically when a date is finalized.",
+  "providers": {
+    "google": {
+      "name": "Google Calendar",
+      "description": "Adds finalized events to Google Calendar with a Google Meet link."
+    },
+    "outlook": {
+      "name": "Outlook Calendar",
+      "description": "Adds finalized events to your Outlook (Microsoft 365) calendar with a Teams link."
+    }
+  },
+  "status": {
+    "connected": "Connected",
+    "notConnected": "Not connected",
+    "expired": "Reconnect needed",
+    "notConfigured": "Unavailable"
+  },
+  "connect": "Connect",
+  "reconnect": "Reconnect",
+  "disconnect": "Disconnect",
+  "connected": "Connected to {provider}",
+  "connectError": "Couldn't connect to {provider}",
+  "connectFailed": "Couldn't start connecting to {provider}",
+  "disconnected": "Disconnected from {provider}",
+  "disconnectFailed": "Couldn't disconnect from {provider}",
+  "notConfigured": "{provider} integration is not configured on this server. Please contact the administrator.",
+  "lastUsed": "Last used: {date}",
+  "loadError": "Couldn't load the connection status ({reason})",
+  "reasons": {
+    "denied": "Access was not granted.",
+    "state": "The connection request expired. Please try again.",
+    "code": "No authorization code was received. Please try again.",
+    "token": "Couldn't obtain an access token. Please try again later.",
+    "unknown": "Please try again later."
+  }
+}

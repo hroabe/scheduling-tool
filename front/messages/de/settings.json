@@ -1,0 +1,8 @@
+{
+  "title": "Einstellungen",
+  "language": "Anzeigesprache",
+  "timezone": "Zeitzone",
+  "notifications": "Benachrichtigungen",
+  "emailNotifications": "E-Mail-Benachrichtigungen erhalten",
+  "emailNotificationsHelp": "Wir benachrichtigen Sie per E-Mail, wenn jemand antwortet oder bucht und wenn ein Termin feststeht."
+}

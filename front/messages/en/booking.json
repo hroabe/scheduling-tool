@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} min",
+  "loadErrorTitle": "Couldn't load this page",
+  "status": {
+    "pending": "Awaiting email confirmation",
+    "published": "Published",
+    "paused": "Paused",
+    "unpublished": "Unpublished"
+  },
+  "bookingStatus": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "completed": "Completed"
+  },
+  "confirm": {
+    "keep": "Go back"
+  },
+  "invalidLink": {
+    "title": "This link is invalid",
+    "body": "Please open the link from your email again."
+  },
+  "generator": {
+    "pickDays": "Pick one or more days on the calendar",
+    "selectedDays": "{count} days selected",
+    "from": "From",
+    "to": "To",
+    "invalidRange": "The end time must be after the start time.",
+    "hint": "Creates back-to-back {minutes}-minute slots on each selected day. Times in the past are skipped.",
+    "add": "Add slots",
+    "noSlots": "No slots to add. Check the days and time range."
+  },
+  "slots": {
+    "empty": "No slots yet. Pick days and a time range to add some.",
+    "booked": "Booked",
+    "remove": "Remove slot {slot}"
+  },
+  "new": {
+    "title": "Create a 1-on-1 booking page",
+    "description": "Publish your available times and share the link. Guests book a time that suits them, no sign-up needed.",
+    "basics": "Details",
+    "fields": {
+      "title": "Page title",
+      "titlePlaceholder": "e.g. 30-minute online meeting",
+      "organizerName": "Your name",
+      "organizerEmail": "Your email",
+      "organizerEmailHelp": "We'll send the confirmation email and your management link here, and notify you here about new bookings.",
+      "duration": "Duration",
+      "timezone": "Time zone"
+    },
+    "availability": "Set your availability",
+    "slotsHeading": "Slots to publish",
+    "slotCount": "{count} / {max}",
+    "slotLimit": "You can add up to {max} slots. Extra slots were not added (you can add more from the management page later).",
+    "clearSlots": "Remove all",
+    "submit": "Create booking page",
+    "verifyNote": "Your page goes live once you open the link in the confirmation email.",
+    "errors": {
+      "title": "Enter a title.",
+      "organizerName": "Enter your name.",
+      "organizerEmail": "Enter a valid email address.",
+      "slots": "Add at least one slot."
+    }
+  },
+  "host": {
+    "summary": "Organizer: {organizer} · {minutes} min · {timezone}",
+    "noToken": "This browser doesn't have access to manage this page",
+    "invalidToken": "This management link is invalid",
+    "useEmailLink": "Open the management link from the email you received when you created the page.",
+    "created": "Your booking page has been created.",
+    "pendingTitle": "Confirm your email to publish this page",
+    "pendingBody": "We sent a confirmation email to {email}. Open the link in it to publish your page so guests can book.",
+    "resend": "Resend confirmation email",
+    "resent": "Confirmation email resent to {email}",
+    "resendFailed": "Couldn't resend the confirmation email",
+    "devVerify": "[Development] Open the confirmation link",
+    "shareHeading": "Share with guests",
+    "publicUrl": "Booking page URL",
+    "notPublicYet": "Guests can't open this page until you confirm your email.",
+    "copy": "Copy URL",
+    "copied": "URL copied",
+    "copyFailed": "Couldn't copy. Please select the URL and copy it.",
+    "share": "Share",
+    "openPublic": "Open guest view",
+    "settingsHeading": "Booking settings",
+    "accepting": "Accept bookings",
+    "acceptingHelp": "Turn off to hide the booking page temporarily.",
+    "notify": "Email me about new bookings",
+    "notifyHelp": "Sent to {email}",
+    "saved": "Settings saved",
+    "saveFailed": "Couldn't save the settings",
+    "tabs": {
+      "slots": "Slots ({count})",
+      "bookings": "Bookings ({count})"
+    },
+    "addSlots": "Add slots",
+    "currentSlots": "Your slots",
+    "slotsAdded": "Added {count} slots",
+    "slotsSkipped": "{count} were skipped because they overlap existing slots or are in the past",
+    "slotsAddFailed": "Couldn't add the slots",
+    "slotDeleteFailed": "Couldn't remove the slot",
+    "noBookings": "No bookings yet.",
+    "cancelBooking": "Cancel booking",
+    "cancelConfirmTitle": "Cancel this booking?",
+    "cancelConfirmBody": "The booking by {name} will be cancelled and they'll be notified by email. This can't be undone.",
+    "bookingCancelled": "Booking cancelled",
+    "cancelFailed": "Couldn't cancel the booking",
+    "secretNote": "This page is for the organizer only. Don't share your management link."
+  },
+  "guest": {
+    "unavailableTitle": "This booking page isn't available",
+    "unavailableBody": "It may not be published yet, bookings may be paused, or the URL may be wrong. Please check with the organizer.",
+    "loadErrorTitle": "Couldn't load the booking page",
+    "organizer": "Organizer: {name}",
+    "timezone": "Times shown in {timezone}",
+    "pickHeading": "Pick a time",
+    "noSlots": "No times are available right now.",
+    "formHeading": "Your details",
+    "noSelection": "Choose a time from the list",
+    "pickSlot": "Please choose a time.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message (optional)",
+    "submit": "Book this time",
+    "privacy": "Your details are shared only with the organizer. The confirmation email includes a link to cancel.",
+    "slotTaken": "Sorry, that time was just booked. Please choose another one.",
+    "errors": {
+      "name": "Enter your name.",
+      "email": "Enter a valid email address."
+    }
+  },
+  "done": {
+    "title": "You're booked!",
+    "cancelledTitle": "This booking has been cancelled",
+    "emailSent": "We sent a confirmation email to {email}.",
+    "backToPage": "Back to the booking page",
+    "cancelViaEmail": "To cancel, use the link in your confirmation email."
+  },
+  "cancel": {
+    "title": "Cancel your booking",
+    "description": "You can cancel the booking below.",
+    "alreadyCancelled": "This booking has already been cancelled.",
+    "notCancellable": "This booking can no longer be cancelled.",
+    "button": "Cancel booking",
+    "confirmTitle": "Cancel this booking?",
+    "confirmBody": "The organizer will be notified. This can't be undone.",
+    "done": "Your booking has been cancelled",
+    "failed": "Couldn't cancel the booking"
+  },
+  "summary": {
+    "title": "Booking",
+    "when": "Date & time",
+    "organizer": "Organizer",
+    "guest": "Booked by",
+    "status": "Status",
+    "meeting": "Meeting link",
+    "message": "Message"
+  },
+  "verify": {
+    "loading": "Confirming your email…",
+    "successTitle": "Your booking page is live",
+    "successBody": "Guests can now book a time. Share your booking page URL.",
+    "linkInEmail": "You can open the management page from the management link in the email we sent you.",
+    "openHost": "Open management page",
+    "openPublic": "View booking page",
+    "errorTitle": "Couldn't confirm",
+    "invalid": "This link is invalid or has expired. Open the link from the email again, or resend the confirmation email from the management page.",
+    "createNew": "Create a booking page"
+  }
+}

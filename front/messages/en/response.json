@@ -1,0 +1,47 @@
+{
+  "available": "Yes",
+  "maybe": "Maybe",
+  "unavailable": "No",
+  "yourName": "Your Name",
+  "submitted": "Response submitted.",
+  "updated": "Response updated.",
+  "status": {
+    "ok": "Available",
+    "maybe": "Maybe",
+    "ng": "Unavailable",
+    "pending": "No answer"
+  },
+  "form": {
+    "ariaLabel": "Availability form",
+    "name": "Your name",
+    "namePlaceholder": "e.g. Alex Kim",
+    "nameRequired": "Please enter your name",
+    "nameTooLong": "Use 100 characters or fewer",
+    "commentTooLong": "Use 1000 characters or fewer",
+    "attendanceLegend": "Choose your availability for each date",
+    "candidateGroup": "Availability for {date}",
+    "optionLabel": "{date}: {status}",
+    "missing": "{count} dates still need an answer",
+    "comment": "Comment (optional)",
+    "commentPlaceholder": "Anything the organizer should know",
+    "submit": "Send response",
+    "update": "Update response",
+    "sending": "Sending...",
+    "error": "Couldn't send your response"
+  },
+  "table": {
+    "caption": "Responses by participant",
+    "participant": "Participant",
+    "comment": "Comment",
+    "actions": "Actions",
+    "total": "Total",
+    "you": "You",
+    "finalized": "Decided",
+    "recommended": "Recommended",
+    "empty": "No responses yet",
+    "emptyHint": "Share the link to collect responses",
+    "editResponse": "Edit {name}'s response",
+    "deleteResponse": "Delete {name}'s response",
+    "countLabel": "{status}: {count}"
+  }
+}

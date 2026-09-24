@@ -3,6 +3,10 @@
 #   cp .env.production.example .env.production   # fill in DOMAIN, secrets
 #   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 #
+# Optional profiles (docs/10_deployment.md):
+#   --profile worker   Redis + Celery worker/beat (async e-mail, calendar events, hourly reminders)
+#   --profile sso      Keycloak SSO at https://$DOMAIN/keycloak (RFC-0011)
+#
 # Routing (single domain, no CORS needed):
 #   https://$DOMAIN/api/*, /admin/*, /static/*  -> Django (api:8000)
 #   https://$DOMAIN/*                           -> Next.js (front:3000)
@@ -42,6 +46,25 @@ services:
       NUM_PROXIES: "1"
       DJANGO_ADMIN_URL: ${DJANGO_ADMIN_URL:-admin/}
       WEB_CONCURRENCY: ${WEB_CONCURRENCY:-3}
+      # Set REDIS_URL=redis://redis:6379/0 together with --profile worker; empty = run tasks synchronously
+      REDIS_URL: ${REDIS_URL:-}
+      FERNET_KEY: ${FERNET_KEY:-}
+      EMAIL_BACKEND: ${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      EMAIL_HOST: ${EMAIL_HOST:-}
+      EMAIL_PORT: ${EMAIL_PORT:-587}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER:-}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD:-}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL:-noreply@${DOMAIN}}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: https://${DOMAIN}/api/v1/integrations/google/callback/
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID:-}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET:-}
+      MICROSOFT_REDIRECT_URI: https://${DOMAIN}/api/v1/integrations/outlook/callback/
+      KEYCLOAK_URL: ${KEYCLOAK_URL:-}
+      KEYCLOAK_REALM: scheduling-tool
+      KEYCLOAK_CLIENT_ID: scheduling-backend
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_BACKEND_SECRET:-}
     depends_on:
       db:
         condition: service_healthy
@@ -59,6 +82,10 @@ services:
         NEXT_PUBLIC_TWITTER_HANDLE: ${TWITTER_HANDLE:-}
         NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-}
         NEXT_PUBLIC_BING_SITE_VERIFICATION: ${BING_SITE_VERIFICATION:-}
+        NEXT_PUBLIC_KEYCLOAK_URL: ${NEXT_PUBLIC_KEYCLOAK_URL:-}
+        NEXT_PUBLIC_KEYCLOAK_REALM: scheduling-tool
+        NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: scheduling-frontend
+        NEXT_PUBLIC_KEYCLOAK_IDP_HINT: ${KEYCLOAK_IDP_HINT:-}
     restart: unless-stopped
     environment:
       API_INTERNAL_URL: http://api:8000
@@ -83,7 +110,110 @@ services:
       - front
       - api
 
+  # ---------------------------------------------------------------- profile: worker
+  redis:
+    image: redis:7-alpine
+    profiles: ["worker"]
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    profiles: ["worker"]
+    restart: unless-stopped
+    command: celery -A api worker -l INFO
+    environment: &worker-env
+      DEBUG: "False"
+      SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY}
+      DATABASE_URL: postgres://${POSTGRES_USER:-scheduling}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-scheduling_db}
+      REDIS_URL: redis://redis:6379/0
+      ALLOWED_HOSTS: ${DOMAIN},api
+      FRONTEND_URL: https://${DOMAIN}
+      FERNET_KEY: ${FERNET_KEY:-}
+      EMAIL_BACKEND: ${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      EMAIL_HOST: ${EMAIL_HOST:-}
+      EMAIL_PORT: ${EMAIL_PORT:-587}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER:-}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD:-}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL:-noreply@${DOMAIN}}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID:-}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET:-}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    profiles: ["worker"]
+    restart: unless-stopped
+    command: celery -A api beat -l INFO --schedule /tmp/celerybeat-schedule
+    environment: *worker-env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------- profile: sso
+  keycloak-db:
+    image: postgres:15-alpine
+    profiles: ["sso"]
+    restart: unless-stopped
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-change-me}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    profiles: ["sso"]
+    restart: unless-stopped
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:ro
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-change-me}
+      KC_HOSTNAME: ${DOMAIN}
+      KC_HOSTNAME_PATH: /keycloak
+      KC_HTTP_RELATIVE_PATH: /keycloak
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_PROXY: edge
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-change-me}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    command: start --proxy edge --hostname-strict=false --import-realm
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   caddy_data:
   caddy_config:
+  redis_data:
+  keycloak_postgres_data:

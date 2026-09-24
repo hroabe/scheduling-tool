@@ -1,0 +1,127 @@
+{
+  "effectiveDate": "Fecha de entrada en vigor: 24 de septiembre de 2026",
+  "languageNote": "Esta traducción se ofrece para tu comodidad. En caso de discrepancia entre esta versión y la versión en japonés, prevalecerá la versión en japonés.",
+  "privacy": {
+    "title": "Política de privacidad",
+    "lead": "Esta política explica cómo {siteName} (en adelante, el \"Servicio\") trata la información personal y la información de los usuarios.",
+    "collect": {
+      "heading": "1. Información que recopilamos",
+      "p1": "El Servicio puede utilizarse sin registrarse. Según las funciones que utilices, recopilamos la siguiente información.",
+      "item1": "Información introducida al crear un evento (nombre del evento, descripción, nombre del organizador, fechas y horas propuestas, fecha límite de respuesta y, si se solicitan avisos de respuestas, la dirección de correo electrónico del organizador, entre otros)",
+      "item2": "Información introducida al responder (nombre, disponibilidad para cada fecha propuesta y comentario)",
+      "item3": "Información introducida al crear una página de reservas 1 a 1 (dirección de correo electrónico del organizador, título y descripción de la página, y fechas y horas de los huecos libres)",
+      "item4": "Información introducida al hacer una reserva 1 a 1 (nombre, dirección de correo electrónico y mensaje del invitado, y la fecha y hora reservadas)",
+      "item5": "Si creas una cuenta: nombre de usuario, dirección de correo electrónico, contraseña (convertida en un hash irreversible; nunca se guarda en texto plano) y ajustes como el idioma de la interfaz y la zona horaria",
+      "item6": "Si activas la integración de calendarios: los tokens de acceso y de actualización OAuth de Google o Microsoft (guardados de forma cifrada), así como los identificadores y enlaces de reunión de los eventos creados mediante la integración",
+      "item7": "Claves de edición, tokens para editar respuestas y tokens para cancelar reservas (todos convertidos en hashes; nunca se guardan en texto plano)",
+      "item8": "Registros de los correos de notificación enviados (tipo de notificación, destinatario y fecha y hora de envío) y registros de acceso (dirección IP, agente de usuario, fecha y hora de acceso, página de referencia, etc.)"
+    },
+    "purpose": {
+      "heading": "2. Finalidades del uso",
+      "item1": "Prestar la función de programación (mostrar eventos, contabilizar respuestas, exportar archivos CSV e ICS, etc.) y la función de reservas 1 a 1",
+      "item2": "Enviar correos de notificación (verificación de la dirección de correo, avisos de confirmación y cancelación de reservas, avisos de respuestas, recordatorios de la fecha límite, avisos de confirmación de fecha, etc.)",
+      "item3": "Autenticar las cuentas y, mediante la integración de calendarios, registrar eventos y generar enlaces de reunión (así como consultar la disponibilidad del calendario en la medida necesaria para ello)",
+      "item4": "Garantizar la seguridad, por ejemplo, impidiendo accesos no autorizados y solicitudes excesivas",
+      "item5": "Conocer el uso del Servicio y mejorar su calidad (como datos estadísticos que no identifican a personas)",
+      "item6": "Atender consultas"
+    },
+    "visibility": {
+      "heading": "3. Quién puede ver la información",
+      "p1": "Cualquier persona que conozca la URL de un evento puede ver su contenido y sus respuestas. Ten cuidado con las personas con quienes compartes la URL. La dirección de correo electrónico del organizador no se hace pública.",
+      "p2": "En las páginas de reservas 1 a 1 solo se muestran los huecos libres publicados por el organizador. El nombre, la dirección de correo electrónico y el mensaje de los invitados no se muestran en la página pública; solo pueden verlos el organizador y la persona que hizo la reserva.",
+      "p3": "No existe ninguna función para publicar una lista de eventos, y las páginas de eventos y de reservas están configuradas para que los buscadores no las indexen.",
+      "p4": "Al responder, puedes usar un apodo en lugar de tu nombre real. No introduzcas información sensible que permita identificar a una persona."
+    },
+    "storage": {
+      "heading": "4. Cookies y almacenamiento en el navegador",
+      "p1": "El Servicio utiliza cookies y el almacenamiento local y de sesión del navegador para los fines que se indican a continuación. Se usan únicamente para el funcionamiento del Servicio; no se utilizan para seguimiento con fines publicitarios ni se usan cookies de terceros.",
+      "item1": "Una cookie de sesión para mantener la sesión iniciada (o un token de autenticación si inicias sesión con un servicio de autenticación externo) y una cookie de protección CSRF para impedir solicitudes fraudulentas",
+      "item2": "El idioma de la interfaz (cookie)",
+      "item3": "El tema de visualización (claro, oscuro o adorable)",
+      "item4": "Tokens para editar más tarde las respuestas que enviaste y tokens de gestión de las páginas de reservas 1 a 1 que creaste",
+      "item5": "Las claves de edición introducidas en esta pestaña (se eliminan al cerrar la pestaña)",
+      "item6": "Cómo conociste el Servicio (el parámetro ref)"
+    },
+    "thirdParty": {
+      "heading": "5. Cesión a terceros y servicios externos",
+      "p1": "Salvo cuando lo exija la ley, no facilitamos la información recopilada a terceros sin el consentimiento de la persona interesada. Para operar los servidores y la base de datos y enviar correos, podemos encargar el tratamiento de la información a proveedores de alojamiento y de envío de correo electrónico.",
+      "p2": "Si activas la integración de calendarios, enviaremos la información del evento (nombre del evento, fecha y hora, descripción, etc.), en la medida necesaria para registrar eventos y generar enlaces de reunión, a Google LLC (Google Calendar y Google Meet) o a Microsoft Corporation (Outlook y Microsoft Teams). Estas empresas tratan la información conforme a sus propias políticas de privacidad."
+    },
+    "retention": {
+      "heading": "6. Plazo de conservación y eliminación",
+      "p1": "Los eventos y las respuestas se conservan hasta que el organizador los elimina desde la página de edición. El organizador puede eliminar un evento en cualquier momento con la clave de edición (o con su cuenta, si lo creó con la sesión iniciada).",
+      "p2": "Los participantes pueden modificar o eliminar sus propias respuestas desde el dispositivo con el que respondieron. Si deseas solicitar la eliminación por otra vía, ponte en contacto con el organizador o con nuestro servicio de contacto.",
+      "p3": "La información de las páginas de reservas 1 a 1 y de las reservas se conserva como registro de las reservas. El organizador puede dejar de aceptar reservas en cualquier momento, y tanto el organizador como el invitado pueden cancelar una reserva. Si deseas solicitar la eliminación, ponte en contacto con nuestro servicio de contacto.",
+      "p4": "Puedes desconectar la integración de calendarios en cualquier momento desde la configuración de integración de tu cuenta; a partir de entonces, los tokens guardados dejarán de usarse. Si deseas eliminar tu cuenta, ponte en contacto con nuestro servicio de contacto.",
+      "p5": "Los eventos y las páginas de reservas que lleven mucho tiempo sin actualizarse podrán eliminarse sin previo aviso."
+    },
+    "security": {
+      "heading": "7. Medidas de seguridad",
+      "p1": "Adoptamos medidas de seguridad razonables para evitar la filtración y la alteración de la información, como cifrar las comunicaciones mediante HTTPS, guardar las contraseñas, las claves de edición y los distintos tokens convertidos en hashes, y guardar cifrados los tokens OAuth de la integración de calendarios."
+    },
+    "contact": {
+      "heading": "8. Contacto y modificaciones",
+      "p1Email": "Para cualquier consulta sobre esta política, escribe a {email}.",
+      "p1NoEmail": "Para cualquier consulta sobre esta política, ponte en contacto con el operador del Servicio.",
+      "p2": "Esta política puede modificarse cuando sea necesario. Si se producen cambios importantes, los anunciaremos en esta página."
+    }
+  },
+  "terms": {
+    "title": "Términos del servicio",
+    "lead": "Estos son los términos del servicio de {siteName} (en adelante, el \"Servicio\").",
+    "scope": {
+      "heading": "Artículo 1 (Ámbito de aplicación)",
+      "p1": "Estos términos establecen las condiciones de uso del Servicio. Al utilizar el Servicio, se considera que aceptas estos términos."
+    },
+    "service": {
+      "heading": "Artículo 2 (Contenido del Servicio)",
+      "p1": "El Servicio ofrece de forma gratuita una función de programación para varias personas (creación de eventos, respuestas, recuento, exportación de archivos CSV e ICS y edición de eventos) y páginas de reservas 1 a 1 para aceptar citas individuales. Ambas pueden utilizarse sin registrarse.",
+      "p2": "Si decides crear una cuenta, podrás usar funciones adicionales, como la lista de eventos que has creado y la integración de calendarios."
+    },
+    "account": {
+      "heading": "Artículo 3 (Cuentas)",
+      "p1": "Si creas una cuenta, registra información exacta. La gestión de la contraseña es responsabilidad del usuario, que no debe permitir que terceros la utilicen. El operador no se hace responsable de los daños derivados del uso no autorizado de la cuenta, salvo en caso de dolo o negligencia grave por parte del operador."
+    },
+    "keys": {
+      "heading": "Artículo 4 (Gestión de las claves de edición y los enlaces de gestión)",
+      "p1": "La gestión de las claves de edición de los eventos, los enlaces de gestión de las páginas de reservas 1 a 1 y los enlaces de cancelación de reservas es responsabilidad del usuario. El operador no se hace responsable de los daños derivados de su pérdida o divulgación. El operador no puede recuperar las claves de edición."
+    },
+    "integrations": {
+      "heading": "Artículo 5 (Integración con servicios externos)",
+      "p1": "La integración de calendarios utiliza servicios externos como Google y Microsoft. El uso de dichos servicios externos está sujeto a los términos de servicio de cada proveedor. Es posible que las funciones de integración no estén disponibles debido a cambios en las especificaciones o a fallos de los servicios externos, y el operador no se hace responsable de los daños que ello pueda ocasionar."
+    },
+    "booking": {
+      "heading": "Artículo 6 (Reservas 1 a 1)",
+      "p1": "Una reserva realizada a través de una página de reservas 1 a 1 es un acuerdo entre el organizador y el invitado. El operador no es parte de la reserva y no se hace responsable de los conflictos entre usuarios relativos al cumplimiento, la modificación o la cancelación de las reservas."
+    },
+    "prohibited": {
+      "heading": "Artículo 7 (Conductas prohibidas)",
+      "item1": "Actos contrarios a la ley, al orden público o a las buenas costumbres",
+      "item2": "Publicar información que vulnere los derechos de terceros, contenido discriminatorio o violento, o información sensible que permita identificar a una persona",
+      "item3": "Registrar la dirección de correo electrónico de otra persona sin su consentimiento, o utilizar el Servicio para enviar correo no deseado",
+      "item4": "Imponer una carga excesiva a los servidores del Servicio, acceder sin autorización o realizar solicitudes masivas automatizadas",
+      "item5": "Realizar actividades comerciales, publicitarias o de captación a través del Servicio (salvo las autorizadas por el operador)",
+      "item6": "Cualquier otra conducta que el operador considere inapropiada"
+    },
+    "removal": {
+      "heading": "Artículo 8 (Eliminación de contenido y suspensión del uso)",
+      "p1": "Si un usuario incumple estos términos, o si el operador lo considera necesario para la gestión del Servicio, el operador podrá eliminar eventos, respuestas, páginas de reservas o cuentas, o restringir el uso del Servicio, sin previo aviso."
+    },
+    "changes": {
+      "heading": "Artículo 9 (Modificación y suspensión del Servicio)",
+      "p1": "El operador podrá modificar el contenido del Servicio, o interrumpir o finalizar su prestación, sin previo aviso. El operador no se hace responsable de los daños que ello pueda ocasionar a los usuarios."
+    },
+    "disclaimer": {
+      "heading": "Artículo 10 (Exención de responsabilidad)",
+      "p1": "El operador no garantiza que el Servicio esté libre de defectos de hecho o de derecho. Salvo en caso de dolo o negligencia grave por parte del operador, este no se hace responsable de la pérdida de datos, del retraso o la falta de entrega de los correos de notificación, del resultado de la programación o de las reservas, ni de los conflictos entre usuarios, entre otros."
+    },
+    "amendment": {
+      "heading": "Artículo 11 (Modificación de los términos)",
+      "p1": "El operador podrá modificar estos términos cuando sea necesario. Los términos modificados entrarán en vigor en el momento de su publicación en esta página."
+    },
+    "law": {
+      "heading": "Artículo 12 (Legislación aplicable y jurisdicción)",
+      "p1": "Estos términos se rigen e interpretan conforme a la legislación de Japón. Cualquier controversia relacionada con el Servicio se someterá a la jurisdicción exclusiva, por acuerdo, del tribunal competente del lugar donde se encuentre el operador."
+    }
+  }
+}

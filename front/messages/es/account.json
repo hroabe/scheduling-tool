@@ -1,0 +1,52 @@
+{
+  "title": "Configuración de la cuenta",
+  "nav": {
+    "label": "Menú de la cuenta",
+    "profile": "Perfil",
+    "events": "Mis eventos",
+    "integrations": "Integración de calendarios"
+  },
+  "links": {
+    "events": "Eventos que creaste con la sesión iniciada",
+    "integrations": "Conecta Google Calendar u Outlook"
+  },
+  "profile": {
+    "heading": "Perfil",
+    "username": "Nombre de usuario: {username}",
+    "lastName": "Apellidos",
+    "firstName": "Nombre",
+    "email": "Correo electrónico",
+    "invalidEmail": "Introduce un correo electrónico válido.",
+    "save": "Guardar",
+    "saved": "Perfil guardado",
+    "saveFailed": "No se pudo guardar"
+  },
+  "password": {
+    "heading": "Cambiar contraseña",
+    "old_password": "Contraseña actual",
+    "new_password": "Nueva contraseña",
+    "new_password_confirm": "Confirmar nueva contraseña",
+    "submit": "Cambiar contraseña",
+    "changed": "Contraseña cambiada",
+    "required": "Introduce tu contraseña actual y una nueva contraseña.",
+    "mismatch": "Las contraseñas nuevas no coinciden.",
+    "sso": "Has iniciado sesión con inicio de sesión único (SSO), así que tu contraseña se gestiona en el servicio con el que inicias sesión."
+  },
+  "events": {
+    "title": "Mis eventos",
+    "create": "Crear un evento",
+    "total": "{count} eventos en total",
+    "empty": "Todavía no hay eventos",
+    "emptyDescription": "Aquí aparecerán los eventos que crees con la sesión iniciada.",
+    "participants": "{count} respuestas",
+    "candidates": "{count} fechas",
+    "deadline": "Límite: {date}",
+    "created": "Creado: {date}",
+    "pagination": "Paginación",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page} de {total}",
+    "loadError": "No se pudieron cargar los eventos ({reason})",
+    "retry": "Recargar"
+  }
+}

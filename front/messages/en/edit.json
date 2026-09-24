@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Edit event"
+  },
+  "title": "Edit event",
+  "back": "Back to the event",
+  "notFound": "Event not found",
+  "ownerNotice": "You created this event with your account, so you can manage it without an edit key.",
+  "toast": {
+    "reenterKey": "Please enter the edit key again"
+  },
+  "keyModal": {
+    "title": "Enter the edit key",
+    "description": "To edit this event, enter the edit key that was set (or issued) when the event was created.",
+    "label": "Edit key",
+    "helper": "You stay signed in until you close this tab",
+    "required": "Please enter the edit key",
+    "invalid": "That edit key is incorrect",
+    "verifying": "Checking...",
+    "submit": "Continue"
+  },
+  "info": {
+    "title": "Event details",
+    "name": "Event name",
+    "description": "Description",
+    "deadline": "Response deadline",
+    "isActive": "Accept responses",
+    "allowMaybe": "Allow \"maybe\" answers",
+    "save": "Save changes",
+    "saved": "Changes saved",
+    "nameRequired": "Please enter an event name",
+    "nameTooLong": "Use 200 characters or fewer",
+    "descriptionTooLong": "Use 2000 characters or fewer",
+    "deadlinePast": "The deadline must be in the future"
+  },
+  "candidates": {
+    "title": "Candidate dates",
+    "listLabel": "Candidate dates",
+    "responseCount": "{count} responses",
+    "deleteLabel": "Delete {date}",
+    "minOne": "At least one candidate date is required",
+    "addTitle": "Add a candidate date",
+    "date": "Date",
+    "start": "Start",
+    "end": "End",
+    "add": "Add",
+    "added": "Candidate date added",
+    "deleted": "Candidate date deleted",
+    "dateRequired": "Please choose a date",
+    "endAfterStart": "The end time must be after the start time",
+    "confirmTitle": "Delete this candidate date?",
+    "confirmBody": "This date has {count} responses. Deleting it will also delete those answers.",
+    "confirmDelete": "Delete"
+  },
+  "closing": {
+    "title": "Closing responses",
+    "open": "The event is accepting responses.",
+    "expired": "The response deadline has passed. Extend the deadline to accept responses again.",
+    "help": "Once closed, nobody can add or change responses. You can reopen at any time.",
+    "close": "Close responses",
+    "closed": "Responses are closed.",
+    "closedAt": "Responses were closed on {date}.",
+    "expiredNote": "The deadline has also passed, so extend it if you want people to respond after reopening.",
+    "reopen": "Reopen responses",
+    "finalized": "The date has been decided, so responses can't be closed or reopened. Undo the decision to change this.",
+    "closedToast": "Responses closed",
+    "reopenedToast": "Responses reopened"
+  },
+  "finalize": {
+    "title": "Decide the date",
+    "current": "Decided: {date}",
+    "meetingUrl": "Online meeting link",
+    "help": "Choose the date to decide on. Responses will be closed once the date is decided.",
+    "countsLabel": "{ok} available, {maybe} maybe, {ng} unavailable",
+    "recommended": "Recommended",
+    "undo": "Undo decision",
+    "submit": "Decide the date",
+    "done": "Date decided",
+    "undone": "Decision undone"
+  },
+  "danger": {
+    "title": "Danger zone",
+    "help": "Deleting the event permanently removes all candidate dates and responses. This can't be undone.",
+    "delete": "Delete event",
+    "deleted": "Event deleted",
+    "confirmTitle": "Delete this event?",
+    "confirmBody": "\"{name}\" and its {count} responses will be permanently deleted. This can't be undone.",
+    "confirmDelete": "Delete"
+  }
+}

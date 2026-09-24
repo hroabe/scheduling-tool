@@ -1,0 +1,66 @@
+{
+  "title": "Frequently asked questions",
+  "lead": "Answers to common questions about how the scheduling tool works and what it can do.",
+  "questionPrefix": "Q.",
+  "ctaLead": "Ready to start scheduling?",
+  "ctaCreate": "Create an event (free)",
+  "ctaBooking": "Create a 1-on-1 booking page",
+  "items": {
+    "noLogin": {
+      "q": "Do I need to sign up or log in?",
+      "a": "No. Both the person creating an event and the people responding can use it without an account. Just share the event link to start collecting answers. A 1-on-1 booking page can also be published by simply verifying your e-mail address."
+    },
+    "price": {
+      "q": "Does it cost anything?",
+      "a": "Every feature is free. Use it without worrying about limits on the number of events or respondents."
+    },
+    "oneOnOne": {
+      "q": "What is a 1-on-1 booking page?",
+      "a": "It is designed for one-on-one appointments such as interviews and sales calls. The organizer adds open slots and publishes the page, and the booking is confirmed as soon as a guest picks a slot. A verification link and a link to your management page are sent to the e-mail address you enter when creating it. Both the organizer and the guest are notified by e-mail about bookings and cancellations, and guests can cancel from the link in their confirmation e-mail."
+    },
+    "account": {
+      "q": "What can I do with an account?",
+      "a": "Create an account with a username, e-mail address and password, then log in to see a list of the events you created (My events) and to connect Google Calendar or Outlook. Without logging in you can still use every core feature: creating events, responding, tallying and CSV/ICS export."
+    },
+    "calendarSync": {
+      "q": "Can I connect Google Calendar or Outlook?",
+      "a": "Yes. Log in and connect your Google or Microsoft (Outlook) account under Calendar integrations. When you finalize a date, it is added to your calendar automatically and a Google Meet or Microsoft Teams link can be created. Calendar integration requires logging in, and you can disconnect at any time."
+    },
+    "csv": {
+      "q": "Can I manage the results in Excel?",
+      "a": "Yes. Use the CSV button on the event page to download each participant's answers and comments along with the totals for each date. The file is UTF-8 with a BOM, so it opens directly in Excel."
+    },
+    "ics": {
+      "q": "Can I add the final date to Google Calendar or Outlook?",
+      "a": "Yes, even without logging in. The file downloaded with the ICS button can be imported into Google Calendar, Outlook, Apple Calendar and other major calendar apps. Once the date is finalized, only the final date is exported and a link to add it to Google Calendar is shown."
+    },
+    "editAfter": {
+      "q": "Can I add or remove dates after creating an event?",
+      "a": "Yes. Open Edit on the event page and enter the edit key to change the name, description and deadline, add or remove dates, close or reopen responses, and finalize the date. Events you created while logged in can be managed without an edit key."
+    },
+    "editKey": {
+      "q": "What is an edit key, and what if I forget it?",
+      "a": "It is the password for editing and deleting an event. You can set it yourself when creating the event, or one is generated for you if you leave it blank. Edit keys are stored hashed, so not even the operator can look them up. Please keep a note of it."
+    },
+    "editResponse": {
+      "q": "Can I change my answers later?",
+      "a": "Yes, from the same device and browser you answered with. Use Edit my response on the event page to change or delete your answers."
+    },
+    "languages": {
+      "q": "Is it available in languages other than Japanese?",
+      "a": "It supports 8 languages: Japanese, English, Chinese (Simplified), Korean, Spanish, French, German and Portuguese. Switch at any time from the language menu at the top of the page, and your choice is remembered next time."
+    },
+    "theme": {
+      "q": "What is the cute theme?",
+      "a": "It is a soft, pastel display theme you can choose in addition to light and dark. Answers are shown as faces (😊🤔😢). Pick it from the theme switcher at the top of the page. The meaning of each symbol is also given as text, so it works with screen readers too."
+    },
+    "mobile": {
+      "q": "Does it work on smartphones?",
+      "a": "Yes. The responsive design works on phones, tablets and computers. You can also add it to your home screen and launch it like an app (PWA)."
+    },
+    "visibility": {
+      "q": "Can other people see the information I enter?",
+      "a": "Event details and answers can only be viewed by people who know the event link. There is no public list of events, and event pages are hidden from search engines. On 1-on-1 booking pages, guests' names and e-mail addresses are never shown on the public page; only the organizer and the guest who booked can see them."
+    }
+  }
+}

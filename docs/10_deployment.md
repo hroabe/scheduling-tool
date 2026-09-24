@@ -52,6 +52,12 @@ cp .env.production.example .env.production
 | `DJANGO_ADMIN_URL` | | 管理画面のパス（推測されにくい値を推奨。例: `manage-3f9a/`） |
 | `SITE_NAME` / `CONTACT_EMAIL` / `TWITTER_HANDLE` | | サイト名・問い合わせ先・X アカウント（ビルド時に埋め込み） |
 | `GOOGLE_SITE_VERIFICATION` / `BING_SITE_VERIFICATION` | | Search Console / Bing の所有権確認コード |
+| `EMAIL_HOST` / `EMAIL_PORT` / `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` / `DEFAULT_FROM_EMAIL` | △ | SMTP。**匿名の1on1予約ページはメール確認で公開されるため、1on1機能を使うなら必須**。回答通知・予約通知・リマインドにも使用 |
+| `FERNET_KEY` | | OAuth トークン暗号化キー（空なら `DJANGO_SECRET_KEY` から導出。SECRET_KEY をローテーションする場合は明示設定する） |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | | Google カレンダー連携（未設定なら連携UIは「未設定」表示、APIは 503） |
+| `MICROSOFT_CLIENT_ID` / `MICROSOFT_CLIENT_SECRET` | | Outlook カレンダー連携（同上） |
+| `REDIS_URL` | | `--profile worker` と併用。空ならメール・カレンダー登録はリクエスト内で同期実行、リマインドは無効 |
+| `KEYCLOAK_*` / `NEXT_PUBLIC_KEYCLOAK_URL` | | `--profile sso` と併用（§3.2） |
 
 ```bash
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
@@ -64,6 +70,26 @@ API コンテナは起動時に `migrate` を自動実行する。管理ユー�
 docker compose -f docker-compose.prod.yml --env-file .env.production exec api python manage.py createsuperuser
 ```
 
+### 3.1 オプション機能（Compose profile）
+
+| profile | 起動されるもの | 用途 |
+|---------|---------------|------|
+| （なし） | caddy / db / api / front | MVP 全機能 + アカウント・1on1・カレンダー連携（非同期処理は同期実行） |
+| `worker` | + redis / celery worker / celery beat | メール・カレンダー登録の非同期化、1時間ごとのリマインド。`REDIS_URL=redis://redis:6379/0` を設定する |
+| `sso` | + keycloak / keycloak-db | `https://DOMAIN/keycloak` で Keycloak SSO（RFC-0011） |
+
+```bash
+docker compose -f docker-compose.prod.yml --env-file .env.production --profile worker --profile sso up -d --build
+```
+
+### 3.2 外部サービスの登録
+
+- **Google Cloud Console**（OAuth クライアント・Web）: 承認済みリダイレクトURI に `https://DOMAIN/api/v1/integrations/google/callback/`
+- **Microsoft Entra ID**（アプリ登録・Web）: リダイレクトURI に `https://DOMAIN/api/v1/integrations/outlook/callback/`
+- 連携完了後は `https://DOMAIN/account/integrations?provider=...&status=...` に戻る
+- **Keycloak**（`--profile sso`）: `keycloak/realm-export.json` のフロント用クライアントは `localhost` 向けの `redirectUris` / `webOrigins` のみ登録されている。本番では管理コンソールで `https://DOMAIN/*` と `https://DOMAIN` を追加し、`KEYCLOAK_BACKEND_SECRET` を再生成する。`.env.production` で `KEYCLOAK_URL=http://keycloak:8080/keycloak`、`NEXT_PUBLIC_KEYCLOAK_URL=https://DOMAIN/keycloak` を設定（後者はビルド時埋め込みのため再ビルドが必要）
+- **モバイルアプリ**（`mobile/`）: `EXPO_PUBLIC_API_URL=https://DOMAIN/api/v1` でビルドする（手順は `mobile/README.md`）
+
 ## 4. 動作確認（リリースチェックリスト）
 
 - [ ] `https://DOMAIN/` が表示され、証明書が有効
@@ -75,6 +101,9 @@ docker compose -f docker-compose.prod.yml --env-file .env.production exec api py
 - [ ] ICS を Google カレンダー / Outlook / Apple カレンダーに取り込める（手動）
 - [ ] Android Chrome / iOS Safari で「ホーム画面に追加」できる（手動）
 - [ ] LINE / Slack / X にURLを貼るとOGP画像とイベント名が表示される
+- [ ] 会員登録 → ログイン → マイイベントに作成したイベントが表示される
+- [ ] 1on1: 予約ページ作成 → 確認メールのリンクで公開 → 予約 → キャンセル（SMTP 設定時）
+- [ ] カレンダー連携: `/account/integrations` から Google / Outlook を接続できる（クライアント設定時）
 
 ## 5. 更新・ロールバック
 
@@ -101,7 +130,7 @@ cron で日次ダンプを取り、サーバー外（オブジェクトストレ
 
 ## 7. 運用メモ
 
-- **レート制限**: 匿名 100 req/時/IP（`THROTTLE_ANON_RATE`）、編集キー検証 30 req/時/IP。キャッシュは LocMemCache のため Gunicorn ワーカーごとに独立して数える（実効上限はワーカー数倍）。厳密にしたい場合は Redis キャッシュを再導入する
+- **レート制限**: 匿名 100 req/時/IP（`THROTTLE_ANON_RATE`）、編集キー検証 30 req/時/IP、ログイン・メール確認にも個別制限。`REDIS_URL` 未設定時はキャッシュが LocMemCache のため Gunicorn ワーカーごとに独立して数える（実効上限はワーカー数倍）。`--profile worker` で Redis を使うと共有される（OAuth の state もキャッシュに保存するため、複数ワーカーでは Redis 推奨）
 - **クライアントIP**: Caddy 経由のため `NUM_PROXIES=1`。プロキシ段数を変えたら合わせて変更する
 - **ログ**: `docker compose ... logs -f api front caddy`。Gunicorn のアクセスログに `?ref=` / `?utm_source=` が残るので、バイラル施策（docs/01_strategy.md §6 の検証項目）の集計に使える
 - **静的ファイル**: Django admin / API ドキュメントの静的ファイルはイメージビルド時に `collectstatic` 済み（WhiteNoise で配信）

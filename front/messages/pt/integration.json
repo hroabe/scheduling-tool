@@ -1,0 +1,38 @@
+{
+  "title": "Integração de calendário",
+  "description": "Com a integração ativa, o evento e o link da reunião online são adicionados automaticamente ao seu calendário quando uma data é definida.",
+  "providers": {
+    "google": {
+      "name": "Google Agenda",
+      "description": "Adiciona os eventos definidos ao Google Agenda e gera um link do Google Meet."
+    },
+    "outlook": {
+      "name": "Calendário do Outlook",
+      "description": "Adiciona os eventos definidos ao seu calendário do Outlook (Microsoft 365) e gera um link do Teams."
+    }
+  },
+  "status": {
+    "connected": "Conectado",
+    "notConnected": "Não conectado",
+    "expired": "Reconexão necessária",
+    "notConfigured": "Indisponível"
+  },
+  "connect": "Conectar",
+  "reconnect": "Reconectar",
+  "disconnect": "Desconectar",
+  "connected": "Conectado ao {provider}",
+  "connectError": "Não foi possível conectar ao {provider}",
+  "connectFailed": "Não foi possível iniciar a conexão com o {provider}",
+  "disconnected": "Desconectado do {provider}",
+  "disconnectFailed": "Não foi possível desconectar do {provider}",
+  "notConfigured": "A integração com o {provider} não está configurada neste servidor. Entre em contato com o administrador.",
+  "lastUsed": "Último uso: {date}",
+  "loadError": "Não foi possível obter o status da conexão ({reason})",
+  "reasons": {
+    "denied": "O acesso não foi permitido.",
+    "state": "A solicitação de conexão expirou. Tente novamente.",
+    "code": "Nenhum código de autorização foi recebido. Tente novamente.",
+    "token": "Não foi possível obter um token de acesso. Tente novamente mais tarde.",
+    "unknown": "Tente novamente mais tarde."
+  }
+}

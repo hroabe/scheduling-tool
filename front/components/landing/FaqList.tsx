@@ -10,32 +10,38 @@ import {
     Button,
     Container,
     Heading,
+    Stack,
     Text,
     VStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { PageShell } from '@/components/layout/PageShell';
-import type { FaqItem } from '@/lib/faq';
+import { faqKeys, getFaqItems } from '@/lib/faq';
+import { useI18n } from '@/providers/I18nProvider';
 
-export function FaqList({ items }: { items: FaqItem[] }) {
+/** Full FAQ page (/faq), translated into the current UI language */
+export function FaqList() {
+    const { t } = useI18n();
+    const items = getFaqItems(t, faqKeys);
+
     return (
         <PageShell>
             <Container maxW="container.md" py={{ base: 8, md: 12 }}>
                 <VStack align="stretch" spacing={8}>
                     <Box>
                         <Heading as="h1" size="xl" mb={3}>
-                            よくある質問
+                            {t('faq.title')}
                         </Heading>
-                        <Text color="text.muted">日程調整ツールの使い方や機能についてのよくある質問です。</Text>
+                        <Text color="text.muted">{t('faq.lead')}</Text>
                     </Box>
                     <Accordion allowMultiple defaultIndex={[0]}>
                         {items.map((item) => (
-                            <AccordionItem key={item.question}>
+                            <AccordionItem key={item.key} id={`faq-${item.key}`}>
                                 <h2>
                                     <AccordionButton py={4}>
                                         <Box as="span" flex="1" textAlign="left" fontWeight="semibold">
-                                            Q. {item.question}
+                                            {t('faq.questionPrefix')} {item.question}
                                         </Box>
                                         <AccordionIcon />
                                     </AccordionButton>
@@ -47,10 +53,15 @@ export function FaqList({ items }: { items: FaqItem[] }) {
                         ))}
                     </Accordion>
                     <VStack spacing={3} py={6}>
-                        <Text fontWeight="semibold">さっそく日程調整を始めましょう</Text>
-                        <Button as={NextLink} href="/create" size="lg" rightIcon={<ArrowRight size={18} />}>
-                            イベントを作成する（無料）
-                        </Button>
+                        <Text fontWeight="semibold">{t('faq.ctaLead')}</Text>
+                        <Stack direction={{ base: 'column', sm: 'row' }} spacing={3} w={{ base: 'full', sm: 'auto' }}>
+                            <Button as={NextLink} href="/create" size="lg" rightIcon={<ArrowRight size={18} />}>
+                                {t('faq.ctaCreate')}
+                            </Button>
+                            <Button as={NextLink} href="/booking/new" size="lg" variant="outline">
+                                {t('faq.ctaBooking')}
+                            </Button>
+                        </Stack>
                     </VStack>
                 </VStack>
             </Container>

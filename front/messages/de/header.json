@@ -1,0 +1,23 @@
+{
+  "features": "Funktionen",
+  "howToUse": "So funktioniert's",
+  "faq": "Häufige Fragen",
+  "skipToContent": "Zum Inhalt springen",
+  "home": "Zur Startseite von {name}",
+  "mainNav": "Hauptnavigation",
+  "oneOnOne": "1:1-Buchung",
+  "language": "Sprache",
+  "theme": "Design wechseln",
+  "themeSystem": "Systemeinstellung verwenden",
+  "theme_light": "Hell",
+  "theme_dark": "Dunkel",
+  "theme_cute": "Niedlich",
+  "accountMenu": "Kontomenü",
+  "account": "Konto",
+  "myEvents": "Meine Termine",
+  "integrations": "Kalenderanbindung",
+  "login": "Anmelden",
+  "logout": "Abmelden",
+  "create": "Neu erstellen",
+  "openMenu": "Menü öffnen"
+}

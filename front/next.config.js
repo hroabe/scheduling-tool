@@ -16,6 +16,10 @@ const nextConfig = {
     // Self-contained server bundle for Docker deployments
     output: 'standalone',
 
+    // Always emit <head> metadata before the body (Next 15 otherwise streams it at the end of the
+    // HTML for non-bot user agents on dynamic pages, which link-preview crawlers and audits miss)
+    htmlLimitedBots: /.*/,
+
     // Inline the (small) global CSS into the HTML to remove render-blocking stylesheet requests
     experimental: {
         inlineCss: true,
@@ -27,9 +31,12 @@ const nextConfig = {
                 source: '/:path*',
                 headers: securityHeaders,
             },
+            // Private-by-URL or personal pages are never indexed (meta robots is set as well)
+            ...['/event/:path*', '/account/:path*', '/account', '/login', '/register', '/callback', '/booking/verify', '/booking/cancel']
+                .map((source) => ({ source, headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] })),
             {
-                // Event pages are private-by-URL
-                source: '/event/:path*',
+                // 1-on-1 guest/host pages (everything under /booking except the public /booking/new landing)
+                source: '/booking/:slug((?!new$)[^/]+)/:path*',
                 headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
             },
             {

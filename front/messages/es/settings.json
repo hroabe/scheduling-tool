@@ -1,0 +1,8 @@
+{
+  "title": "Configuración",
+  "language": "Idioma de la interfaz",
+  "timezone": "Zona horaria",
+  "notifications": "Notificaciones",
+  "emailNotifications": "Recibir notificaciones por correo",
+  "emailNotificationsHelp": "Te avisaremos por correo cuando alguien responda o reserve, y cuando se confirme una fecha."
+}

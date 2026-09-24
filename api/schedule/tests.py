@@ -9,6 +9,8 @@ import io
 from datetime import timedelta, timezone as dt_timezone
 
 from django.contrib.auth.hashers import identify_hasher
+from django.contrib.auth.models import User
+from django.core import mail
 from django.core.cache import cache
 from django.db import connection
 from django.test import TestCase, override_settings
@@ -133,13 +135,12 @@ class ScheduleCRUDTests(APITestBase):
         response = self.client.get(f"/api/v1/schedules/{data['id']}/")
         self.assertEqual(response.status_code, 404)
 
-    def test_update_without_edit_key(self):
-        """edit_key未設定（旧データ）のイベントはキーなしで更新できる"""
+    def test_schedule_without_edit_key_is_not_editable_by_anyone(self):
+        """edit_key未設定（旧データ）のイベントは作成者以外は更新できない"""
         data = self.create_schedule()
-        Schedule.objects.filter(uuid=data['uuid']).update(edit_key=None)
+        Schedule.objects.filter(uuid=data['uuid']).update(edit_key=None, edit_key_hash=None)
         response = self.client.patch(self.url(data), {'name': '新しい名前'}, format='json')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['name'], '新しい名前')
+        self.assertEqual(response.status_code, 400)
 
     def test_delete_schedule(self):
         data = self.create_schedule()
@@ -300,8 +301,8 @@ class EditKeyTests(APITestBase):
     def test_edit_key_is_hashed(self):
         data = self.create_schedule()
         schedule = Schedule.objects.get(uuid=data['uuid'])
-        self.assertNotEqual(schedule.edit_key, EDIT_KEY)
-        identify_hasher(schedule.edit_key)  # raises if not a hash
+        self.assertIsNone(schedule.edit_key)  # 平文は保存しない
+        identify_hasher(schedule.edit_key_hash)  # raises if not a hash
         self.assertTrue(schedule.check_edit_key(EDIT_KEY))
         self.assertFalse(schedule.check_edit_key('wrong'))
         self.assertFalse(schedule.check_edit_key(''))
@@ -417,11 +418,11 @@ class SecurityTests(APITestBase):
         self.assertNotIn('notify_on_response', body)
         self.assertNotIn('show_participant_count', body)
 
-    def test_hidden_settings_are_not_writable(self):
+    def test_notify_requires_owner_email(self):
         data = self.create_schedule(notify_on_response=True, show_participant_count=False)
         schedule = Schedule.objects.get(uuid=data['uuid'])
-        self.assertFalse(schedule.notify_on_response)
-        self.assertTrue(schedule.show_participant_count)
+        self.assertFalse(schedule.notify_on_response)  # メールアドレス無しでは無効
+        self.assertTrue(schedule.show_participant_count)  # API からは変更不可
 
     def test_api_robots_txt(self):
         response = self.client.get('/robots.txt')
@@ -637,3 +638,160 @@ class ThrottleBypassTests(APITestBase):
         from rest_framework.test import APIRequestFactory
 
         self.assertFalse(_is_internal_request(APIRequestFactory().get('/', HTTP_X_INTERNAL_TOKEN='')))
+
+
+# ---------------------------------------------------------------------------
+# Integration with origin/main features (docs/11_integration.md)
+# ---------------------------------------------------------------------------
+
+class CloseReopenTests(APITestBase):
+    def test_close_and_reopen(self):
+        data = self.create_schedule()
+        closed = self.client.post(self.url(data, 'close/'), {}, format='json', HTTP_X_EDIT_KEY=EDIT_KEY)
+        self.assertEqual(closed.status_code, 200)
+        self.assertEqual(closed.json()['status'], 'closed')
+        self.assertFalse(closed.json()['can_respond'])
+        self.assertEqual(self.respond(data, 'x', ['ok', 'ok']).status_code, 400)
+
+        reopened = self.client.post(self.url(data, 'reopen/'), {}, format='json', HTTP_X_EDIT_KEY=EDIT_KEY)
+        self.assertEqual(reopened.json()['status'], 'open')
+        self.assertEqual(self.respond(data, 'x', ['ok', 'ok']).status_code, 201)
+
+    def test_close_requires_key(self):
+        data = self.create_schedule()
+        response = self.client.post(self.url(data, 'close/'), {}, format='json', HTTP_X_EDIT_KEY='wrong')
+        self.assertEqual(response.status_code, 403)
+
+    def test_cannot_close_or_reopen_finalized(self):
+        data = self.create_schedule()
+        self.client.post(self.url(data, 'finalize/'), {'candidate_id': data['candidates'][0]['id']},
+                         format='json', HTTP_X_EDIT_KEY=EDIT_KEY)
+        self.assertEqual(self.client.post(self.url(data, 'close/'), {}, format='json',
+                                          HTTP_X_EDIT_KEY=EDIT_KEY).status_code, 400)
+        self.assertEqual(self.client.post(self.url(data, 'reopen/'), {}, format='json',
+                                          HTTP_X_EDIT_KEY=EDIT_KEY).status_code, 400)
+
+    def test_finalize_records_timestamp(self):
+        data = self.create_schedule()
+        response = self.client.post(self.url(data, 'finalize/'), {'candidate_id': data['candidates'][0]['id']},
+                                    format='json', HTTP_X_EDIT_KEY=EDIT_KEY)
+        self.assertIsNotNone(response.json()['finalized_at'])
+        self.assertEqual(response.json()['status'], 'fixed')
+        response = self.client.post(self.url(data, 'finalize/'), {'candidate_id': None},
+                                    format='json', HTTP_X_EDIT_KEY=EDIT_KEY)
+        self.assertIsNone(response.json()['finalized_at'])
+
+
+class OwnerTests(APITestBase):
+    def setUp(self):
+        super().setUp()
+        self.user = User.objects.create_user('owner', 'owner@example.com', 'pass-1234-word')
+
+    def test_logged_in_creator_owns_and_manages_without_key(self):
+        self.client.force_authenticate(self.user)
+        data = self.create_schedule(edit_key=None)
+        self.assertTrue(data['is_owner'])
+        schedule = Schedule.objects.get(uuid=data['uuid'])
+        self.assertEqual(schedule.owner_user, self.user)
+        self.assertEqual(schedule.owner_email, 'owner@example.com')
+
+        response = self.client.patch(self.url(data), {'name': '作成者が変更'}, format='json')
+        self.assertEqual(response.status_code, 200)
+        verify = self.client.post(self.url(data, 'verify_edit_key/'), {}, format='json')
+        self.assertEqual(verify.json(), {'valid': True, 'is_owner': True})
+
+        # 他人（未ログイン）は編集キーが必要
+        self.client.force_authenticate(None)
+        self.assertFalse(self.client.get(self.url(data)).json()['is_owner'])
+        self.assertEqual(self.client.patch(self.url(data), {'name': 'x'}, format='json').status_code, 400)
+        self.assertEqual(self.client.delete(self.url(data)).status_code, 403)
+
+    def test_my_schedules_lists_only_own_events(self):
+        self.client.force_authenticate(self.user)
+        mine = self.create_schedule()
+        other_user = User.objects.create_user('other', 'o@example.com', 'pass-1234-word')
+        self.client.force_authenticate(other_user)
+        self.create_schedule()
+        self.client.force_authenticate(self.user)
+        response = self.client.get('/api/v1/accounts/me/schedules/')
+        self.assertEqual(response.status_code, 200)
+        uuids = [item['uuid'] for item in response.json()['results']]
+        self.assertEqual(uuids, [mine['uuid']])
+
+
+class NotificationTests(APITestBase):
+    def test_response_notification_email(self):
+        data = self.create_schedule(owner_email='owner@example.com', notify_on_response=True)
+        with self.captureOnCommitCallbacks(execute=True):
+            self.respond(data, '佐藤', ['ok', 'ok'])
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('佐藤', mail.outbox[0].subject)
+        self.assertIn(f"/event/{data['uuid']}", mail.outbox[0].body)
+        self.assertEqual(mail.outbox[0].to, ['owner@example.com'])
+
+    def test_no_notification_when_disabled(self):
+        data = self.create_schedule(owner_email='owner@example.com')
+        with self.captureOnCommitCallbacks(execute=True):
+            self.respond(data, '佐藤', ['ok', 'ok'])
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_deadline_reminder_task(self):
+        from .tasks import send_deadline_reminders
+
+        data = self.create_schedule(owner_email='owner@example.com',
+                                    deadline=(timezone.now() + timedelta(hours=5)).isoformat())
+        send_deadline_reminders()
+        send_deadline_reminders()  # 2回目は送信しない
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(f"/event/{data['uuid']}", mail.outbox[0].body)
+
+
+class EditTokenFormatTests(APITestBase):
+    def test_token_is_hashed_and_scoped_to_participant(self):
+        data = self.create_schedule()
+        token = self.respond(data, 'a', ['ok', 'ok']).json()['edit_token']
+        participant = Participant.objects.get(name='a')
+        self.assertTrue(token.startswith(f'{participant.pk}.'))
+        identify_hasher(participant.edit_token_hash)
+        self.assertNotIn(token, participant.edit_token_hash)
+
+        # 他人のIDに差し替えたトークンは無効
+        self.respond(data, 'b', ['ok', 'ok'])
+        other = Participant.objects.get(name='b')
+        forged = f"{other.pk}.{token.split('.', 1)[1]}"
+        response = self.respond(data, 'b', ['ng', 'ng'], edit_token=forged)
+        self.assertEqual(response.status_code, 400)
+
+    def test_token_accepted_in_header(self):
+        data = self.create_schedule()
+        token = self.respond(data, 'a', ['ok', 'ok']).json()['edit_token']
+        response = self.client.post(self.url(data, 'respond/'), {
+            'name': 'a',
+            'attendances': [{'candidate': c['id'], 'status': 'ng'} for c in data['candidates']],
+        }, format='json', HTTP_X_EDIT_TOKEN=token)
+        self.assertEqual(response.status_code, 200)
+
+    def test_legacy_uuid_token_after_migration(self):
+        """0003 マイグレーション相当: 旧UUIDトークンをハッシュ化すると引き続き使える"""
+        from django.contrib.auth.hashers import make_password
+
+        data = self.create_schedule()
+        self.respond(data, 'legacy', ['ok', 'ok'])
+        participant = Participant.objects.get(name='legacy')
+        participant.edit_token_hash = make_password(str(participant.edit_token))
+        participant.save()
+        response = self.respond(data, 'legacy', ['ng', 'ng'], edit_token=str(participant.edit_token))
+        self.assertEqual(response.status_code, 200)
+
+
+class ExpirationTests(APITestBase):
+    def test_respond_after_deadline_fails(self):
+        data = self.create_schedule()
+        Schedule.objects.filter(uuid=data['uuid']).update(deadline=timezone.now() - timedelta(hours=1))
+        self.assertEqual(self.respond(data, 'x', ['ok', 'ok']).status_code, 400)
+        self.assertEqual(self.client.get(self.url(data)).json()['status'], 'closed')
+
+    def test_respond_to_inactive_schedule_fails(self):
+        data = self.create_schedule()
+        Schedule.objects.filter(uuid=data['uuid']).update(is_active=False)
+        self.assertEqual(self.respond(data, 'x', ['ok', 'ok']).status_code, 400)

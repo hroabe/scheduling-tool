@@ -1,80 +1,52 @@
 'use client';
 
-import { ChakraProvider, ColorModeScript, extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, useColorMode } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MotionConfig } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { I18nProvider } from '@/providers/I18nProvider';
+import { cuteTheme, proTheme } from '@/providers/theme';
+import { useAuthStore } from '@/stores/authStore';
+import { useThemeStore } from '@/stores/themeStore';
 
-// Theme configuration (docs/05_ui_design.md)
-const config: ThemeConfig = {
-    initialColorMode: 'system',
-    useSystemColorMode: false,
-};
+const ROUNDED_FONT_URL = 'https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap';
 
-const fontStack =
-    'var(--font-inter), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "YuGothic", Meiryo, sans-serif';
+/** Keeps Chakra's color mode in sync with the theme store and loads the cute font lazily */
+function ThemeModeSync() {
+    const mode = useThemeStore((state) => state.mode);
+    const { colorMode, setColorMode } = useColorMode();
+    const previousMode = useRef(mode);
 
-const theme = extendTheme({
-    config,
-    fonts: {
-        heading: fontStack,
-        body: fontStack,
-    },
-    colors: {
-        brand: {
-            50: '#EBF4FF',
-            100: '#BAE3FF',
-            200: '#7CC4FA',
-            300: '#4A9EE5',
-            400: '#2186EB',
-            500: '#0967D2',
-            600: '#0552B5',
-            700: '#03449E',
-            800: '#01337D',
-            900: '#002159',
-        },
-    },
-    semanticTokens: {
-        colors: {
-            'brand.fg': { default: 'brand.500', _dark: 'brand.300' },
-            'brand.subtle': { default: 'brand.50', _dark: 'rgba(74, 158, 229, 0.16)' },
-            'text.muted': { default: 'gray.600', _dark: 'gray.300' },
-            'bg.card': { default: 'white', _dark: 'gray.800' },
-            'bg.page': { default: 'gray.50', _dark: 'gray.900' },
-            'bg.subtle': { default: 'gray.50', _dark: 'gray.700' },
-            'border.default': { default: 'gray.200', _dark: 'gray.700' },
-        },
-    },
-    styles: {
-        global: {
-            body: {
-                bg: 'bg.page',
-                color: 'chakra-body-text',
-            },
-        },
-    },
-    components: {
-        Button: {
-            defaultProps: {
-                colorScheme: 'brand',
-            },
-        },
-        Card: {
-            baseStyle: {
-                container: {
-                    bg: 'bg.card',
-                    borderRadius: 'xl',
-                    boxShadow: 'sm',
-                    border: '1px solid',
-                    borderColor: 'border.default',
-                },
-            },
-        },
-        Input: { defaultProps: { focusBorderColor: 'brand.500' } },
-        Select: { defaultProps: { focusBorderColor: 'brand.500' } },
-        Textarea: { defaultProps: { focusBorderColor: 'brand.500' } },
-    },
-});
+    useEffect(() => {
+        if (mode === 'dark' && colorMode !== 'dark') setColorMode('dark');
+        if ((mode === 'light' || mode === 'cute') && colorMode !== 'light') setColorMode('light');
+        // "Follow the system" is already applied by ColorModeScript on load; only reset it when the
+        // user switches back from an explicit mode (avoids a full re-render on every page load)
+        if (mode === null && previousMode.current !== null) setColorMode('system');
+        previousMode.current = mode;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mode]);
+
+    useEffect(() => {
+        if (mode !== 'cute' || document.getElementById('cute-font')) return;
+        const link = document.createElement('link');
+        link.id = 'cute-font';
+        link.rel = 'stylesheet';
+        link.href = ROUNDED_FONT_URL;
+        document.head.appendChild(link);
+    }, [mode]);
+
+    return null;
+}
+
+/** Restores the signed-in user (session / Keycloak / token) once per page load */
+function AuthBootstrap() {
+    const checkAuth = useAuthStore((state) => state.checkAuth);
+    useEffect(() => {
+        void checkAuth();
+    }, [checkAuth]);
+    return null;
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(
@@ -89,12 +61,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 },
             })
     );
+    const mode = useThemeStore((state) => state.mode);
+    // The server always renders the default theme; switch after mount to avoid hydration mismatches
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    const theme = mounted && mode === 'cute' ? cuteTheme : proTheme;
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ColorModeScript initialColorMode={config.initialColorMode} />
+            <ColorModeScript initialColorMode="system" />
             <ChakraProvider theme={theme}>
-                <MotionConfig reducedMotion="user">{children}</MotionConfig>
+                <ThemeModeSync />
+                <AuthBootstrap />
+                <I18nProvider>
+                    <MotionConfig reducedMotion="user">{children}</MotionConfig>
+                </I18nProvider>
             </ChakraProvider>
         </QueryClientProvider>
     );

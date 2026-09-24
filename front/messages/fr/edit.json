@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Modifier l'événement"
+  },
+  "title": "Modifier l'événement",
+  "back": "Retour à la page de l'événement",
+  "notFound": "Événement introuvable",
+  "ownerNotice": "Vous avez créé cet événement avec votre compte : vous pouvez donc le gérer sans clé de modification.",
+  "toast": {
+    "reenterKey": "Veuillez saisir à nouveau la clé de modification"
+  },
+  "keyModal": {
+    "title": "Saisir la clé de modification",
+    "description": "Pour modifier cet événement, saisissez la clé de modification définie (ou générée) lors de sa création.",
+    "label": "Clé de modification",
+    "helper": "L'authentification reste valable jusqu'à la fermeture de cet onglet",
+    "required": "Veuillez saisir la clé de modification",
+    "invalid": "Clé de modification incorrecte",
+    "verifying": "Vérification...",
+    "submit": "Valider"
+  },
+  "info": {
+    "title": "Informations sur l'événement",
+    "name": "Nom de l'événement",
+    "description": "Description",
+    "deadline": "Date limite de réponse",
+    "isActive": "Accepter les réponses",
+    "allowMaybe": "Autoriser la réponse « Peut-être »",
+    "save": "Enregistrer les modifications",
+    "saved": "Modifications enregistrées",
+    "nameRequired": "Veuillez saisir le nom de l'événement",
+    "nameTooLong": "200 caractères maximum",
+    "descriptionTooLong": "2000 caractères maximum",
+    "deadlinePast": "La date limite doit être dans le futur"
+  },
+  "candidates": {
+    "title": "Gérer les dates proposées",
+    "listLabel": "Dates proposées",
+    "responseCount": "{count} réponse(s)",
+    "deleteLabel": "Supprimer {date}",
+    "minOne": "Au moins une date proposée est requise",
+    "addTitle": "Ajouter une date proposée",
+    "date": "Date",
+    "start": "Début",
+    "end": "Fin",
+    "add": "Ajouter",
+    "added": "Date proposée ajoutée",
+    "deleted": "Date proposée supprimée",
+    "dateRequired": "Veuillez choisir une date",
+    "endAfterStart": "L'heure de fin doit être postérieure à l'heure de début",
+    "confirmTitle": "Supprimer cette date proposée ?",
+    "confirmBody": "Cette date a reçu {count} réponse(s). Si vous la supprimez, ces réponses seront également perdues.",
+    "confirmDelete": "Supprimer"
+  },
+  "closing": {
+    "title": "Clôture des réponses",
+    "open": "L'événement accepte actuellement les réponses.",
+    "expired": "La date limite de réponse est dépassée. Prolongez-la pour accepter à nouveau des réponses.",
+    "help": "Une fois les réponses clôturées, personne ne peut en ajouter ni en modifier. Vous pourrez les rouvrir plus tard.",
+    "close": "Clôturer les réponses",
+    "closed": "Les réponses sont clôturées.",
+    "closedAt": "Réponses clôturées le {date}.",
+    "expiredNote": "La date limite est également dépassée : prolongez-la pour que les participants puissent répondre après la réouverture.",
+    "reopen": "Rouvrir les réponses",
+    "finalized": "La date est confirmée : les réponses ne peuvent être ni clôturées ni rouvertes. Annulez la confirmation pour pouvoir le faire.",
+    "closedToast": "Réponses clôturées",
+    "reopenedToast": "Réponses rouvertes"
+  },
+  "finalize": {
+    "title": "Confirmer la date",
+    "current": "Confirmée : {date}",
+    "meetingUrl": "Lien de la réunion en ligne",
+    "help": "Choisissez la date à confirmer. Une fois la date confirmée, les réponses sont clôturées.",
+    "countsLabel": "{ok} disponible(s), {maybe} peut-être, {ng} indisponible(s)",
+    "recommended": "Recommandée",
+    "undo": "Annuler la confirmation",
+    "submit": "Confirmer la date",
+    "done": "Date confirmée",
+    "undone": "Confirmation de la date annulée"
+  },
+  "danger": {
+    "title": "Zone de danger",
+    "help": "La suppression de l'événement efface définitivement toutes les dates proposées et toutes les réponses. Cette action est irréversible.",
+    "delete": "Supprimer l'événement",
+    "deleted": "Événement supprimé",
+    "confirmTitle": "Supprimer cet événement ?",
+    "confirmBody": "« {name} » et ses {count} réponse(s) seront définitivement supprimés. Cette action est irréversible.",
+    "confirmDelete": "Supprimer"
+  }
+}

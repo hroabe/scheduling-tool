@@ -1,0 +1,52 @@
+{
+  "title": "アカウント設定",
+  "nav": {
+    "label": "アカウントメニュー",
+    "profile": "プロフィール",
+    "events": "マイイベント",
+    "integrations": "カレンダー連携"
+  },
+  "links": {
+    "events": "ログイン中に作成したイベントの一覧",
+    "integrations": "Google / Outlook カレンダーとの連携"
+  },
+  "profile": {
+    "heading": "プロフィール",
+    "username": "ユーザー名: {username}",
+    "lastName": "姓",
+    "firstName": "名",
+    "email": "メールアドレス",
+    "invalidEmail": "正しいメールアドレスを入力してください。",
+    "save": "保存する",
+    "saved": "プロフィールを保存しました",
+    "saveFailed": "保存できませんでした"
+  },
+  "password": {
+    "heading": "パスワード変更",
+    "old_password": "現在のパスワード",
+    "new_password": "新しいパスワード",
+    "new_password_confirm": "新しいパスワード（確認）",
+    "submit": "パスワードを変更",
+    "changed": "パスワードを変更しました",
+    "required": "現在のパスワードと新しいパスワードを入力してください。",
+    "mismatch": "新しいパスワードが一致しません。",
+    "sso": "シングルサインオン（SSO）でログインしているため、パスワードはログイン元のサービスで管理されています。"
+  },
+  "events": {
+    "title": "マイイベント",
+    "create": "イベントを作成",
+    "total": "全 {count} 件",
+    "empty": "まだイベントがありません",
+    "emptyDescription": "ログイン中に作成したイベントがここに表示されます。",
+    "participants": "回答 {count} 人",
+    "candidates": "候補 {count} 件",
+    "deadline": "締切 {date}",
+    "created": "作成 {date}",
+    "pagination": "ページ切り替え",
+    "prev": "前へ",
+    "next": "次へ",
+    "page": "{page} / {total} ページ",
+    "loadError": "イベントを読み込めませんでした（{reason}）",
+    "retry": "再読み込み"
+  }
+}

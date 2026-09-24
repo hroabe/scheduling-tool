@@ -41,6 +41,9 @@
 | 08 | [08_security.md](./08_security.md) | セキュリティ修正ガイド（7つの脆弱性と修正手順） |
 | 09 | [09_competitive_analysis.md](./09_competitive_analysis.md) | 競合分析（B2C日程調整ツール10社の詳細比較と批判的評価） |
 | 10 | [10_deployment.md](./10_deployment.md) | デプロイ・運用ガイド（Docker Compose + Caddy / Render、SEO対策一覧） |
+| 11 | [11_integration.md](./11_integration.md) | origin/main（アカウント・1on1・カレンダー連携・Keycloak・i18n・テーマ・モバイル）との統合仕様。**01〜10 と矛盾する場合はこちらを優先** |
+
+origin/main 由来の詳細仕様（`requirements.md` / `data-model.md` / `api-spec.md` / `system-overview.md` / `security-privacy.md` / `frontend-spec.md` / `rfcs/`）も 11 に合わせて改訂済み。
 
 ---
 
@@ -81,6 +84,25 @@ Phase 0 / 1a / 1b（MVP）の全タスクを実装済み。
 | Lighthouse Performance | 90+ | デスクトップ100 / モバイル86〜94（ローカル計測、ばらつきあり） |
 | Lighthouse Accessibility / SEO / Best Practices | 90+ | 100 / 100 / 100 |
 
+### origin/main 統合後（2026-09-24）
+
+MVP に origin/main の開発途中機能を統合し、すべて動作する状態に仕上げた（詳細は [11_integration.md](./11_integration.md)）。
+
+- **アカウント**: 会員登録・ログイン（ユーザー名/メール）・マイイベント・パスワード変更。Web はセッション+CSRF、モバイルは DRF トークン、Keycloak SSO は任意
+- **1on1 予約**: 匿名作成（メール確認で公開・ホストリンク発行）/ 会員作成、予約・キャンセル・通知メール
+- **カレンダー連携**: Google / Outlook OAuth、日程確定時に予定を自動登録
+- **i18n 8言語・テーマ（ライト/ダーク/かわいい）**、イベントの締切/再開・会議URL
+- **モバイルアプリ**（Expo SDK 52）を API v1 に追従させて再構築
+- **非同期処理は任意**: Redis なしでも全機能が動作（同期実行）
+
+| 品質指標 | 結果 |
+|---------|------|
+| バックエンドテスト | 140 テスト OK |
+| フロントエンド単体テスト | Vitest 144 テスト |
+| E2E | 24 シナリオ × デスクトップ/モバイル（48 本）すべて成功 |
+| モバイル | 型チェック・328 テスト・`expo export`・expo-doctor 18/18 |
+| Lighthouse モバイル（本番ビルド・ローカル） | Performance `/` 86・`/create` 81〜83、Accessibility / Best Practices / SEO 100 |
+
 ### 設計からの差分
 
 - **Django 5.1 → 5.2 LTS**: 5.1 は 2025年12月にサポート終了のため
@@ -89,4 +111,4 @@ Phase 0 / 1a / 1b（MVP）の全タスクを実装済み。
 - **`finalize` で `candidate_id: null` を受け付け**、確定解除に対応
 - **回答の編集トークン**: 回答直後のレスポンスでのみ返却し、ブラウザ（localStorage）に保存して「自分の回答を編集」を提供
 - **日本語Webフォント（Noto Sans JP）は不採用**: 約100KBのレンダーブロッキングCSSになるためOSフォントを使用（Inter のみ next/font で配信）
-- **mobile/ 等の削除対象ファイル**: コードからの参照は除去済み。ファイル自体の削除は `git rm -r mobile init_mobile.bat api/schedule/serializer.py api/api/celery.py api/schedule/filters.py` で行う
+- **Celery / Redis / mobile/ は削除せず任意機能として存続**（origin/main 統合で方針変更。Redis 未設定時はタスクを同期実行）

@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Editar evento"
+  },
+  "title": "Editar evento",
+  "back": "Volver a la página del evento",
+  "notFound": "No se encontró el evento",
+  "ownerNotice": "Creaste este evento con tu cuenta, así que puedes gestionarlo sin clave de edición.",
+  "toast": {
+    "reenterKey": "Vuelve a introducir la clave de edición"
+  },
+  "keyModal": {
+    "title": "Introduce la clave de edición",
+    "description": "Para editar este evento, introduce la clave de edición que se definió (o se generó) al crearlo.",
+    "label": "Clave de edición",
+    "helper": "La autenticación es válida hasta que cierres esta pestaña",
+    "required": "Introduce la clave de edición",
+    "invalid": "La clave de edición no es correcta",
+    "verifying": "Comprobando...",
+    "submit": "Continuar"
+  },
+  "info": {
+    "title": "Información del evento",
+    "name": "Nombre del evento",
+    "description": "Descripción",
+    "deadline": "Fecha límite de respuesta",
+    "isActive": "Aceptar respuestas",
+    "allowMaybe": "Permitir la respuesta \"Quizás\"",
+    "save": "Guardar cambios",
+    "saved": "Cambios guardados",
+    "nameRequired": "Introduce el nombre del evento",
+    "nameTooLong": "Usa 200 caracteres como máximo",
+    "descriptionTooLong": "Usa 2000 caracteres como máximo",
+    "deadlinePast": "La fecha límite debe ser posterior a la fecha actual"
+  },
+  "candidates": {
+    "title": "Gestionar fechas propuestas",
+    "listLabel": "Fechas propuestas",
+    "responseCount": "{count} respuestas",
+    "deleteLabel": "Eliminar {date}",
+    "minOne": "Se necesita al menos una fecha propuesta",
+    "addTitle": "Añadir una fecha propuesta",
+    "date": "Fecha",
+    "start": "Inicio",
+    "end": "Fin",
+    "add": "Añadir",
+    "added": "Fecha propuesta añadida",
+    "deleted": "Fecha propuesta eliminada",
+    "dateRequired": "Selecciona una fecha",
+    "endAfterStart": "La hora de fin debe ser posterior a la de inicio",
+    "confirmTitle": "¿Eliminar esta fecha propuesta?",
+    "confirmBody": "Esta fecha tiene {count} respuestas. Si la eliminas, también se perderán esas respuestas.",
+    "confirmDelete": "Eliminar"
+  },
+  "closing": {
+    "title": "Cierre de respuestas",
+    "open": "El evento está aceptando respuestas.",
+    "expired": "La fecha límite de respuesta ya pasó. Amplíala para volver a aceptar respuestas.",
+    "help": "Al cerrar, nadie podrá añadir ni cambiar respuestas. Puedes volver a abrirlas más tarde.",
+    "close": "Cerrar respuestas",
+    "closed": "Las respuestas están cerradas.",
+    "closedAt": "Las respuestas se cerraron el {date}.",
+    "expiredNote": "La fecha límite también ha pasado, así que tendrás que ampliarla para que se pueda responder después de reabrir.",
+    "reopen": "Volver a aceptar respuestas",
+    "finalized": "La fecha ya está confirmada, así que no puedes cerrar ni reabrir las respuestas. Anula la confirmación para poder hacerlo.",
+    "closedToast": "Respuestas cerradas",
+    "reopenedToast": "Se vuelven a aceptar respuestas"
+  },
+  "finalize": {
+    "title": "Confirmar la fecha",
+    "current": "Confirmada: {date}",
+    "meetingUrl": "Enlace de la reunión en línea",
+    "help": "Elige la fecha que quieres confirmar. Al confirmarla, se dejarán de aceptar respuestas.",
+    "countsLabel": "{ok} disponibles, {maybe} quizás, {ng} no disponibles",
+    "recommended": "Recomendada",
+    "undo": "Anular confirmación",
+    "submit": "Confirmar la fecha",
+    "done": "Fecha confirmada",
+    "undone": "Se anuló la confirmación de la fecha"
+  },
+  "danger": {
+    "title": "Zona de peligro",
+    "help": "Si eliminas el evento, se borrarán de forma permanente todas las fechas propuestas y respuestas. No se puede deshacer.",
+    "delete": "Eliminar evento",
+    "deleted": "Evento eliminado",
+    "confirmTitle": "¿Eliminar este evento?",
+    "confirmBody": "Se eliminarán de forma permanente \"{name}\" y sus {count} respuestas. Esta acción no se puede deshacer.",
+    "confirmDelete": "Eliminar"
+  }
+}

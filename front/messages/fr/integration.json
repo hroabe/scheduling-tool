@@ -1,0 +1,38 @@
+{
+  "title": "Connexion des agendas",
+  "description": "Une fois votre agenda connecté, l'événement et le lien de la réunion en ligne y sont ajoutés automatiquement dès qu'une date est confirmée.",
+  "providers": {
+    "google": {
+      "name": "Google Agenda",
+      "description": "Ajoute les dates confirmées à Google Agenda et génère un lien Google Meet."
+    },
+    "outlook": {
+      "name": "Calendrier Outlook",
+      "description": "Ajoute les dates confirmées à votre calendrier Outlook (Microsoft 365) et génère un lien Teams."
+    }
+  },
+  "status": {
+    "connected": "Connecté",
+    "notConnected": "Non connecté",
+    "expired": "Reconnexion nécessaire",
+    "notConfigured": "Indisponible"
+  },
+  "connect": "Connecter",
+  "reconnect": "Reconnecter",
+  "disconnect": "Déconnecter",
+  "connected": "Connecté à {provider}",
+  "connectError": "Impossible de se connecter à {provider}",
+  "connectFailed": "Impossible de lancer la connexion à {provider}",
+  "disconnected": "Déconnecté de {provider}",
+  "disconnectFailed": "Impossible de se déconnecter de {provider}",
+  "notConfigured": "L'intégration {provider} n'est pas configurée sur ce serveur. Veuillez contacter l'administrateur.",
+  "lastUsed": "Dernière utilisation : {date}",
+  "loadError": "Impossible de récupérer l'état de la connexion ({reason})",
+  "reasons": {
+    "denied": "L'accès n'a pas été autorisé.",
+    "state": "La demande de connexion a expiré. Veuillez réessayer.",
+    "code": "Aucun code d'autorisation n'a été reçu. Veuillez réessayer.",
+    "token": "Impossible d'obtenir le jeton d'accès. Veuillez réessayer plus tard.",
+    "unknown": "Veuillez réessayer plus tard."
+  }
+}

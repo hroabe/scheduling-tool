@@ -1,0 +1,23 @@
+{
+  "features": "Fonctionnalités",
+  "howToUse": "Fonctionnement",
+  "faq": "FAQ",
+  "skipToContent": "Aller au contenu",
+  "home": "Accueil de {name}",
+  "mainNav": "Navigation principale",
+  "oneOnOne": "Réservation individuelle",
+  "language": "Langue",
+  "theme": "Changer de thème",
+  "themeSystem": "Suivre le système",
+  "theme_light": "Clair",
+  "theme_dark": "Sombre",
+  "theme_cute": "Mignon",
+  "accountMenu": "Menu du compte",
+  "account": "Compte",
+  "myEvents": "Mes événements",
+  "integrations": "Connexion des agendas",
+  "login": "Se connecter",
+  "logout": "Se déconnecter",
+  "create": "Nouvel événement",
+  "openMenu": "Ouvrir le menu"
+}

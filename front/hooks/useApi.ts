@@ -3,13 +3,15 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import api, { ApiError } from '@/lib/api';
+import api, { ApiError, type IntegrationProvider } from '@/lib/api';
 import type { CandidateInput, ParticipantInput, ScheduleInput, ScheduleUpdateInput } from '@/types';
 
 // Query keys
 export const queryKeys = {
     schedule: (uuid: string) => ['schedule', uuid] as const,
     summary: (uuid: string) => ['schedule', uuid, 'summary'] as const,
+    mySchedules: (page: number) => ['me', 'schedules', page] as const,
+    integrationStatus: (provider: IntegrationProvider) => ['integration', provider] as const,
 };
 
 const noRetryOn4xx = (failureCount: number, error: Error) =>
@@ -40,16 +42,18 @@ function useInvalidateSchedule(uuid: string) {
 }
 
 export function useCreateSchedule() {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data: { schedule: ScheduleInput; ref?: string | null }) =>
             api.createSchedule(data.schedule, data.ref),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['me', 'schedules'] }),
     });
 }
 
 export function useUpdateSchedule(uuid: string) {
     const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { schedule: ScheduleUpdateInput; editKey: string }) =>
+        mutationFn: (data: { schedule: ScheduleUpdateInput; editKey?: string }) =>
             api.updateSchedule(uuid, data.schedule, data.editKey),
         onSuccess: invalidate,
     });
@@ -58,8 +62,11 @@ export function useUpdateSchedule(uuid: string) {
 export function useDeleteSchedule(uuid: string) {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (editKey: string) => api.deleteSchedule(uuid, editKey),
-        onSuccess: () => queryClient.removeQueries({ queryKey: queryKeys.schedule(uuid) }),
+        mutationFn: (editKey?: string) => api.deleteSchedule(uuid, editKey),
+        onSuccess: () => {
+            queryClient.removeQueries({ queryKey: queryKeys.schedule(uuid) });
+            queryClient.invalidateQueries({ queryKey: ['me', 'schedules'] });
+        },
     });
 }
 
@@ -92,7 +99,7 @@ export function useDeleteParticipant(uuid: string) {
 export function useAddCandidate(uuid: string) {
     const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { candidate: CandidateInput; editKey: string }) =>
+        mutationFn: (data: { candidate: CandidateInput; editKey?: string }) =>
             api.addCandidate(uuid, data.candidate, data.editKey),
         onSuccess: invalidate,
     });
@@ -101,18 +108,34 @@ export function useAddCandidate(uuid: string) {
 export function useDeleteCandidate(uuid: string) {
     const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { candidateId: number; editKey: string }) =>
+        mutationFn: (data: { candidateId: number; editKey?: string }) =>
             api.deleteCandidate(uuid, data.candidateId, data.editKey),
         onSuccess: invalidate,
     });
 }
 
-// Finalization hook
+// Finalization / closing
 export function useFinalizeSchedule(uuid: string) {
     const invalidate = useInvalidateSchedule(uuid);
     return useMutation({
-        mutationFn: (data: { candidateId: number | null; editKey: string }) =>
+        mutationFn: (data: { candidateId: number | null; editKey?: string }) =>
             api.finalizeSchedule(uuid, data.candidateId, data.editKey),
+        onSuccess: invalidate,
+    });
+}
+
+export function useCloseSchedule(uuid: string) {
+    const invalidate = useInvalidateSchedule(uuid);
+    return useMutation({
+        mutationFn: (editKey?: string) => api.closeSchedule(uuid, editKey),
+        onSuccess: invalidate,
+    });
+}
+
+export function useReopenSchedule(uuid: string) {
+    const invalidate = useInvalidateSchedule(uuid);
+    return useMutation({
+        mutationFn: (editKey?: string) => api.reopenSchedule(uuid, editKey),
         onSuccess: invalidate,
     });
 }
@@ -123,4 +146,23 @@ export function useExportUrls(uuid: string) {
         csv: api.exportCsvUrl(uuid),
         ics: (candidateId?: number) => api.exportIcsUrl(uuid, candidateId),
     };
+}
+
+// Accounts
+export function useMySchedules(page = 1, enabled = true) {
+    return useQuery({
+        queryKey: queryKeys.mySchedules(page),
+        queryFn: () => api.getMySchedules(page),
+        enabled,
+        retry: noRetryOn4xx,
+    });
+}
+
+export function useIntegrationStatus(provider: IntegrationProvider, enabled = true) {
+    return useQuery({
+        queryKey: queryKeys.integrationStatus(provider),
+        queryFn: () => api.getIntegrationStatus(provider),
+        enabled,
+        retry: noRetryOn4xx,
+    });
 }

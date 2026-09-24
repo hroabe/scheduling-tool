@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "EEE, d.M.",
+    "dayLong": "EEE, d. MMM"
+  },
+  "meta": {
+    "pageTitle": "Terminabstimmung: {name}",
+    "pageTitleFallback": "Terminabstimmung",
+    "pageDescription": "{owner} sucht einen Termin für „{name}“. {state}",
+    "pageStateOpen": "Bitte antworten Sie zu den Terminvorschlägen mit ◯△× (keine Registrierung nötig).",
+    "pageStateFinalized": "Der Termin steht fest.",
+    "owner": "Organisator: {name}",
+    "candidates": "Vorschläge: {count}",
+    "responses": "Antworten: {count}",
+    "deadline": "Frist: {date}",
+    "deadlineUntil": "Bitte antworten Sie bis {date}",
+    "created": "Erstellt: {date}"
+  },
+  "actions": {
+    "share": "Teilen",
+    "csvLabel": "Als CSV herunterladen",
+    "icsLabel": "Per ICS zum Kalender hinzufügen",
+    "edit": "Bearbeiten"
+  },
+  "share": {
+    "text": "Bitte teilen Sie uns mit, wann Sie für „{name}“ Zeit haben",
+    "copied": "URL kopiert",
+    "copiedShort": "Kopiert",
+    "tooltip": "URL teilen"
+  },
+  "error": {
+    "notFound": "Termin nicht gefunden",
+    "notFoundHint": "Bitte prüfen Sie, ob die URL korrekt ist und der Termin nicht gelöscht wurde.",
+    "loadFailed": "Termin konnte nicht geladen werden",
+    "createNew": "Neuen Termin erstellen"
+  },
+  "finalized": {
+    "title": "Der Termin steht fest",
+    "addIcs": "Zum Kalender hinzufügen (ICS)",
+    "googleCalendar": "In Google Kalender eintragen"
+  },
+  "closed": {
+    "title": "Die Abstimmung ist beendet",
+    "byOrganizer": "Der Organisator hat die Abstimmung am {date} beendet. Bitte warten Sie auf die Festlegung des Termins.",
+    "waiting": "Bitte warten Sie auf die Festlegung des Termins.",
+    "expired": "Die Antwortfrist ({date}) ist abgelaufen. Bitte warten Sie auf die Festlegung des Termins."
+  },
+  "meeting": {
+    "join": "Am Meeting teilnehmen",
+    "provider": {
+      "google_meet": "Online über Google Meet",
+      "teams": "Online über Microsoft Teams",
+      "zoom": "Online über Zoom",
+      "other": "Online-Meeting"
+    }
+  },
+  "organizer": {
+    "owner": "Sie haben diesen Termin erstellt.",
+    "editKey": "Sie sind in diesem Tab als Organisator bestätigt.",
+    "editPage": "Zur Bearbeitungsseite",
+    "close": "Abstimmung beenden",
+    "reopen": "Abstimmung wieder öffnen"
+  },
+  "tabs": {
+    "responses": "Antworten",
+    "respond": "Jetzt antworten",
+    "editMine": "Eigene Antwort bearbeiten",
+    "summary": "Auswertung"
+  },
+  "respond": {
+    "cta": "Verfügbarkeit angeben",
+    "closedFinalized": "Der Termin wurde festgelegt, daher ist die Abstimmung beendet.",
+    "closedByOrganizer": "Die Abstimmung ist beendet. Bitte warten Sie auf die Festlegung durch den Organisator.",
+    "closedExpired": "Die Antwortfrist ist abgelaufen. Antworten sind nicht mehr möglich.",
+    "closedInactive": "Für diesen Termin werden derzeit keine Antworten angenommen."
+  },
+  "reminder": {
+    "title": "An fehlende Antworten erinnern",
+    "titleEmpty": "Teilen Sie die URL mit den Teilnehmenden",
+    "body": "Bisher haben {count} Personen geantwortet. Senden Sie die URL erneut, um die anderen zu erinnern.",
+    "bodyEmpty": "Noch keine Antworten. Teilen Sie die URL, um Antworten zu sammeln.",
+    "deadline": "Antwortfrist: {date}",
+    "deadlineSoon": "Weniger als 24 Stunden bis zur Antwortfrist ({date})",
+    "share": "URL teilen"
+  },
+  "summary": {
+    "empty": "Die Auswertung erscheint, sobald Antworten vorliegen.",
+    "title": "Antworten pro Terminvorschlag",
+    "scoreHelp": "Punktzahl = {yes}×2 + {maybe}×1. Der Vorschlag mit der höchsten Punktzahl wird als „Empfohlen“ angezeigt.",
+    "listLabel": "Terminvorschläge (nach Punktzahl)",
+    "recommended": "Empfohlen",
+    "finalized": "Festgelegt",
+    "answered": "{count}/{total} haben geantwortet",
+    "reasonsTitle": "Warum empfohlen",
+    "reason": {
+      "allOk": "Alle können teilnehmen",
+      "mostOk": "Die meisten „{symbol}“-Antworten ({count})",
+      "noNg": "Niemand hat „{symbol}“ (nicht verfügbar) gewählt",
+      "fewestNg": "Die wenigsten „{symbol}“-Antworten ({count})",
+      "topScore": "Höchste Punktzahl",
+      "earliestTie": "Frühester Termin unter den Vorschlägen mit gleicher Punktzahl"
+    },
+    "finalizeCta": "Diesen Termin festlegen",
+    "addToCalendar": "Zum Kalender hinzufügen (ICS)",
+    "kpi": {
+      "participants": "Antwortende",
+      "maxOk": "Meiste „{symbol}“",
+      "candidates": "Terminvorschläge"
+    }
+  },
+  "fix": {
+    "title": "Diesen Termin festlegen?",
+    "breakdown": "Aufschlüsselung der Antworten",
+    "warning": "Nach der Festlegung werden keine Antworten mehr angenommen. Sie können die Festlegung auf der Bearbeitungsseite aufheben.",
+    "confirm": "Festlegen"
+  },
+  "toast": {
+    "authRequired": "Bitte geben Sie den Bearbeitungsschlüssel erneut ein (auf der Bearbeitungsseite möglich).",
+    "finalized": "Termin wurde festgelegt",
+    "finalizedHint": "Informieren Sie die Teilnehmenden über den Termin.",
+    "closed": "Abstimmung wurde beendet",
+    "reopened": "Abstimmung wurde wieder geöffnet"
+  },
+  "delete": {
+    "title": "Antwort löschen?",
+    "body": "Die Antwort von {name} wird gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "bodyOwn": "Ihre Antwort wird gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "confirm": "Löschen",
+    "done": "Antwort wurde gelöscht"
+  },
+  "created": {
+    "title": "Ihr Termin wurde erstellt",
+    "description": "Teilen Sie diese URL mit den Teilnehmenden, um Antworten zu sammeln.",
+    "shareUrl": "URL zum Teilen",
+    "editKey": "Bearbeitungsschlüssel",
+    "editKeyWarning": "Den Bearbeitungsschlüssel benötigen Sie zum Bearbeiten, Festlegen und Löschen des Termins. Er wird nicht erneut angezeigt – bitte notieren Sie ihn unbedingt.",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "copyLabel": "{label} kopieren",
+    "ok": "OK"
+  },
+  "success": {
+    "submitted": "Antwort wurde gesendet",
+    "updated": "Antwort wurde aktualisiert",
+    "thanks": "Vielen Dank für Ihre Antwort!",
+    "ctaTitle": "Möchten Sie selbst einen Termin abstimmen?",
+    "ctaFree": "Ohne Registrierung / kostenlos",
+    "ctaExport": "Ergebnisse als CSV oder ICS exportieren",
+    "ctaButton": "Termin erstellen"
+  }
+}

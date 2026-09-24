@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} 分钟",
+  "loadErrorTitle": "无法加载",
+  "status": {
+    "pending": "等待邮箱验证",
+    "published": "已发布",
+    "paused": "已暂停受理",
+    "unpublished": "未发布"
+  },
+  "bookingStatus": {
+    "pending": "确认中",
+    "confirmed": "已确定",
+    "cancelled": "已取消",
+    "completed": "已完成"
+  },
+  "confirm": {
+    "keep": "不取消"
+  },
+  "invalidLink": {
+    "title": "链接无效",
+    "body": "请重新打开邮件中的链接。"
+  },
+  "generator": {
+    "pickDays": "请在日历中选择日期（可多选）",
+    "selectedDays": "已选择 {count} 天",
+    "from": "开始",
+    "to": "结束",
+    "invalidRange": "结束时间必须晚于开始时间。",
+    "hint": "将在所选的每一天按 {minutes} 分钟的间隔创建时段。过去的时间不会被添加。",
+    "add": "添加空闲时段",
+    "noSlots": "没有可添加的时段。请检查日期和时间范围。"
+  },
+  "slots": {
+    "empty": "还没有空闲时段。请选择日期和时间范围后添加。",
+    "booked": "已预约",
+    "remove": "删除 {slot} 时段"
+  },
+  "new": {
+    "title": "创建1对1预约页面",
+    "description": "只需公开空闲时段并分享链接。对方无需登录即可预约方便的时间。",
+    "basics": "基本信息",
+    "fields": {
+      "title": "预约页面标题",
+      "titlePlaceholder": "例：30 分钟在线面谈",
+      "organizerName": "组织者姓名",
+      "organizerEmail": "组织者的电子邮箱",
+      "organizerEmailHelp": "发布用的确认邮件和管理链接将发送到此地址。有新预约时也会通知此地址。",
+      "duration": "时长",
+      "timezone": "时区"
+    },
+    "availability": "设置空闲时段",
+    "slotsHeading": "要公开的空闲时段",
+    "slotCount": "{count} / {max} 个",
+    "slotLimit": "空闲时段最多 {max} 个。超出的部分未被添加（创建后可在管理页面中添加）。",
+    "clearSlots": "全部删除",
+    "submit": "创建预约页面",
+    "verifyNote": "创建后，打开确认邮件中的链接即可发布预约页面。",
+    "errors": {
+      "title": "请输入标题。",
+      "organizerName": "请输入组织者姓名。",
+      "organizerEmail": "请输入有效的电子邮箱地址。",
+      "slots": "请至少添加 1 个空闲时段。"
+    }
+  },
+  "host": {
+    "summary": "组织者：{organizer} · {minutes} 分钟 · {timezone}",
+    "noToken": "此浏览器中没有管理信息",
+    "invalidToken": "管理链接无效",
+    "useEmailLink": "请通过创建预约页面时收到的邮件中的“管理链接”打开。",
+    "created": "预约页面已创建。",
+    "pendingTitle": "请查收邮件以发布预约页面",
+    "pendingBody": "我们已向 {email} 发送确认邮件。打开邮件中的链接后，预约页面即会发布，来宾便可以预约。",
+    "resend": "重新发送确认邮件",
+    "resent": "已向 {email} 重新发送确认邮件",
+    "resendFailed": "无法重新发送确认邮件",
+    "devVerify": "[开发环境] 打开确认链接",
+    "shareHeading": "分享给来宾",
+    "publicUrl": "预约页面链接",
+    "notPublicYet": "在完成邮箱验证之前，来宾无法打开此页面。",
+    "copy": "复制链接",
+    "copied": "已复制链接",
+    "copyFailed": "复制失败。请选中链接后手动复制。",
+    "share": "分享",
+    "openPublic": "打开来宾页面",
+    "settingsHeading": "受理设置",
+    "accepting": "接受预约",
+    "acceptingHelp": "关闭后，预约页面将暂时隐藏。",
+    "notify": "有新预约时通过邮件通知",
+    "notifyHelp": "通知地址：{email}",
+    "saved": "设置已保存",
+    "saveFailed": "无法保存设置",
+    "tabs": {
+      "slots": "空闲时段（{count}）",
+      "bookings": "预约（{count}）"
+    },
+    "addSlots": "添加空闲时段",
+    "currentSlots": "已登记的空闲时段",
+    "slotsAdded": "已添加 {count} 个空闲时段",
+    "slotsSkipped": "有 {count} 个时段因重复或已过时间而未被添加",
+    "slotsAddFailed": "无法添加空闲时段",
+    "slotDeleteFailed": "无法删除空闲时段",
+    "noBookings": "还没有预约。",
+    "cancelBooking": "取消预约",
+    "cancelConfirmTitle": "要取消预约吗？",
+    "cancelConfirmBody": "将取消 {name} 的预约，并通过邮件发送取消通知。此操作无法撤销。",
+    "bookingCancelled": "预约已取消",
+    "cancelFailed": "无法取消预约",
+    "secretNote": "此页面仅供组织者使用。请勿将管理链接分享给他人。"
+  },
+  "guest": {
+    "unavailableTitle": "此预约页面目前不可用",
+    "unavailableBody": "页面可能尚未发布、已暂停受理，或链接有误。请与组织者确认。",
+    "loadErrorTitle": "无法加载预约页面",
+    "organizer": "组织者：{name}",
+    "timezone": "以 {timezone} 时间显示",
+    "pickHeading": "选择日期和时间",
+    "noSlots": "目前没有可预约的空闲时段。",
+    "formHeading": "预约信息",
+    "noSelection": "请从列表中选择日期和时间",
+    "pickSlot": "请选择日期和时间。",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "message": "留言（可选）",
+    "submit": "预约此时间",
+    "privacy": "您填写的信息仅与组织者共享。确认邮件中将附有取消链接。",
+    "slotTaken": "该时段已被预约。请选择其他日期和时间。",
+    "errors": {
+      "name": "请输入您的姓名。",
+      "email": "请输入有效的电子邮箱地址。"
+    }
+  },
+  "done": {
+    "title": "预约已确定",
+    "cancelledTitle": "此预约已被取消",
+    "emailSent": "已向 {email} 发送确认邮件。",
+    "backToPage": "返回预约页面",
+    "cancelViaEmail": "如需取消，请通过确认邮件中的链接办理。"
+  },
+  "cancel": {
+    "title": "取消预约",
+    "description": "您可以取消以下预约。",
+    "alreadyCancelled": "此预约已被取消。",
+    "notCancellable": "此预约无法取消。",
+    "button": "取消预约",
+    "confirmTitle": "要取消预约吗？",
+    "confirmBody": "组织者将收到取消通知。此操作无法撤销。",
+    "done": "预约已取消",
+    "failed": "无法取消"
+  },
+  "summary": {
+    "title": "预约",
+    "when": "日期和时间",
+    "organizer": "组织者",
+    "guest": "预约者",
+    "status": "状态",
+    "meeting": "会议链接",
+    "message": "留言"
+  },
+  "verify": {
+    "loading": "正在验证电子邮箱…",
+    "successTitle": "预约页面已发布",
+    "successBody": "来宾现在可以预约了。分享预约页面的链接吧。",
+    "linkInEmail": "可以通过与确认邮件一起收到的“管理链接”打开管理页面。",
+    "openHost": "打开管理页面",
+    "openPublic": "查看预约页面",
+    "errorTitle": "验证失败",
+    "invalid": "链接无效或已过期。请重新打开邮件中的链接，或在管理页面中重新发送确认邮件。",
+    "createNew": "创建预约页面"
+  }
+}

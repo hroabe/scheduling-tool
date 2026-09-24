@@ -1,0 +1,10 @@
+{
+  "invalidRequest": "Veuillez vérifier les informations saisies.",
+  "unauthorized": "Vous devez vous connecter.",
+  "notFound": "Introuvable.",
+  "permissionDenied": "Vous n'avez pas l'autorisation d'effectuer cette action.",
+  "throttled": "Trop de requêtes. Veuillez patienter un instant, puis réessayer.",
+  "serverError": "Une erreur s'est produite sur le serveur. Veuillez réessayer plus tard.",
+  "networkError": "Impossible de joindre le serveur. Vérifiez votre connexion.",
+  "unknown": "Une erreur s'est produite."
+}

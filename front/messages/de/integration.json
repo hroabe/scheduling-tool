@@ -1,0 +1,38 @@
+{
+  "title": "Kalenderanbindung",
+  "description": "Nach der Anbindung werden der Termin und der Link zum Online-Meeting automatisch in Ihren Kalender eingetragen, sobald ein Datum feststeht.",
+  "providers": {
+    "google": {
+      "name": "Google Kalender",
+      "description": "Trägt festgelegte Termine in Google Kalender ein und erstellt einen Google-Meet-Link."
+    },
+    "outlook": {
+      "name": "Outlook-Kalender",
+      "description": "Trägt festgelegte Termine in Ihren Outlook-Kalender (Microsoft 365) ein und erstellt einen Teams-Link."
+    }
+  },
+  "status": {
+    "connected": "Verbunden",
+    "notConnected": "Nicht verbunden",
+    "expired": "Erneute Verbindung nötig",
+    "notConfigured": "Nicht verfügbar"
+  },
+  "connect": "Verbinden",
+  "reconnect": "Erneut verbinden",
+  "disconnect": "Verbindung trennen",
+  "connected": "Mit {provider} verbunden",
+  "connectError": "Verbindung mit {provider} fehlgeschlagen",
+  "connectFailed": "Verbindung mit {provider} konnte nicht gestartet werden",
+  "disconnected": "Verbindung mit {provider} wurde getrennt",
+  "disconnectFailed": "Verbindung mit {provider} konnte nicht getrennt werden",
+  "notConfigured": "Die Anbindung an {provider} ist auf diesem Server nicht eingerichtet. Bitte wenden Sie sich an den Administrator.",
+  "lastUsed": "Zuletzt verwendet: {date}",
+  "loadError": "Verbindungsstatus konnte nicht abgerufen werden ({reason})",
+  "reasons": {
+    "denied": "Der Zugriff wurde nicht erlaubt.",
+    "state": "Die Verbindungsanfrage ist abgelaufen. Bitte versuchen Sie es erneut.",
+    "code": "Es wurde kein Autorisierungscode empfangen. Bitte versuchen Sie es erneut.",
+    "token": "Es konnte kein Zugriffstoken abgerufen werden. Bitte versuchen Sie es später erneut.",
+    "unknown": "Bitte versuchen Sie es später erneut."
+  }
+}

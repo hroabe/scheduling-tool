@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} 分",
+  "loadErrorTitle": "読み込めませんでした",
+  "status": {
+    "pending": "メール認証待ち",
+    "published": "公開中",
+    "paused": "受付停止中",
+    "unpublished": "非公開"
+  },
+  "bookingStatus": {
+    "pending": "確認中",
+    "confirmed": "確定",
+    "cancelled": "キャンセル済み",
+    "completed": "完了"
+  },
+  "confirm": {
+    "keep": "やめる"
+  },
+  "invalidLink": {
+    "title": "リンクが無効です",
+    "body": "メールに記載されたリンクをもう一度開いてください。"
+  },
+  "generator": {
+    "pickDays": "カレンダーで日付を選んでください（複数選択できます）",
+    "selectedDays": "{count} 日選択中",
+    "from": "開始",
+    "to": "終了",
+    "invalidRange": "終了時刻は開始時刻より後にしてください。",
+    "hint": "選んだ日ごとに {minutes} 分刻みの枠を作ります。過去の時間は追加されません。",
+    "add": "空き枠を追加",
+    "noSlots": "追加できる枠がありません。日付と時間帯を確認してください。"
+  },
+  "slots": {
+    "empty": "まだ空き枠がありません。日付と時間帯を選んで追加してください。",
+    "booked": "予約済み",
+    "remove": "{slot} の枠を削除"
+  },
+  "new": {
+    "title": "1on1 予約ページを作成",
+    "description": "空き枠を公開して URL を共有するだけ。相手はログイン不要で都合の良い時間を予約できます。",
+    "basics": "基本情報",
+    "fields": {
+      "title": "予約ページのタイトル",
+      "titlePlaceholder": "例: 30 分のオンライン面談",
+      "organizerName": "主催者名",
+      "organizerEmail": "主催者のメールアドレス",
+      "organizerEmailHelp": "公開用の確認メールと管理用リンクをこのアドレスに送ります。予約が入ったときの通知先にもなります。",
+      "duration": "所要時間",
+      "timezone": "タイムゾーン"
+    },
+    "availability": "空き枠を設定",
+    "slotsHeading": "公開する空き枠",
+    "slotCount": "{count} / {max} 件",
+    "slotLimit": "空き枠は最大 {max} 件までです。超えた分は追加されませんでした（作成後に管理画面から追加できます）。",
+    "clearSlots": "すべて削除",
+    "submit": "予約ページを作成",
+    "verifyNote": "作成後、確認メールのリンクを開くと予約ページが公開されます。",
+    "errors": {
+      "title": "タイトルを入力してください。",
+      "organizerName": "主催者名を入力してください。",
+      "organizerEmail": "正しいメールアドレスを入力してください。",
+      "slots": "空き枠を 1 件以上追加してください。"
+    }
+  },
+  "host": {
+    "summary": "主催者: {organizer} ・ {minutes} 分 ・ {timezone}",
+    "noToken": "このブラウザには管理用の情報がありません",
+    "invalidToken": "管理用リンクが無効です",
+    "useEmailLink": "予約ページ作成時に届いたメールの「管理用リンク」から開いてください。",
+    "created": "予約ページを作成しました。",
+    "pendingTitle": "メールを確認して予約ページを公開してください",
+    "pendingBody": "{email} に確認メールを送りました。メール内のリンクを開くと予約ページが公開され、ゲストが予約できるようになります。",
+    "resend": "確認メールを再送",
+    "resent": "{email} に確認メールを再送しました",
+    "resendFailed": "確認メールを再送できませんでした",
+    "devVerify": "［開発環境］確認リンクを開く",
+    "shareHeading": "ゲストに共有する",
+    "publicUrl": "予約ページの URL",
+    "notPublicYet": "メール確認が完了するまで、ゲストはこのページを開けません。",
+    "copy": "URL をコピー",
+    "copied": "URL をコピーしました",
+    "copyFailed": "コピーできませんでした。URL を選択してコピーしてください。",
+    "share": "共有",
+    "openPublic": "ゲスト画面を開く",
+    "settingsHeading": "受付設定",
+    "accepting": "予約を受け付ける",
+    "acceptingHelp": "オフにすると予約ページが一時的に非表示になります。",
+    "notify": "予約が入ったらメールで知らせる",
+    "notifyHelp": "通知先: {email}",
+    "saved": "設定を保存しました",
+    "saveFailed": "設定を保存できませんでした",
+    "tabs": {
+      "slots": "空き枠（{count}）",
+      "bookings": "予約（{count}）"
+    },
+    "addSlots": "空き枠を追加",
+    "currentSlots": "登録済みの空き枠",
+    "slotsAdded": "{count} 件の空き枠を追加しました",
+    "slotsSkipped": "{count} 件は重複または過去の時間のため追加されませんでした",
+    "slotsAddFailed": "空き枠を追加できませんでした",
+    "slotDeleteFailed": "空き枠を削除できませんでした",
+    "noBookings": "まだ予約はありません。",
+    "cancelBooking": "予約をキャンセル",
+    "cancelConfirmTitle": "予約をキャンセルしますか？",
+    "cancelConfirmBody": "{name} さんの予約をキャンセルし、キャンセルのお知らせをメールで送ります。この操作は取り消せません。",
+    "bookingCancelled": "予約をキャンセルしました",
+    "cancelFailed": "予約をキャンセルできませんでした",
+    "secretNote": "このページは主催者専用です。管理用リンクは他の人に共有しないでください。"
+  },
+  "guest": {
+    "unavailableTitle": "この予約ページは現在利用できません",
+    "unavailableBody": "公開前・受付停止中、または URL が間違っている可能性があります。主催者にご確認ください。",
+    "loadErrorTitle": "予約ページを読み込めませんでした",
+    "organizer": "主催者: {name}",
+    "timezone": "{timezone} の時刻で表示",
+    "pickHeading": "日時を選ぶ",
+    "noSlots": "現在予約できる空き枠はありません。",
+    "formHeading": "予約情報",
+    "noSelection": "一覧から日時を選んでください",
+    "pickSlot": "日時を選んでください。",
+    "name": "お名前",
+    "email": "メールアドレス",
+    "message": "メッセージ（任意）",
+    "submit": "この日時で予約する",
+    "privacy": "入力した情報は主催者にのみ共有されます。確認メールにキャンセル用のリンクが記載されます。",
+    "slotTaken": "その枠はすでに予約されました。別の日時を選んでください。",
+    "errors": {
+      "name": "お名前を入力してください。",
+      "email": "正しいメールアドレスを入力してください。"
+    }
+  },
+  "done": {
+    "title": "予約が確定しました",
+    "cancelledTitle": "この予約はキャンセルされました",
+    "emailSent": "{email} に確認メールを送りました。",
+    "backToPage": "予約ページへ戻る",
+    "cancelViaEmail": "キャンセルする場合は、確認メールに記載されたリンクから手続きしてください。"
+  },
+  "cancel": {
+    "title": "予約のキャンセル",
+    "description": "以下の予約をキャンセルできます。",
+    "alreadyCancelled": "この予約はすでにキャンセルされています。",
+    "notCancellable": "この予約はキャンセルできません。",
+    "button": "予約をキャンセルする",
+    "confirmTitle": "予約をキャンセルしますか？",
+    "confirmBody": "主催者にキャンセルのお知らせが届きます。この操作は取り消せません。",
+    "done": "予約をキャンセルしました",
+    "failed": "キャンセルできませんでした"
+  },
+  "summary": {
+    "title": "予約",
+    "when": "日時",
+    "organizer": "主催者",
+    "guest": "予約者",
+    "status": "状態",
+    "meeting": "会議 URL",
+    "message": "メッセージ"
+  },
+  "verify": {
+    "loading": "メールアドレスを確認しています…",
+    "successTitle": "予約ページを公開しました",
+    "successBody": "ゲストが予約できるようになりました。予約ページの URL を共有しましょう。",
+    "linkInEmail": "管理画面へは、確認メールと一緒に届いた「管理用リンク」から開けます。",
+    "openHost": "管理画面を開く",
+    "openPublic": "予約ページを見る",
+    "errorTitle": "確認できませんでした",
+    "invalid": "リンクが無効か、有効期限が切れています。メールのリンクをもう一度開くか、管理画面から確認メールを再送してください。",
+    "createNew": "予約ページを作成する"
+  }
+}

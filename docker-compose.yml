@@ -1,49 +1,126 @@
-# Local development: PostgreSQL + Django (runserver) + Next.js (dev server)
-#   docker compose up --build
-#   -> http://localhost:3000 (front) / http://localhost:8000/api/docs/ (API docs)
+# Local development (RFC-0007: everything behind nginx on http://localhost)
+#
+#   cp .env.docker.example .env        # set SECRET_KEY / POSTGRES_PASSWORD
+#   docker compose up --build          # db + redis + api + celery + front + nginx
+#   docker compose --profile sso up    # ... + Keycloak (http://localhost/keycloak)
+#
+#   http://localhost            frontend
+#   http://localhost/api/docs/  API documentation
 
 services:
-  # PostgreSQL Database
+  # Nginx Reverse Proxy (RFC-0007)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+      - front
+    restart: unless-stopped
+
+  # PostgreSQL (internal only)
   db:
     image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: scheduling_db
-      POSTGRES_USER: scheduling
-      POSTGRES_PASSWORD: scheduling_password
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB:-scheduling_db}
+      POSTGRES_USER: ${POSTGRES_USER:-scheduling}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    expose:
+      - "5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U scheduling -d scheduling_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scheduling} -d ${POSTGRES_DB:-scheduling_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Django Backend
+  # Redis (Celery broker + shared cache; optional in production)
+  redis:
+    image: redis:7-alpine
+    expose:
+      - "6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Django API (internal only - accessed via nginx)
   api:
     build:
       context: .
       dockerfile: Dockerfile.api
     volumes:
       - ./api:/app
-    ports:
-      - "8000:8000"
-    environment:
-      DEBUG: "True"
-      SECRET_KEY: "django-insecure-dev-key"
-      DATABASE_URL: "postgres://scheduling:scheduling_password@db:5432/scheduling_db"
-      ALLOWED_HOSTS: "localhost,127.0.0.1,api"
-      CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
-      FRONTEND_URL: "http://localhost:3000"
+    expose:
+      - "8000"
+    environment: &api-env
+      DEBUG: ${DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      DATABASE_URL: "postgres://${POSTGRES_USER:-scheduling}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-scheduling_db}"
+      REDIS_URL: "redis://redis:6379/0"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,api,nginx"
+      CORS_ALLOWED_ORIGINS: "http://localhost,http://127.0.0.1"
+      CSRF_TRUSTED_ORIGINS: "http://localhost,http://127.0.0.1"
+      FRONTEND_URL: "http://localhost"
+      NUM_PROXIES: "1"
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: "http://localhost/api/v1/integrations/google/callback/"
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID:-}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET:-}
+      MICROSOFT_REDIRECT_URI: "http://localhost/api/v1/integrations/outlook/callback/"
+      # Keycloak (RFC-0011) - only used when started with --profile sso
+      KEYCLOAK_URL: ${KEYCLOAK_URL:-}
+      KEYCLOAK_REALM: "scheduling-tool"
+      KEYCLOAK_CLIENT_ID: "scheduling-backend"
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_BACKEND_SECRET:-}
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
 
-  # Next.js Frontend
+  # Celery worker (notifications, calendar events)
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    volumes:
+      - ./api:/app
+    environment: *api-env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A api worker -l INFO
+
+  # Celery beat (deadline reminders, cleanup)
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    volumes:
+      - ./api:/app
+    environment: *api-env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A api beat -l INFO --schedule /tmp/celerybeat-schedule
+
+  # Next.js frontend (internal only - accessed via nginx)
   front:
     build:
       context: ./front
@@ -53,14 +130,72 @@ services:
       - ./front:/app
       - /app/node_modules
       - /app/.next
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
-      NEXT_PUBLIC_API_URL: "http://localhost:8000"
-      NEXT_PUBLIC_SITE_URL: "http://localhost:3000"
+      NEXT_PUBLIC_API_URL: "http://localhost"
+      NEXT_PUBLIC_SITE_URL: "http://localhost"
       API_INTERNAL_URL: "http://api:8000"
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
+      NEXT_PUBLIC_KEYCLOAK_URL: ${NEXT_PUBLIC_KEYCLOAK_URL:-}
+      NEXT_PUBLIC_KEYCLOAK_REALM: "scheduling-tool"
+      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: "scheduling-frontend"
     depends_on:
       - api
 
+  # ---------------------------------------------------------------- optional SSO (profile: sso)
+  keycloak-db:
+    image: postgres:15-alpine
+    profiles: ["sso"]
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-keycloak}
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    profiles: ["sso"]
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:ro
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-keycloak}
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PATH: /keycloak
+      KC_HTTP_RELATIVE_PATH: /keycloak
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_PROXY: edge
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    command: start --proxy edge --hostname-strict=false --import-realm
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    expose:
+      - "8080"
+    healthcheck:
+      # The Keycloak image has no curl: talk HTTP over bash's /dev/tcp
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080 && printf 'GET /keycloak/health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
 volumes:
   postgres_data:
+  redis_data:
+  keycloak_postgres_data:

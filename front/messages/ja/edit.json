@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "イベント編集"
+  },
+  "title": "イベント編集",
+  "back": "イベントページに戻る",
+  "notFound": "イベントが見つかりませんでした",
+  "ownerNotice": "ログイン中のアカウントで作成したイベントのため、編集キーなしで管理できます。",
+  "toast": {
+    "reenterKey": "編集キーを再入力してください"
+  },
+  "keyModal": {
+    "title": "編集キーを入力",
+    "description": "このイベントを編集するには、作成時に設定（または発行）された編集キーを入力してください。",
+    "label": "編集キー",
+    "helper": "認証はこのタブを閉じるまで有効です",
+    "required": "編集キーを入力してください",
+    "invalid": "編集キーが正しくありません",
+    "verifying": "確認中...",
+    "submit": "認証"
+  },
+  "info": {
+    "title": "イベント情報",
+    "name": "イベント名",
+    "description": "説明",
+    "deadline": "回答期限",
+    "isActive": "回答を受け付ける",
+    "allowMaybe": "「調整可能」の回答を許可",
+    "save": "変更を保存",
+    "saved": "変更を保存しました",
+    "nameRequired": "イベント名を入力してください",
+    "nameTooLong": "200文字以内で入力してください",
+    "descriptionTooLong": "2000文字以内で入力してください",
+    "deadlinePast": "回答期限は未来の日時を指定してください"
+  },
+  "candidates": {
+    "title": "候補日の管理",
+    "listLabel": "候補日一覧",
+    "responseCount": "回答{count}件",
+    "deleteLabel": "{date}を削除",
+    "minOne": "候補日は最低1つ必要です",
+    "addTitle": "候補日を追加",
+    "date": "日付",
+    "start": "開始",
+    "end": "終了",
+    "add": "追加",
+    "added": "候補日を追加しました",
+    "deleted": "候補日を削除しました",
+    "dateRequired": "日付を選択してください",
+    "endAfterStart": "終了時刻は開始時刻より後にしてください",
+    "confirmTitle": "候補日を削除しますか？",
+    "confirmBody": "この候補日には{count}件の回答があります。削除すると回答も失われます。",
+    "confirmDelete": "削除する"
+  },
+  "closing": {
+    "title": "回答の締切",
+    "open": "現在、回答を受け付けています。",
+    "expired": "回答期限を過ぎています。期限を延長すると再び回答を受け付けます。",
+    "help": "締め切ると新しい回答や回答の変更ができなくなります。あとから再開できます。",
+    "close": "回答を締め切る",
+    "closed": "回答を締め切っています。",
+    "closedAt": "{date} に回答を締め切りました。",
+    "expiredNote": "回答期限も過ぎているため、再開後も回答するには期限の延長が必要です。",
+    "reopen": "回答受付を再開する",
+    "finalized": "日程が確定しているため、締切・再開は操作できません。確定を解除すると再び操作できます。",
+    "closedToast": "回答を締め切りました",
+    "reopenedToast": "回答の受付を再開しました"
+  },
+  "finalize": {
+    "title": "日程確定",
+    "current": "確定済み: {date}",
+    "meetingUrl": "オンライン会議のURL",
+    "help": "確定する候補日を選択してください。確定すると回答の受付を終了します。",
+    "countsLabel": "参加可能{ok}名、調整可能{maybe}名、参加不可{ng}名",
+    "recommended": "おすすめ",
+    "undo": "確定を解除",
+    "submit": "日程を確定する",
+    "done": "日程を確定しました",
+    "undone": "日程の確定を解除しました"
+  },
+  "danger": {
+    "title": "危険な操作",
+    "help": "イベントを削除すると、すべての候補日と回答が完全に削除され、元に戻せません。",
+    "delete": "イベントを削除する",
+    "deleted": "イベントを削除しました",
+    "confirmTitle": "イベントを削除しますか？",
+    "confirmBody": "「{name}」と、{count}件の回答が完全に削除されます。この操作は取り消せません。",
+    "confirmDelete": "削除する"
+  }
+}

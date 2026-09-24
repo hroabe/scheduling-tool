@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
 
 concurrency:
@@ -14,6 +14,9 @@ jobs:
     name: Backend (Django)
     runs-on: ubuntu-latest
     services:
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
       postgres:
         image: postgres:15-alpine
         env:
@@ -42,8 +45,13 @@ jobs:
       - name: Test with coverage
         working-directory: api
         run: |
-          coverage run --source=schedule --omit="schedule/migrations/*,schedule/tests.py,schedule/serializer.py,schedule/filters.py" manage.py test schedule
+          coverage run --source=. --omit="*/migrations/*,*/tests*.py,manage.py,api/wsgi.py,api/asgi.py" manage.py test
           coverage report --fail-under=65
+      - name: Test with Redis broker settings (Celery non-eager)
+        working-directory: api
+        env:
+          REDIS_URL: redis://localhost:6379/0
+        run: python manage.py check
       - name: Deployment checks
         working-directory: api
         env:
@@ -66,6 +74,8 @@ jobs:
           cache: npm
           cache-dependency-path: front/package-lock.json
       - run: npm ci
+      - name: i18n message consistency (8 locales)
+        run: node scripts/check-messages.mjs
       - run: npm run lint
       - run: npm run type-check
       - run: npm test
@@ -104,3 +114,37 @@ jobs:
           name: playwright-report
           path: front/playwright-report
           retention-days: 7
+
+  mobile:
+    name: Mobile (Expo)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - run: npm run type-check
+      - run: npm test
+
+  docker:
+    name: Docker images & compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose files
+        run: |
+          cp .env.docker.example .env
+          docker compose config -q
+          docker compose --profile sso config -q
+          sed -e 's/^DJANGO_SECRET_KEY=$/DJANGO_SECRET_KEY=ci/' -e 's/^POSTGRES_PASSWORD=$/POSTGRES_PASSWORD=ci/'               -e 's/^INTERNAL_API_TOKEN=$/INTERNAL_API_TOKEN=ci/' .env.production.example > .env.production
+          docker compose -f docker-compose.prod.yml --env-file .env.production --profile worker --profile sso config -q
+      - name: Build API image
+        run: docker build -f Dockerfile.api -t scheduling-api .
+      - name: Build frontend image
+        run: docker build --target runner --build-arg NEXT_PUBLIC_SITE_URL=https://example.com -t scheduling-front front

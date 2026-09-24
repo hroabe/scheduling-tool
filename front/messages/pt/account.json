@@ -1,0 +1,52 @@
+{
+  "title": "Configurações da conta",
+  "nav": {
+    "label": "Menu da conta",
+    "profile": "Perfil",
+    "events": "Meus eventos",
+    "integrations": "Integração de calendário"
+  },
+  "links": {
+    "events": "Eventos que você criou enquanto estava conectado",
+    "integrations": "Integração com o Google Agenda ou o calendário do Outlook"
+  },
+  "profile": {
+    "heading": "Perfil",
+    "username": "Nome de usuário: {username}",
+    "lastName": "Sobrenome",
+    "firstName": "Nome",
+    "email": "E-mail",
+    "invalidEmail": "Informe um endereço de e-mail válido.",
+    "save": "Salvar",
+    "saved": "Perfil salvo",
+    "saveFailed": "Não foi possível salvar"
+  },
+  "password": {
+    "heading": "Alterar senha",
+    "old_password": "Senha atual",
+    "new_password": "Nova senha",
+    "new_password_confirm": "Confirmar nova senha",
+    "submit": "Alterar senha",
+    "changed": "Senha alterada",
+    "required": "Informe sua senha atual e uma nova senha.",
+    "mismatch": "As novas senhas não coincidem.",
+    "sso": "Você entrou com login único (SSO), então sua senha é gerenciada pelo serviço de login."
+  },
+  "events": {
+    "title": "Meus eventos",
+    "create": "Criar evento",
+    "total": "{count} eventos no total",
+    "empty": "Você ainda não tem eventos",
+    "emptyDescription": "Os eventos que você criar enquanto estiver conectado aparecerão aqui.",
+    "participants": "{count} respostas",
+    "candidates": "{count} datas",
+    "deadline": "Prazo: {date}",
+    "created": "Criado em {date}",
+    "pagination": "Paginação",
+    "prev": "Anterior",
+    "next": "Próxima",
+    "page": "Página {page} de {total}",
+    "loadError": "Não foi possível carregar os eventos ({reason})",
+    "retry": "Tentar novamente"
+  }
+}

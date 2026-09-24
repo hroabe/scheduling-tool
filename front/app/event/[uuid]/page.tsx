@@ -3,21 +3,30 @@ import { Suspense } from 'react';
 import { EventDetail } from '@/components/event/EventDetail';
 import { PageShell } from '@/components/layout/PageShell';
 import { fetchEventMeta } from '@/lib/server-api';
+import jaMessages from '@/messages/ja';
 
 interface EventPageProps {
     params: Promise<{ uuid: string }>;
 }
 
+/** Server-rendered metadata is always Japanese (the source locale, see docs/11_integration.md §1) */
+function fill(template: string, vars: Record<string, string>): string {
+    return template.replace(/\{(\w+)\}/g, (match, name: string) => vars[name] ?? match);
+}
+
 export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
     const { uuid } = await params;
     const event = await fetchEventMeta(uuid);
+    const meta = jaMessages.event.meta;
 
-    const title = event ? `${event.name}の日程調整` : '日程調整';
+    const title = event ? fill(meta.pageTitle, { name: event.name }) : meta.pageTitleFallback;
     const description = event
-        ? `${event.owner_name}さんが「${event.name}」の日程調整をしています。${
-              event.is_finalized ? '日程が確定しました。' : '候補日から◯△×で回答してください（登録不要）。'
-          }`
-        : '候補日から◯△×で回答してください（登録不要）。';
+        ? fill(meta.pageDescription, {
+              owner: event.owner_name,
+              name: event.name,
+              state: event.is_finalized ? meta.pageStateFinalized : meta.pageStateOpen,
+          })
+        : meta.pageStateOpen;
 
     return {
         title,

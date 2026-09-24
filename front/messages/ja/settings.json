@@ -1,0 +1,8 @@
+{
+  "title": "設定",
+  "language": "表示言語",
+  "timezone": "タイムゾーン",
+  "notifications": "通知設定",
+  "emailNotifications": "メール通知を受け取る",
+  "emailNotificationsHelp": "回答や予約があったとき、日程が確定したときにメールでお知らせします。"
+}

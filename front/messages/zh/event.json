@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "M/d（EEE）",
+    "dayLong": "M月d日（EEE）"
+  },
+  "meta": {
+    "pageTitle": "{name} 的日程调整",
+    "pageTitleFallback": "日程调整",
+    "pageDescription": "{owner} 正在为“{name}”调整日程。{state}",
+    "pageStateOpen": "请从候选日期中用 ◯△× 回复（无需注册）。",
+    "pageStateFinalized": "日程已确定。",
+    "owner": "组织者：{name}",
+    "candidates": "候选：{count} 个",
+    "responses": "回复：{count} 人",
+    "deadline": "截止：{date}",
+    "deadlineUntil": "回复截止：{date} 前",
+    "created": "创建：{date}"
+  },
+  "actions": {
+    "share": "分享",
+    "csvLabel": "下载 CSV",
+    "icsLabel": "通过 ICS 添加到日历",
+    "edit": "编辑"
+  },
+  "share": {
+    "text": "请回复“{name}”的日程调整",
+    "copied": "已复制链接",
+    "copiedShort": "已复制",
+    "tooltip": "分享链接"
+  },
+  "error": {
+    "notFound": "未找到该活动",
+    "notFoundHint": "请确认链接是否正确，或活动是否已被删除。",
+    "loadFailed": "无法加载活动",
+    "createNew": "创建新活动"
+  },
+  "finalized": {
+    "title": "日程已确定",
+    "addIcs": "添加到日历（ICS）",
+    "googleCalendar": "添加到 Google 日历"
+  },
+  "closed": {
+    "title": "已截止回复",
+    "byOrganizer": "组织者已于 {date} 截止回复。请等待日程确定。",
+    "waiting": "请等待日程确定。",
+    "expired": "已过回复截止时间（{date}）。请等待日程确定。"
+  },
+  "meeting": {
+    "join": "加入会议",
+    "provider": {
+      "google_meet": "通过 Google Meet 在线举行",
+      "teams": "通过 Microsoft Teams 在线举行",
+      "zoom": "通过 Zoom 在线举行",
+      "other": "在线会议"
+    }
+  },
+  "organizer": {
+    "owner": "这是您创建的活动。",
+    "editKey": "您已在此标签页中以组织者身份完成验证。",
+    "editPage": "前往编辑页面",
+    "close": "截止回复",
+    "reopen": "重新开放回复"
+  },
+  "tabs": {
+    "responses": "回复情况",
+    "respond": "回复",
+    "editMine": "编辑我的回复",
+    "summary": "汇总结果"
+  },
+  "respond": {
+    "cta": "回复出席情况",
+    "closedFinalized": "此活动的日程已确定，已截止回复",
+    "closedByOrganizer": "此活动已截止回复。请等待组织者确定日程",
+    "closedExpired": "已过回复截止时间，无法回复",
+    "closedInactive": "此活动目前不接受回复"
+  },
+  "reminder": {
+    "title": "提醒尚未回复的人",
+    "titleEmpty": "将链接分享给参与者吧",
+    "body": "目前已有 {count} 人回复。重新发送链接，提醒还未回复的人吧。",
+    "bodyEmpty": "还没有回复。分享链接来收集回复吧。",
+    "deadline": "回复截止：{date}",
+    "deadlineSoon": "距离回复截止已不足 24 小时（{date}）",
+    "share": "分享链接"
+  },
+  "summary": {
+    "empty": "有回复后将显示汇总结果",
+    "title": "各候选日期的回复情况",
+    "scoreHelp": "得分 = {yes}×2 + {maybe}×1。得分最高的候选将显示为“推荐”。",
+    "listLabel": "候选日期列表（按得分排序）",
+    "recommended": "推荐",
+    "finalized": "已确定",
+    "answered": "已回复 {count}/{total} 人",
+    "reasonsTitle": "推荐理由",
+    "reason": {
+      "allOk": "所有人都可以参加",
+      "mostOk": "“{symbol}”最多的候选（{count} 人）",
+      "noNg": "没有人选择“{symbol}”（无法参加）",
+      "fewestNg": "“{symbol}”最少的候选（{count} 人）",
+      "topScore": "得分最高的候选",
+      "earliestTie": "得分相同的候选中日期最早的一个"
+    },
+    "finalizeCta": "确定为此候选",
+    "addToCalendar": "添加到日历（ICS）",
+    "kpi": {
+      "participants": "回复人数",
+      "maxOk": "最多“{symbol}”数",
+      "candidates": "候选日期数"
+    }
+  },
+  "fix": {
+    "title": "要确定为此日期和时间吗？",
+    "breakdown": "回复明细",
+    "warning": "确定后将停止接受回复。可以在编辑页面中取消确定。",
+    "confirm": "确定"
+  },
+  "toast": {
+    "authRequired": "请重新输入编辑密钥（可在编辑页面中验证）",
+    "finalized": "日程已确定",
+    "finalizedHint": "请将确定结果通知参与者",
+    "closed": "已截止回复",
+    "reopened": "已重新开放回复"
+  },
+  "delete": {
+    "title": "要删除回复吗？",
+    "body": "将删除 {name} 的回复。此操作无法撤销。",
+    "bodyOwn": "将删除您的回复。此操作无法撤销。",
+    "confirm": "删除",
+    "done": "回复已删除"
+  },
+  "created": {
+    "title": "活动已创建",
+    "description": "将此链接分享给参与者，开始收集回复吧。",
+    "shareUrl": "分享链接",
+    "editKey": "编辑密钥",
+    "editKeyWarning": "编辑、确定日程和删除活动都需要编辑密钥。该密钥无法再次显示，请务必记下来。",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyLabel": "复制{label}",
+    "ok": "OK"
+  },
+  "success": {
+    "submitted": "回复已提交",
+    "updated": "回复已更新",
+    "thanks": "感谢您的回复",
+    "ctaTitle": "您也来创建一个活动吧？",
+    "ctaFree": "免注册 / 免费",
+    "ctaExport": "结果可导出为 CSV 和 ICS",
+    "ctaButton": "创建活动"
+  }
+}

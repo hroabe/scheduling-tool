@@ -1,0 +1,66 @@
+{
+  "title": "Perguntas frequentes",
+  "lead": "Respostas às dúvidas mais comuns sobre como usar a Ferramenta de agendamento e seus recursos.",
+  "questionPrefix": "P.",
+  "ctaLead": "Comece a agendar agora mesmo",
+  "ctaCreate": "Criar evento (grátis)",
+  "ctaBooking": "Criar página de agendamento 1:1",
+  "items": {
+    "noLogin": {
+      "q": "Preciso me cadastrar ou fazer login?",
+      "a": "Não. Tanto quem cria o evento quanto quem responde pode usar sem criar conta. Basta compartilhar o link do evento para começar a receber respostas. A página de agendamento 1:1 também pode ser publicada apenas confirmando seu e-mail."
+    },
+    "price": {
+      "q": "É pago?",
+      "a": "Todos os recursos são gratuitos. Use à vontade, sem se preocupar com limites de eventos ou de participantes."
+    },
+    "oneOnOne": {
+      "q": "O que é a página de agendamento 1:1?",
+      "a": "É um recurso para compromissos individuais, como entrevistas e reuniões de vendas. O organizador cadastra os horários livres e publica a página; quando o convidado escolhe um horário conveniente, o agendamento é confirmado. Um link de confirmação e o link da página de gerenciamento são enviados ao e-mail informado na criação. Sempre que houver um agendamento ou cancelamento, o organizador e o convidado são avisados por e-mail. O convidado pode cancelar o agendamento pelo link no e-mail de confirmação."
+    },
+    "account": {
+      "q": "O que posso fazer com uma conta?",
+      "a": "Ao criar uma conta com nome de usuário, e-mail e senha e entrar nela, você pode ver a lista dos eventos que criou (Meus eventos) e integrar o Google Agenda ou o Outlook. Mesmo sem login, todos os recursos básicos estão disponíveis: criar eventos, responder, ver o resultado e exportar em CSV/ICS."
+    },
+    "calendarSync": {
+      "q": "Posso integrar com o Google Agenda ou o Outlook?",
+      "a": "Sim. Entre na sua conta e conecte sua conta Google ou Microsoft (Outlook) em \"Integração de calendário\". Ao definir uma data, o compromisso é adicionado automaticamente ao seu calendário, e também é possível gerar um link do Google Meet ou do Microsoft Teams. A integração exige login e pode ser desfeita a qualquer momento."
+    },
+    "csv": {
+      "q": "Posso gerenciar os resultados no Excel?",
+      "a": "Sim. Pelo botão \"CSV\" na página do evento, você baixa em CSV as respostas e os comentários de cada participante, além do total por data. O arquivo é gerado em UTF-8 (com BOM), então abre direto no Excel."
+    },
+    "ics": {
+      "q": "Posso adicionar a data definida ao Google Agenda ou ao Outlook?",
+      "a": "Sim, mesmo sem login. O arquivo baixado pelo botão \"ICS\" pode ser importado no Google Agenda, no Outlook, no Calendário da Apple e em outros aplicativos de calendário populares. Depois que a data é definida, apenas ela é exportada, e também é exibido um link para adicioná-la ao Google Agenda."
+    },
+    "editAfter": {
+      "q": "Posso adicionar ou excluir datas depois de criar o evento?",
+      "a": "Sim. Em \"Editar\" na página do evento, informe a chave de edição para alterar o nome, a descrição e o prazo, adicionar ou excluir datas, encerrar ou reabrir as respostas e definir a data. Eventos criados com login podem ser gerenciados sem a chave de edição."
+    },
+    "editKey": {
+      "q": "O que é a chave de edição? E se eu esquecer?",
+      "a": "É a senha usada para editar e excluir o evento. Você pode defini-la ao criar o evento; se deixar em branco, ela é gerada automaticamente. As chaves de edição são armazenadas de forma criptografada (com hash), então nem mesmo o operador consegue consultá-las. Anote a sua para não esquecer."
+    },
+    "editResponse": {
+      "q": "Posso corrigir minha resposta depois?",
+      "a": "Sim, desde que use o mesmo dispositivo e navegador em que respondeu. Use \"Editar minha resposta\" na página do evento para alterar ou excluir sua resposta."
+    },
+    "languages": {
+      "q": "Posso usar em outros idiomas além do japonês?",
+      "a": "Há suporte a 8 idiomas: japonês, inglês, chinês (simplificado), coreano, espanhol, francês, alemão e português. Você pode trocar a qualquer momento pelo menu de idiomas no topo da página, e o idioma escolhido fica salvo para as próximas visitas."
+    },
+    "theme": {
+      "q": "O que é o tema \"Fofo\"?",
+      "a": "É um tema de cores suaves que você pode escolher além dos temas claro e escuro. Os símbolos de resposta aparecem como carinhas (😊🤔😢). Escolha-o pelo seletor de tema no topo da página. O significado de cada símbolo também é exibido em texto, então ele funciona com leitores de tela."
+    },
+    "mobile": {
+      "q": "Funciona no celular?",
+      "a": "Sim. O design responsivo funciona em celulares, tablets e computadores. Você também pode adicionar à tela inicial e abrir como um aplicativo (PWA)."
+    },
+    "visibility": {
+      "q": "Outras pessoas podem ver as informações que eu inserir?",
+      "a": "Os detalhes do evento e as respostas só podem ser vistos por quem conhece o link do evento. Não existe uma lista pública de eventos, e as páginas de eventos são configuradas para não aparecer em mecanismos de busca. Nas páginas de agendamento 1:1, o nome e o e-mail dos convidados não aparecem na página pública; apenas o organizador e a própria pessoa que agendou podem vê-los."
+    }
+  }
+}

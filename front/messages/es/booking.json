@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} min",
+  "loadErrorTitle": "No se pudo cargar",
+  "status": {
+    "pending": "Pendiente de verificar el correo",
+    "published": "Publicada",
+    "paused": "En pausa",
+    "unpublished": "No publicada"
+  },
+  "bookingStatus": {
+    "pending": "Pendiente",
+    "confirmed": "Confirmada",
+    "cancelled": "Cancelada",
+    "completed": "Completada"
+  },
+  "confirm": {
+    "keep": "Volver"
+  },
+  "invalidLink": {
+    "title": "El enlace no es válido",
+    "body": "Vuelve a abrir el enlace que recibiste por correo."
+  },
+  "generator": {
+    "pickDays": "Elige días en el calendario (puedes elegir varios)",
+    "selectedDays": "{count} día(s) seleccionado(s)",
+    "from": "Inicio",
+    "to": "Fin",
+    "invalidRange": "La hora de fin debe ser posterior a la de inicio.",
+    "hint": "Se crean huecos de {minutes} minutos en cada día elegido. Las horas ya pasadas no se añaden.",
+    "add": "Añadir huecos libres",
+    "noSlots": "No hay huecos que añadir. Revisa los días y la franja horaria."
+  },
+  "slots": {
+    "empty": "Todavía no hay huecos libres. Elige días y una franja horaria para añadirlos.",
+    "booked": "Reservado",
+    "remove": "Eliminar el hueco {slot}"
+  },
+  "new": {
+    "title": "Crear una página de reservas 1 a 1",
+    "description": "Publica tus huecos libres y comparte la URL. Tus invitados podrán reservar la hora que les venga bien sin iniciar sesión.",
+    "basics": "Información básica",
+    "fields": {
+      "title": "Título de la página de reservas",
+      "titlePlaceholder": "p. ej., Reunión en línea de 30 minutos",
+      "organizerName": "Nombre del organizador",
+      "organizerEmail": "Correo del organizador",
+      "organizerEmailHelp": "Enviaremos a esta dirección el correo de verificación para publicar la página y el enlace de gestión. También recibirás aquí los avisos de nuevas reservas.",
+      "duration": "Duración",
+      "timezone": "Zona horaria"
+    },
+    "availability": "Configurar huecos libres",
+    "slotsHeading": "Huecos libres que se publicarán",
+    "slotCount": "{count} / {max}",
+    "slotLimit": "Puedes tener como máximo {max} huecos libres. Los que sobraban no se añadieron (podrás añadir más desde la página de gestión después de crearla).",
+    "clearSlots": "Eliminar todos",
+    "submit": "Crear página de reservas",
+    "verifyNote": "Una vez creada, la página de reservas se publicará cuando abras el enlace del correo de verificación.",
+    "errors": {
+      "title": "Introduce un título.",
+      "organizerName": "Introduce el nombre del organizador.",
+      "organizerEmail": "Introduce un correo electrónico válido.",
+      "slots": "Añade al menos un hueco libre."
+    }
+  },
+  "host": {
+    "summary": "Organiza: {organizer} · {minutes} min · {timezone}",
+    "noToken": "Este navegador no tiene los datos para gestionar esta página",
+    "invalidToken": "El enlace de gestión no es válido",
+    "useEmailLink": "Ábrela desde el \"enlace de gestión\" del correo que recibiste al crear la página de reservas.",
+    "created": "Se creó la página de reservas.",
+    "pendingTitle": "Verifica tu correo para publicar la página de reservas",
+    "pendingBody": "Hemos enviado un correo de verificación a {email}. Abre el enlace que contiene para publicar la página de reservas y que los invitados puedan reservar.",
+    "resend": "Reenviar el correo de verificación",
+    "resent": "Se reenvió el correo de verificación a {email}",
+    "resendFailed": "No se pudo reenviar el correo de verificación",
+    "devVerify": "[Entorno de desarrollo] Abrir el enlace de verificación",
+    "shareHeading": "Compartir con los invitados",
+    "publicUrl": "URL de la página de reservas",
+    "notPublicYet": "Los invitados no podrán abrir esta página hasta que verifiques tu correo.",
+    "copy": "Copiar la URL",
+    "copied": "URL copiada",
+    "copyFailed": "No se pudo copiar. Selecciona la URL y cópiala.",
+    "share": "Compartir",
+    "openPublic": "Abrir la vista del invitado",
+    "settingsHeading": "Configuración de reservas",
+    "accepting": "Aceptar reservas",
+    "acceptingHelp": "Si lo desactivas, la página de reservas se ocultará temporalmente.",
+    "notify": "Avisarme por correo de nuevas reservas",
+    "notifyHelp": "Se enviará a: {email}",
+    "saved": "Configuración guardada",
+    "saveFailed": "No se pudo guardar la configuración",
+    "tabs": {
+      "slots": "Huecos libres ({count})",
+      "bookings": "Reservas ({count})"
+    },
+    "addSlots": "Añadir huecos libres",
+    "currentSlots": "Huecos libres registrados",
+    "slotsAdded": "Se añadieron {count} huecos libres",
+    "slotsSkipped": "{count} no se añadieron porque estaban duplicados o eran horas ya pasadas",
+    "slotsAddFailed": "No se pudieron añadir los huecos libres",
+    "slotDeleteFailed": "No se pudo eliminar el hueco libre",
+    "noBookings": "Todavía no hay reservas.",
+    "cancelBooking": "Cancelar la reserva",
+    "cancelConfirmTitle": "¿Cancelar esta reserva?",
+    "cancelConfirmBody": "Se cancelará la reserva de {name} y se le enviará un aviso de cancelación por correo. Esta acción no se puede deshacer.",
+    "bookingCancelled": "Reserva cancelada",
+    "cancelFailed": "No se pudo cancelar la reserva",
+    "secretNote": "Esta página es solo para el organizador. No compartas el enlace de gestión con nadie."
+  },
+  "guest": {
+    "unavailableTitle": "Esta página de reservas no está disponible ahora",
+    "unavailableBody": "Puede que aún no esté publicada, que las reservas estén en pausa o que la URL sea incorrecta. Consúltalo con el organizador.",
+    "loadErrorTitle": "No se pudo cargar la página de reservas",
+    "organizer": "Organiza: {name}",
+    "timezone": "Horas en {timezone}",
+    "pickHeading": "Elige fecha y hora",
+    "noSlots": "Ahora mismo no hay huecos disponibles.",
+    "formHeading": "Datos de la reserva",
+    "noSelection": "Elige una fecha y hora de la lista",
+    "pickSlot": "Elige una fecha y hora.",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje (opcional)",
+    "submit": "Reservar esta fecha y hora",
+    "privacy": "Tus datos solo se comparten con el organizador. El correo de confirmación incluirá un enlace para cancelar.",
+    "slotTaken": "Ese hueco ya se ha reservado. Elige otra fecha y hora.",
+    "errors": {
+      "name": "Introduce tu nombre.",
+      "email": "Introduce un correo electrónico válido."
+    }
+  },
+  "done": {
+    "title": "¡Reserva confirmada!",
+    "cancelledTitle": "Esta reserva se ha cancelado",
+    "emailSent": "Hemos enviado un correo de confirmación a {email}.",
+    "backToPage": "Volver a la página de reservas",
+    "cancelViaEmail": "Si necesitas cancelar, usa el enlace del correo de confirmación."
+  },
+  "cancel": {
+    "title": "Cancelar la reserva",
+    "description": "Puedes cancelar la siguiente reserva.",
+    "alreadyCancelled": "Esta reserva ya se ha cancelado.",
+    "notCancellable": "Esta reserva no se puede cancelar.",
+    "button": "Cancelar la reserva",
+    "confirmTitle": "¿Cancelar esta reserva?",
+    "confirmBody": "El organizador recibirá un aviso de la cancelación. Esta acción no se puede deshacer.",
+    "done": "Reserva cancelada",
+    "failed": "No se pudo cancelar"
+  },
+  "summary": {
+    "title": "Reserva",
+    "when": "Fecha y hora",
+    "organizer": "Organizador",
+    "guest": "Reservado por",
+    "status": "Estado",
+    "meeting": "Enlace de la reunión",
+    "message": "Mensaje"
+  },
+  "verify": {
+    "loading": "Verificando tu correo…",
+    "successTitle": "Tu página de reservas está publicada",
+    "successBody": "Los invitados ya pueden reservar. Comparte la URL de tu página de reservas.",
+    "linkInEmail": "Puedes abrir la página de gestión desde el \"enlace de gestión\" que llegó junto con el correo de verificación.",
+    "openHost": "Abrir la página de gestión",
+    "openPublic": "Ver la página de reservas",
+    "errorTitle": "No se pudo verificar",
+    "invalid": "El enlace no es válido o ha caducado. Vuelve a abrir el enlace del correo o reenvía el correo de verificación desde la página de gestión.",
+    "createNew": "Crear una página de reservas"
+  }
+}

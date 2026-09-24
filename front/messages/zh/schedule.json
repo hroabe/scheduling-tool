@@ -1,0 +1,30 @@
+{
+  "title": "日程调整",
+  "create": "新建",
+  "myEvents": "我的活动",
+  "eventName": "活动名称",
+  "description": "说明",
+  "deadline": "回复截止时间",
+  "candidates": "候选日期",
+  "participants": "参与者",
+  "finalize": "确定",
+  "finalized": "已确定",
+  "notFinalized": "未确定",
+  "created": "日程已创建。",
+  "finalizedSuccess": "日程已确定。",
+  "noEvents": "还没有活动。",
+  "status": {
+    "open": "接受回复中",
+    "closed": "回复已截止",
+    "expired": "已过回复截止时间",
+    "fixed": "已确定",
+    "inactive": "已暂停接受"
+  },
+  "card": {
+    "candidates": "候选：{count} 个",
+    "responses": "回复：{count} 人",
+    "deadline": "截止：{date}",
+    "created": "创建：{date}",
+    "open": "打开"
+  }
+}

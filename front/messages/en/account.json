@@ -1,0 +1,52 @@
+{
+  "title": "Account settings",
+  "nav": {
+    "label": "Account menu",
+    "profile": "Profile",
+    "events": "My events",
+    "integrations": "Calendar integrations"
+  },
+  "links": {
+    "events": "Events you created while logged in",
+    "integrations": "Connect Google or Outlook Calendar"
+  },
+  "profile": {
+    "heading": "Profile",
+    "username": "Username: {username}",
+    "lastName": "Last name",
+    "firstName": "First name",
+    "email": "Email",
+    "invalidEmail": "Enter a valid email address.",
+    "save": "Save",
+    "saved": "Profile saved",
+    "saveFailed": "Couldn't save your profile"
+  },
+  "password": {
+    "heading": "Change password",
+    "old_password": "Current password",
+    "new_password": "New password",
+    "new_password_confirm": "Confirm new password",
+    "submit": "Change password",
+    "changed": "Password changed",
+    "required": "Enter your current password and a new password.",
+    "mismatch": "The new passwords don't match.",
+    "sso": "You're logged in with single sign-on (SSO), so your password is managed by your identity provider."
+  },
+  "events": {
+    "title": "My events",
+    "create": "Create an event",
+    "total": "{count} events",
+    "empty": "No events yet",
+    "emptyDescription": "Events you create while logged in will show up here.",
+    "participants": "{count} responses",
+    "candidates": "{count} options",
+    "deadline": "Deadline {date}",
+    "created": "Created {date}",
+    "pagination": "Pagination",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {total}",
+    "loadError": "Couldn't load your events ({reason})",
+    "retry": "Retry"
+  }
+}

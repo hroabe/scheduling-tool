@@ -1,0 +1,47 @@
+{
+  "available": "◯",
+  "maybe": "△",
+  "unavailable": "×",
+  "yourName": "Seu nome",
+  "submitted": "Resposta enviada.",
+  "updated": "Resposta atualizada.",
+  "status": {
+    "ok": "Disponível",
+    "maybe": "Talvez",
+    "ng": "Indisponível",
+    "pending": "Sem resposta"
+  },
+  "form": {
+    "ariaLabel": "Formulário de disponibilidade",
+    "name": "Seu nome",
+    "namePlaceholder": "Ex.: Ana Souza",
+    "nameRequired": "Informe seu nome",
+    "nameTooLong": "Use no máximo 100 caracteres",
+    "commentTooLong": "Use no máximo 1000 caracteres",
+    "attendanceLegend": "Escolha sua disponibilidade para cada data",
+    "candidateGroup": "Disponibilidade em {date}",
+    "optionLabel": "{date}: {status}",
+    "missing": "Ainda faltam {count} datas sem resposta",
+    "comment": "Comentário (opcional)",
+    "commentPlaceholder": "Escreva aqui qualquer outra observação",
+    "submit": "Enviar resposta",
+    "update": "Atualizar resposta",
+    "sending": "Enviando...",
+    "error": "Não foi possível enviar sua resposta"
+  },
+  "table": {
+    "caption": "Respostas por participante",
+    "participant": "Participante",
+    "comment": "Comentário",
+    "actions": "Ações",
+    "total": "Total",
+    "you": "Você",
+    "finalized": "Definido",
+    "recommended": "Recomendado",
+    "empty": "Ainda não há respostas",
+    "emptyHint": "Compartilhe o link para receber respostas",
+    "editResponse": "Editar resposta de {name}",
+    "deleteResponse": "Excluir resposta de {name}",
+    "countLabel": "{status}: {count}"
+  }
+}

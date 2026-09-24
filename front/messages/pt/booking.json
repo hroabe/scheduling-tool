@@ -1,0 +1,170 @@
+{
+  "minutes": "{count} min",
+  "loadErrorTitle": "Não foi possível carregar",
+  "status": {
+    "pending": "Aguardando confirmação do e-mail",
+    "published": "Publicada",
+    "paused": "Pausada",
+    "unpublished": "Não publicada"
+  },
+  "bookingStatus": {
+    "pending": "Em análise",
+    "confirmed": "Confirmado",
+    "cancelled": "Cancelado",
+    "completed": "Concluído"
+  },
+  "confirm": {
+    "keep": "Voltar"
+  },
+  "invalidLink": {
+    "title": "Link inválido",
+    "body": "Abra novamente o link enviado por e-mail."
+  },
+  "generator": {
+    "pickDays": "Escolha os dias no calendário (é possível selecionar vários)",
+    "selectedDays": "{count} dia(s) selecionado(s)",
+    "from": "Início",
+    "to": "Término",
+    "invalidRange": "O horário de término deve ser posterior ao de início.",
+    "hint": "Em cada dia escolhido, serão criados horários de {minutes} minutos. Horários no passado não são adicionados.",
+    "add": "Adicionar horários livres",
+    "noSlots": "Não há horários para adicionar. Verifique os dias e o intervalo de horário."
+  },
+  "slots": {
+    "empty": "Ainda não há horários livres. Escolha os dias e um intervalo de horário para adicioná-los.",
+    "booked": "Reservado",
+    "remove": "Remover o horário {slot}"
+  },
+  "new": {
+    "title": "Criar página de agendamento 1:1",
+    "description": "Publique seus horários livres e compartilhe a URL. A outra pessoa agenda o horário que for melhor para ela, sem precisar entrar em uma conta.",
+    "basics": "Informações básicas",
+    "fields": {
+      "title": "Título da página de agendamento",
+      "titlePlaceholder": "Ex.: Reunião online de 30 minutos",
+      "organizerName": "Nome do organizador",
+      "organizerEmail": "E-mail do organizador",
+      "organizerEmailHelp": "Enviaremos para este endereço o e-mail de confirmação para publicar a página e o link de gerenciamento. Ele também receberá os avisos de novos agendamentos.",
+      "duration": "Duração",
+      "timezone": "Fuso horário"
+    },
+    "availability": "Definir horários livres",
+    "slotsHeading": "Horários livres a publicar",
+    "slotCount": "{count} / {max}",
+    "slotLimit": "É possível ter no máximo {max} horários livres. Os excedentes não foram adicionados (você pode adicionar mais pela página de gerenciamento depois de criar).",
+    "clearSlots": "Remover todos",
+    "submit": "Criar página de agendamento",
+    "verifyNote": "Depois de criar, a página de agendamento será publicada quando você abrir o link do e-mail de confirmação.",
+    "errors": {
+      "title": "Informe um título.",
+      "organizerName": "Informe o nome do organizador.",
+      "organizerEmail": "Informe um endereço de e-mail válido.",
+      "slots": "Adicione pelo menos um horário livre."
+    }
+  },
+  "host": {
+    "summary": "Organizador: {organizer} · {minutes} min · {timezone}",
+    "noToken": "Este navegador não tem as informações de gerenciamento desta página",
+    "invalidToken": "O link de gerenciamento é inválido",
+    "useEmailLink": "Abra a página pelo \"link de gerenciamento\" do e-mail que você recebeu ao criar a página de agendamento.",
+    "created": "A página de agendamento foi criada.",
+    "pendingTitle": "Confirme seu e-mail para publicar a página de agendamento",
+    "pendingBody": "Enviamos um e-mail de confirmação para {email}. Ao abrir o link do e-mail, a página de agendamento será publicada e os convidados poderão agendar.",
+    "resend": "Reenviar e-mail de confirmação",
+    "resent": "E-mail de confirmação reenviado para {email}",
+    "resendFailed": "Não foi possível reenviar o e-mail de confirmação",
+    "devVerify": "[Ambiente de desenvolvimento] Abrir o link de confirmação",
+    "shareHeading": "Compartilhar com os convidados",
+    "publicUrl": "URL da página de agendamento",
+    "notPublicYet": "Os convidados não conseguem abrir esta página até que seu e-mail seja confirmado.",
+    "copy": "Copiar URL",
+    "copied": "URL copiada",
+    "copyFailed": "Não foi possível copiar. Selecione a URL e copie manualmente.",
+    "share": "Compartilhar",
+    "openPublic": "Abrir a visão do convidado",
+    "settingsHeading": "Configurações de agendamento",
+    "accepting": "Aceitar agendamentos",
+    "acceptingHelp": "Se desativado, a página de agendamento fica temporariamente oculta.",
+    "notify": "Avisar por e-mail sobre novos agendamentos",
+    "notifyHelp": "Enviado para: {email}",
+    "saved": "Configurações salvas",
+    "saveFailed": "Não foi possível salvar as configurações",
+    "tabs": {
+      "slots": "Horários livres ({count})",
+      "bookings": "Agendamentos ({count})"
+    },
+    "addSlots": "Adicionar horários livres",
+    "currentSlots": "Horários livres cadastrados",
+    "slotsAdded": "{count} horário(s) livre(s) adicionado(s)",
+    "slotsSkipped": "{count} não foram adicionados por estarem duplicados ou no passado",
+    "slotsAddFailed": "Não foi possível adicionar os horários livres",
+    "slotDeleteFailed": "Não foi possível remover o horário livre",
+    "noBookings": "Ainda não há agendamentos.",
+    "cancelBooking": "Cancelar agendamento",
+    "cancelConfirmTitle": "Cancelar este agendamento?",
+    "cancelConfirmBody": "O agendamento de {name} será cancelado e um aviso de cancelamento será enviado por e-mail. Esta ação não pode ser desfeita.",
+    "bookingCancelled": "Agendamento cancelado",
+    "cancelFailed": "Não foi possível cancelar o agendamento",
+    "secretNote": "Esta página é exclusiva do organizador. Não compartilhe o link de gerenciamento com outras pessoas."
+  },
+  "guest": {
+    "unavailableTitle": "Esta página de agendamento não está disponível no momento",
+    "unavailableBody": "Ela pode ainda não ter sido publicada, estar com os agendamentos pausados ou a URL pode estar incorreta. Confirme com o organizador.",
+    "loadErrorTitle": "Não foi possível carregar a página de agendamento",
+    "organizer": "Organizador: {name}",
+    "timezone": "Horários exibidos no fuso {timezone}",
+    "pickHeading": "Escolha a data e o horário",
+    "noSlots": "No momento, não há horários livres para agendar.",
+    "formHeading": "Dados do agendamento",
+    "noSelection": "Escolha uma data e horário na lista",
+    "pickSlot": "Escolha uma data e horário.",
+    "name": "Nome",
+    "email": "E-mail",
+    "message": "Mensagem (opcional)",
+    "submit": "Agendar neste horário",
+    "privacy": "Seus dados serão compartilhados apenas com o organizador. O e-mail de confirmação inclui um link para cancelar.",
+    "slotTaken": "Esse horário acabou de ser reservado. Escolha outra data e horário.",
+    "errors": {
+      "name": "Informe seu nome.",
+      "email": "Informe um endereço de e-mail válido."
+    }
+  },
+  "done": {
+    "title": "Agendamento confirmado",
+    "cancelledTitle": "Este agendamento foi cancelado",
+    "emailSent": "Enviamos um e-mail de confirmação para {email}.",
+    "backToPage": "Voltar para a página de agendamento",
+    "cancelViaEmail": "Para cancelar, use o link do e-mail de confirmação."
+  },
+  "cancel": {
+    "title": "Cancelar agendamento",
+    "description": "Você pode cancelar o agendamento abaixo.",
+    "alreadyCancelled": "Este agendamento já foi cancelado.",
+    "notCancellable": "Este agendamento não pode ser cancelado.",
+    "button": "Cancelar agendamento",
+    "confirmTitle": "Cancelar este agendamento?",
+    "confirmBody": "O organizador receberá um aviso de cancelamento. Esta ação não pode ser desfeita.",
+    "done": "Agendamento cancelado",
+    "failed": "Não foi possível cancelar"
+  },
+  "summary": {
+    "title": "Agendamento",
+    "when": "Data e horário",
+    "organizer": "Organizador",
+    "guest": "Agendado por",
+    "status": "Status",
+    "meeting": "Link da reunião",
+    "message": "Mensagem"
+  },
+  "verify": {
+    "loading": "Confirmando seu e-mail…",
+    "successTitle": "Sua página de agendamento foi publicada",
+    "successBody": "Os convidados já podem agendar. Compartilhe a URL da sua página de agendamento.",
+    "linkInEmail": "Você pode abrir a página de gerenciamento pelo \"link de gerenciamento\" enviado junto com o e-mail de confirmação.",
+    "openHost": "Abrir página de gerenciamento",
+    "openPublic": "Ver página de agendamento",
+    "errorTitle": "Não foi possível confirmar",
+    "invalid": "O link é inválido ou expirou. Abra novamente o link do e-mail ou reenvie o e-mail de confirmação pela página de gerenciamento.",
+    "createNew": "Criar página de agendamento"
+  }
+}

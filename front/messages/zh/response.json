@@ -1,0 +1,47 @@
+{
+  "available": "◯",
+  "maybe": "△",
+  "unavailable": "×",
+  "yourName": "您的姓名",
+  "submitted": "回复已提交。",
+  "updated": "回复已更新。",
+  "status": {
+    "ok": "可以参加",
+    "maybe": "可以调整",
+    "ng": "无法参加",
+    "pending": "未回复"
+  },
+  "form": {
+    "ariaLabel": "出席回复表单",
+    "name": "您的姓名",
+    "namePlaceholder": "例：张三",
+    "nameRequired": "请输入您的姓名",
+    "nameTooLong": "请输入 100 个字符以内",
+    "commentTooLong": "请输入 1000 个字符以内",
+    "attendanceLegend": "请为每个候选日期选择是否出席",
+    "candidateGroup": "{date} 的出席情况",
+    "optionLabel": "{date}：{status}",
+    "missing": "还有 {count} 个候选日期未选择",
+    "comment": "备注（可选）",
+    "commentPlaceholder": "如有其他事项，请在此填写",
+    "submit": "提交回复",
+    "update": "更新回复",
+    "sending": "发送中...",
+    "error": "无法提交回复"
+  },
+  "table": {
+    "caption": "各参与者的回复情况",
+    "participant": "参与者",
+    "comment": "备注",
+    "actions": "操作",
+    "total": "汇总",
+    "you": "你",
+    "finalized": "已确定",
+    "recommended": "推荐",
+    "empty": "还没有回复",
+    "emptyHint": "分享链接来收集回复吧",
+    "editResponse": "编辑 {name} 的回复",
+    "deleteResponse": "删除 {name} 的回复",
+    "countLabel": "{status} {count} 人"
+  }
+}

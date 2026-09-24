@@ -1,0 +1,195 @@
+# Django translations for scheduling-tool
+# English
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: scheduling-tool 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-04 00:00+0900\n"
+"PO-Revision-Date: 2026-01-04 00:00+0900\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Common messages
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Confirm"
+msgstr "Confirm"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+#: Authentication
+msgid "Login"
+msgstr "Login"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Login successful."
+msgstr "Login successful."
+
+msgid "Logged out."
+msgstr "Logged out."
+
+msgid "Registration complete."
+msgstr "Registration complete."
+
+msgid "Invalid username or password."
+msgstr "Invalid username or password."
+
+msgid "This email is already in use."
+msgstr "This email is already in use."
+
+msgid "Passwords do not match."
+msgstr "Passwords do not match."
+
+msgid "Password changed successfully."
+msgstr "Password changed successfully."
+
+msgid "Current password is incorrect."
+msgstr "Current password is incorrect."
+
+#: Schedule
+msgid "Schedule"
+msgstr "Schedule"
+
+msgid "Create New"
+msgstr "Create New"
+
+msgid "Event Name"
+msgstr "Event Name"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Deadline"
+msgstr "Deadline"
+
+msgid "Candidates"
+msgstr "Candidates"
+
+msgid "Participants"
+msgstr "Participants"
+
+msgid "Finalize"
+msgstr "Finalize"
+
+msgid "Finalized"
+msgstr "Finalized"
+
+msgid "Not finalized"
+msgstr "Not finalized"
+
+msgid "Schedule created successfully."
+msgstr "Schedule created successfully."
+
+msgid "Schedule finalized."
+msgstr "Schedule finalized."
+
+#: Response
+msgid "Available"
+msgstr "Yes"
+
+msgid "Maybe"
+msgstr "Maybe"
+
+msgid "Unavailable"
+msgstr "No"
+
+msgid "Your Name"
+msgstr "Your Name"
+
+msgid "Response submitted."
+msgstr "Response submitted."
+
+msgid "Response updated."
+msgstr "Response updated."
+
+#: Integration
+msgid "Google Calendar connected."
+msgstr "Google Calendar connected."
+
+msgid "Google Calendar disconnected."
+msgstr "Google Calendar disconnected."
+
+msgid "Outlook Calendar connected."
+msgstr "Outlook Calendar connected."
+
+msgid "Outlook Calendar disconnected."
+msgstr "Outlook Calendar disconnected."
+
+msgid "Token expired. Please reconnect."
+msgstr "Token expired. Please reconnect."
+
+#: 1-on-1 Booking
+msgid "Booking"
+msgstr "Booking"
+
+msgid "Book a time"
+msgstr "Book a time"
+
+msgid "Available slots"
+msgstr "Available slots"
+
+msgid "Booking confirmed."
+msgstr "Booking confirmed."
+
+msgid "Booking cancelled."
+msgstr "Booking cancelled."
+
+msgid "This slot is already booked."
+msgstr "This slot is already booked."
+
+#: Errors
+msgid "Invalid request."
+msgstr "Invalid request."
+
+msgid "Not found."
+msgstr "Not found."
+
+msgid "Permission denied."
+msgstr "Permission denied."
+
+msgid "Server error."
+msgstr "Server error."

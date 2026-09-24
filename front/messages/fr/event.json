@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "EEE d/M",
+    "dayLong": "EEE d MMM"
+  },
+  "meta": {
+    "pageTitle": "Planification : {name}",
+    "pageTitleFallback": "Planification",
+    "pageDescription": "{owner} cherche une date pour « {name} ». {state}",
+    "pageStateOpen": "Répondez par ◯△× pour chaque date proposée (sans inscription).",
+    "pageStateFinalized": "La date a été confirmée.",
+    "owner": "Organisateur : {name}",
+    "candidates": "Dates : {count}",
+    "responses": "Réponses : {count}",
+    "deadline": "Limite : {date}",
+    "deadlineUntil": "Répondez avant le {date}",
+    "created": "Créé le {date}"
+  },
+  "actions": {
+    "share": "Partager",
+    "csvLabel": "Télécharger en CSV",
+    "icsLabel": "Ajouter à l'agenda (ICS)",
+    "edit": "Modifier"
+  },
+  "share": {
+    "text": "Merci d'indiquer vos disponibilités pour « {name} »",
+    "copied": "URL copiée",
+    "copiedShort": "Copié",
+    "tooltip": "Partager l'URL"
+  },
+  "error": {
+    "notFound": "Événement introuvable",
+    "notFoundHint": "Vérifiez que l'URL est correcte et que l'événement n'a pas été supprimé.",
+    "loadFailed": "Impossible de charger l'événement",
+    "createNew": "Créer un nouvel événement"
+  },
+  "finalized": {
+    "title": "La date a été confirmée",
+    "addIcs": "Ajouter à l'agenda (ICS)",
+    "googleCalendar": "Ajouter à Google Agenda"
+  },
+  "closed": {
+    "title": "Les réponses sont clôturées",
+    "byOrganizer": "L'organisateur a clôturé les réponses le {date}. Merci de patienter jusqu'à la confirmation de la date.",
+    "waiting": "Merci de patienter jusqu'à la confirmation de la date.",
+    "expired": "La date limite de réponse ({date}) est dépassée. Merci de patienter jusqu'à la confirmation de la date."
+  },
+  "meeting": {
+    "join": "Rejoindre la réunion",
+    "provider": {
+      "google_meet": "En ligne via Google Meet",
+      "teams": "En ligne via Microsoft Teams",
+      "zoom": "En ligne via Zoom",
+      "other": "Réunion en ligne"
+    }
+  },
+  "organizer": {
+    "owner": "Vous avez créé cet événement.",
+    "editKey": "Vous êtes authentifié comme organisateur dans cet onglet.",
+    "editPage": "Aller à la page de modification",
+    "close": "Clôturer les réponses",
+    "reopen": "Rouvrir les réponses"
+  },
+  "tabs": {
+    "responses": "Réponses",
+    "respond": "Répondre",
+    "editMine": "Modifier ma réponse",
+    "summary": "Synthèse"
+  },
+  "respond": {
+    "cta": "Indiquer mes disponibilités",
+    "closedFinalized": "La date de cet événement a été confirmée : les réponses sont clôturées",
+    "closedByOrganizer": "Les réponses à cet événement sont clôturées. Merci de patienter jusqu'à la confirmation par l'organisateur",
+    "closedExpired": "La date limite de réponse est dépassée : vous ne pouvez plus répondre",
+    "closedInactive": "Cet événement n'accepte pas de réponses pour le moment"
+  },
+  "reminder": {
+    "title": "Relancer les personnes qui n'ont pas répondu",
+    "titleEmpty": "Partagez l'URL avec les participants",
+    "body": "{count} personne(s) ont répondu pour l'instant. Renvoyez l'URL aux autres pour les inciter à répondre.",
+    "bodyEmpty": "Aucune réponse pour le moment. Partagez l'URL pour commencer à recueillir des réponses.",
+    "deadline": "Date limite : {date}",
+    "deadlineSoon": "Moins de 24 heures avant la date limite ({date})",
+    "share": "Partager l'URL"
+  },
+  "summary": {
+    "empty": "La synthèse s'affichera dès les premières réponses",
+    "title": "Réponses par date proposée",
+    "scoreHelp": "Score = {yes}×2 + {maybe}×1. La date ayant le score le plus élevé est marquée « Recommandée ».",
+    "listLabel": "Dates proposées (par score)",
+    "recommended": "Recommandée",
+    "finalized": "Confirmée",
+    "answered": "{count}/{total} ont répondu",
+    "reasonsTitle": "Pourquoi cette recommandation",
+    "reason": {
+      "allOk": "Tout le monde peut venir",
+      "mostOk": "C'est la date qui a le plus de « {symbol} » ({count})",
+      "noNg": "Personne n'a répondu « {symbol} » (indisponible)",
+      "fewestNg": "C'est la date qui a le moins de « {symbol} » ({count})",
+      "topScore": "C'est la date ayant le score le plus élevé",
+      "earliestTie": "C'est la plus proche des dates ayant le même score"
+    },
+    "finalizeCta": "Confirmer cette date",
+    "addToCalendar": "Ajouter à l'agenda (ICS)",
+    "kpi": {
+      "participants": "Participants",
+      "maxOk": "Maximum de « {symbol} »",
+      "candidates": "Dates proposées"
+    }
+  },
+  "fix": {
+    "title": "Confirmer cette date et cet horaire ?",
+    "breakdown": "Détail des réponses",
+    "warning": "Une fois la date confirmée, les réponses sont clôturées. Vous pouvez annuler la confirmation depuis la page de modification.",
+    "confirm": "Confirmer"
+  },
+  "toast": {
+    "authRequired": "Veuillez saisir à nouveau la clé de modification (vous pouvez le faire sur la page de modification)",
+    "finalized": "Date confirmée",
+    "finalizedHint": "Pensez à prévenir les participants",
+    "closed": "Réponses clôturées",
+    "reopened": "Réponses rouvertes"
+  },
+  "delete": {
+    "title": "Supprimer cette réponse ?",
+    "body": "La réponse de {name} va être supprimée. Cette action est irréversible.",
+    "bodyOwn": "Votre réponse va être supprimée. Cette action est irréversible.",
+    "confirm": "Supprimer",
+    "done": "Réponse supprimée"
+  },
+  "created": {
+    "title": "Votre événement a été créé",
+    "description": "Partagez cette URL avec les participants pour recueillir leurs disponibilités.",
+    "shareUrl": "URL de partage",
+    "editKey": "Clé de modification",
+    "editKeyWarning": "La clé de modification est nécessaire pour modifier l'événement, confirmer la date ou le supprimer. Elle ne sera plus affichée : notez-la bien.",
+    "copy": "Copier",
+    "copied": "Copié",
+    "copyLabel": "Copier : {label}",
+    "ok": "OK"
+  },
+  "success": {
+    "submitted": "Réponse envoyée",
+    "updated": "Réponse mise à jour",
+    "thanks": "Merci pour votre réponse !",
+    "ctaTitle": "Envie de créer votre propre événement ?",
+    "ctaFree": "Sans inscription / gratuit",
+    "ctaExport": "Résultats exportables en CSV ou ICS",
+    "ctaButton": "Créer un événement"
+  }
+}

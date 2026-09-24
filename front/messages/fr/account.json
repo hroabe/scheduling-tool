@@ -1,0 +1,52 @@
+{
+  "title": "Paramètres du compte",
+  "nav": {
+    "label": "Menu du compte",
+    "profile": "Profil",
+    "events": "Mes événements",
+    "integrations": "Connexion des agendas"
+  },
+  "links": {
+    "events": "Les événements créés lorsque vous étiez connecté",
+    "integrations": "Connecter Google Agenda ou Outlook"
+  },
+  "profile": {
+    "heading": "Profil",
+    "username": "Nom d'utilisateur : {username}",
+    "lastName": "Nom",
+    "firstName": "Prénom",
+    "email": "Adresse e-mail",
+    "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
+    "save": "Enregistrer",
+    "saved": "Profil enregistré",
+    "saveFailed": "Impossible d'enregistrer"
+  },
+  "password": {
+    "heading": "Changer le mot de passe",
+    "old_password": "Mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "new_password_confirm": "Confirmer le nouveau mot de passe",
+    "submit": "Changer le mot de passe",
+    "changed": "Mot de passe modifié",
+    "required": "Veuillez saisir votre mot de passe actuel et un nouveau mot de passe.",
+    "mismatch": "Les nouveaux mots de passe ne correspondent pas.",
+    "sso": "Vous êtes connecté via l'authentification unique (SSO) : votre mot de passe est donc géré par le service qui vous authentifie."
+  },
+  "events": {
+    "title": "Mes événements",
+    "create": "Créer un événement",
+    "total": "{count} événement(s) au total",
+    "empty": "Aucun événement pour le moment",
+    "emptyDescription": "Les événements que vous créez en étant connecté apparaîtront ici.",
+    "participants": "{count} réponse(s)",
+    "candidates": "{count} date(s)",
+    "deadline": "Limite : {date}",
+    "created": "Créé le {date}",
+    "pagination": "Pagination",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "page": "Page {page} sur {total}",
+    "loadError": "Impossible de charger les événements ({reason})",
+    "retry": "Actualiser"
+  }
+}

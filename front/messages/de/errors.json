@@ -1,0 +1,10 @@
+{
+  "invalidRequest": "Bitte überprüfen Sie Ihre Eingaben.",
+  "unauthorized": "Bitte melden Sie sich an.",
+  "notFound": "Nicht gefunden.",
+  "permissionDenied": "Sie haben keine Berechtigung für diese Aktion.",
+  "throttled": "Zu viele Anfragen. Bitte versuchen Sie es in Kürze erneut.",
+  "serverError": "Auf dem Server ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+  "networkError": "Keine Verbindung zum Server. Bitte prüfen Sie Ihre Internetverbindung.",
+  "unknown": "Ein Fehler ist aufgetreten."
+}

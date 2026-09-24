@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { EditEventPage } from '@/components/edit/EditEventPage';
 import { PageShell } from '@/components/layout/PageShell';
+import jaMessages from '@/messages/ja';
 
 export const metadata: Metadata = {
-    title: 'イベント編集',
+    title: jaMessages.edit.meta.title,
     robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
     alternates: { canonical: null },
 };

@@ -2,8 +2,17 @@
  * Date utility functions
  */
 
-import { format, formatDistance, isBefore, isValid, parseISO } from 'date-fns';
-import { ja } from 'date-fns/locale';
+import { format, formatDistance, isBefore, isValid, parseISO, type Locale as DateFnsLocale } from 'date-fns';
+import { de, enUS, es, fr, ja, ko, ptBR, zhCN } from 'date-fns/locale';
+
+const DATE_LOCALES: Record<string, DateFnsLocale> = { ja, en: enUS, zh: zhCN, ko, es, fr, de, pt: ptBR };
+
+let currentLocale: DateFnsLocale = ja;
+
+/** Called by the I18nProvider so every formatter follows the selected UI language */
+export function setDateLocale(locale: string): void {
+    currentLocale = DATE_LOCALES[locale] ?? ja;
+}
 
 function toDate(date: string | Date): Date {
     return typeof date === 'string' ? parseISO(date) : date;
@@ -15,7 +24,7 @@ function toDate(date: string | Date): Date {
 export function formatDate(date: string | Date, formatStr = 'yyyy/MM/dd'): string {
     const d = toDate(date);
     if (!isValid(d)) return '';
-    return format(d, formatStr, { locale: ja });
+    return format(d, formatStr, { locale: currentLocale });
 }
 
 /**
@@ -41,8 +50,8 @@ export function formatDateRange(start: string | Date, end: string | Date): strin
     if (!isValid(startDate) || !isValid(endDate)) return '';
 
     const sameDay = format(startDate, 'yyyyMMdd') === format(endDate, 'yyyyMMdd');
-    const startStr = format(startDate, 'yyyy/MM/dd (E) HH:mm', { locale: ja });
-    const endStr = format(endDate, sameDay ? 'HH:mm' : 'MM/dd (E) HH:mm', { locale: ja });
+    const startStr = format(startDate, 'yyyy/MM/dd (E) HH:mm', { locale: currentLocale });
+    const endStr = format(endDate, sameDay ? 'HH:mm' : 'MM/dd (E) HH:mm', { locale: currentLocale });
     return `${startStr} - ${endStr}`;
 }
 
@@ -52,7 +61,7 @@ export function formatDateRange(start: string | Date, end: string | Date): strin
 export function formatRelative(date: string | Date): string {
     const d = toDate(date);
     if (!isValid(d)) return '';
-    return formatDistance(d, new Date(), { addSuffix: true, locale: ja });
+    return formatDistance(d, new Date(), { addSuffix: true, locale: currentLocale });
 }
 
 /**

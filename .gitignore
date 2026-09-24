@@ -39,3 +39,8 @@ api/staticfiles/
 # e2e database
 api/e2e.sqlite3
 .env.production
+
+# runtime artifacts
+nohup.out
+celerybeat-schedule*
+*Zone.Identifier

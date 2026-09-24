@@ -10,9 +10,9 @@ export default function NotFound() {
     return (
         <StatusPage
             code="404"
-            title="ページが見つかりません"
-            message="お探しのページは移動または削除された可能性があります。URLをご確認ください。"
-            action={{ label: 'イベントを作成する', href: '/create' }}
+            title="home.notFoundTitle"
+            message="home.notFoundMessage"
+            action={{ label: 'home.createEvent', href: '/create' }}
         />
     );
 }

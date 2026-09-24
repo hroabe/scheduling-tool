@@ -7,10 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function OfflinePage() {
-    return (
-        <StatusPage
-            title="オフラインです"
-            message="インターネットに接続されていません。接続を確認してから再度お試しください。"
-        />
-    );
+    return <StatusPage title="home.offlineTitle" message="home.offlineMessage" />;
 }

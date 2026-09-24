@@ -1,0 +1,127 @@
+{
+  "effectiveDate": "Date d'entrée en vigueur : 24 septembre 2026",
+  "languageNote": "Cette traduction est fournie à titre indicatif. En cas de divergence avec la version japonaise, la version japonaise prévaut.",
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lead": "La présente politique explique comment {siteName} (ci-après le « Service ») traite les informations personnelles et les informations des utilisateurs.",
+    "collect": {
+      "heading": "1. Informations collectées",
+      "p1": "Le Service peut être utilisé sans inscription. Selon les fonctionnalités utilisées, nous collectons les informations suivantes.",
+      "item1": "Les informations saisies lors de la création d'un événement (nom de l'événement, description, nom de l'organisateur, dates et heures proposées, date limite de réponse, adresse e-mail de l'organisateur s'il souhaite recevoir les notifications de réponse, etc.)",
+      "item2": "Les informations saisies lors d'une réponse (nom, disponibilité pour chaque date proposée, commentaire)",
+      "item3": "Les informations saisies lors de la création d'une page de réservation individuelle (adresse e-mail de l'organisateur, titre et description de la page, dates et heures des créneaux libres)",
+      "item4": "Les informations saisies lors d'une réservation individuelle (nom, adresse e-mail et message de l'invité, date et heure réservées)",
+      "item5": "En cas de création d'un compte : nom d'utilisateur, adresse e-mail, mot de passe (converti en une empreinte irréversible et jamais stocké en clair) et paramètres tels que la langue d'affichage et le fuseau horaire",
+      "item6": "En cas d'activation de la connexion des agendas : les jetons d'accès et d'actualisation OAuth de Google ou de Microsoft (stockés sous forme chiffrée), ainsi que les identifiants et liens de réunion des événements créés via cette connexion",
+      "item7": "Les clés de modification, les jetons de modification des réponses et les jetons d'annulation des réservations (tous convertis en empreintes et jamais stockés en clair)",
+      "item8": "L'historique des e-mails de notification envoyés (type de notification, destinataire, date et heure d'envoi) et les journaux d'accès (adresse IP, agent utilisateur, date et heure d'accès, page de provenance, etc.)"
+    },
+    "purpose": {
+      "heading": "2. Finalités de l'utilisation",
+      "item1": "Fournir la fonctionnalité de planification (affichage des événements, décompte des réponses, export de fichiers CSV et ICS, etc.) et la fonctionnalité de réservation individuelle",
+      "item2": "Envoyer des e-mails de notification (vérification de l'adresse e-mail, confirmation et annulation des réservations, notification des réponses, rappel de la date limite, annonce de la date confirmée, etc.)",
+      "item3": "Authentifier les comptes et, via la connexion des agendas, enregistrer des événements et générer des liens de réunion (ainsi que consulter les disponibilités de l'agenda dans la mesure nécessaire à cette fin)",
+      "item4": "Assurer la sécurité, notamment en empêchant les accès non autorisés et les requêtes excessives",
+      "item5": "Comprendre l'utilisation du Service et en améliorer la qualité (sous forme de statistiques ne permettant pas d'identifier les personnes)",
+      "item6": "Répondre aux demandes de renseignements"
+    },
+    "visibility": {
+      "heading": "3. Visibilité des informations",
+      "p1": "Le contenu d'un événement et ses réponses peuvent être consultés par toute personne qui connaît l'URL de l'événement. Faites donc attention aux personnes avec qui vous la partagez. L'adresse e-mail de l'organisateur n'est jamais rendue publique.",
+      "p2": "Une page de réservation individuelle n'affiche que les créneaux libres publiés par l'organisateur. Le nom, l'adresse e-mail et le message des invités ne sont jamais affichés sur la page publique : seuls l'organisateur et la personne ayant réservé peuvent les consulter.",
+      "p3": "Il n'existe aucune fonctionnalité permettant de publier une liste des événements, et les pages d'événement et de réservation sont configurées pour ne pas être indexées par les moteurs de recherche.",
+      "p4": "Vous pouvez répondre sous un pseudonyme plutôt que sous votre vrai nom. Veuillez ne pas saisir d'informations sensibles permettant d'identifier une personne."
+    },
+    "storage": {
+      "heading": "4. Cookies et stockage dans le navigateur",
+      "p1": "Le Service utilise des cookies ainsi que le stockage local et le stockage de session du navigateur aux fins suivantes. Ils servent uniquement au fonctionnement du Service : ils ne sont pas utilisés à des fins de suivi publicitaire, et aucun cookie tiers n'est utilisé.",
+      "item1": "Un cookie de session permettant de rester connecté (ou un jeton d'authentification en cas de connexion via un service d'authentification externe) et un cookie de protection CSRF empêchant les requêtes frauduleuses",
+      "item2": "La langue d'affichage (cookie)",
+      "item3": "Le thème d'affichage (clair, sombre ou mignon)",
+      "item4": "Les jetons permettant de modifier ultérieurement les réponses que vous avez envoyées, et les jetons de gestion des pages de réservation individuelle que vous avez créées",
+      "item5": "Les clés de modification saisies dans cet onglet (supprimées à la fermeture de l'onglet)",
+      "item6": "La façon dont vous avez découvert le Service (paramètre ref)"
+    },
+    "thirdParty": {
+      "heading": "5. Communication à des tiers et services externes",
+      "p1": "Sauf lorsque la loi l'exige, nous ne communiquons pas les informations collectées à des tiers sans le consentement de la personne concernée. Pour l'exploitation des serveurs et de la base de données et pour l'envoi des e-mails, nous pouvons confier le traitement des informations à des hébergeurs et à des prestataires d'envoi d'e-mails.",
+      "p2": "Si vous activez la connexion des agendas, les informations de l'événement (nom, date et heure, description, etc.) sont transmises, dans la mesure nécessaire à l'enregistrement des événements et à la génération des liens de réunion, à Google LLC (Google Agenda et Google Meet) ou à Microsoft Corporation (Outlook et Microsoft Teams). Ces sociétés traitent ces informations conformément à leur propre politique de confidentialité."
+    },
+    "retention": {
+      "heading": "6. Durée de conservation et suppression",
+      "p1": "Les événements et les réponses sont conservés jusqu'à ce que l'organisateur les supprime depuis la page de modification. L'organisateur peut supprimer un événement à tout moment à l'aide de la clé de modification (ou de son compte s'il l'a créé en étant connecté).",
+      "p2": "Les participants peuvent modifier ou supprimer leurs propres réponses depuis l'appareil utilisé pour répondre. Pour demander une suppression par un autre moyen, veuillez contacter l'organisateur ou notre service de contact.",
+      "p3": "Les informations des pages de réservation individuelle et des réservations sont conservées à titre d'historique des réservations. L'organisateur peut suspendre les réservations à tout moment, et l'organisateur comme l'invité peuvent annuler une réservation. Pour demander une suppression, veuillez contacter notre service de contact.",
+      "p4": "Vous pouvez supprimer la connexion des agendas à tout moment depuis les paramètres de connexion de votre compte ; les jetons stockés ne sont alors plus utilisés. Pour demander la suppression de votre compte, veuillez contacter notre service de contact.",
+      "p5": "Les événements et pages de réservation qui n'ont pas été mis à jour depuis longtemps peuvent être supprimés sans préavis."
+    },
+    "security": {
+      "heading": "7. Mesures de sécurité",
+      "p1": "Nous prenons des mesures de sécurité raisonnables pour prévenir les fuites et l'altération des informations : chiffrement des communications en HTTPS, stockage des mots de passe, des clés de modification et des différents jetons sous forme d'empreintes, et stockage chiffré des jetons OAuth de la connexion des agendas."
+    },
+    "contact": {
+      "heading": "8. Contact et modifications",
+      "p1Email": "Pour toute question concernant la présente politique, veuillez écrire à {email}.",
+      "p1NoEmail": "Pour toute question concernant la présente politique, veuillez contacter l'exploitant du Service.",
+      "p2": "La présente politique peut être modifiée si nécessaire. Toute modification importante sera annoncée sur cette page."
+    }
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lead": "Les présentes constituent les conditions d'utilisation de {siteName} (ci-après le « Service »).",
+    "scope": {
+      "heading": "Article 1 (Champ d'application)",
+      "p1": "Les présentes conditions définissent les modalités d'utilisation du Service. En utilisant le Service, vous êtes réputé avoir accepté les présentes conditions."
+    },
+    "service": {
+      "heading": "Article 2 (Contenu du Service)",
+      "p1": "Le Service fournit gratuitement une fonctionnalité de planification à plusieurs (création d'événements, réponses, décompte, export de fichiers CSV et ICS, modification des événements) ainsi que des pages de réservation individuelle permettant d'accepter des rendez-vous individuels. Ces fonctionnalités peuvent être utilisées sans inscription.",
+      "p2": "Si vous choisissez de créer un compte, vous pouvez utiliser des fonctionnalités supplémentaires, telles que la liste des événements que vous avez créés et la connexion des agendas."
+    },
+    "account": {
+      "heading": "Article 3 (Comptes)",
+      "p1": "Si vous créez un compte, veuillez enregistrer des informations exactes. La gestion du mot de passe relève de la responsabilité de l'utilisateur, qui ne doit pas permettre à des tiers de l'utiliser. L'exploitant décline toute responsabilité pour les dommages résultant d'une utilisation non autorisée du compte, sauf en cas de faute intentionnelle ou de faute lourde de sa part."
+    },
+    "keys": {
+      "heading": "Article 4 (Gestion des clés de modification et des liens de gestion)",
+      "p1": "La gestion des clés de modification des événements, des liens de gestion des pages de réservation individuelle et des liens d'annulation des réservations relève de la responsabilité de l'utilisateur. L'exploitant décline toute responsabilité pour les dommages résultant de leur perte ou de leur divulgation. L'exploitant n'est pas en mesure de récupérer les clés de modification."
+    },
+    "integrations": {
+      "heading": "Article 5 (Connexion avec des services externes)",
+      "p1": "La connexion des agendas utilise des services externes tels que Google et Microsoft. L'utilisation de ces services externes est soumise aux conditions d'utilisation de chaque prestataire. Les fonctionnalités de connexion peuvent devenir indisponibles en raison de modifications des spécifications ou de pannes de ces services externes, et l'exploitant décline toute responsabilité pour les dommages qui en résulteraient."
+    },
+    "booking": {
+      "heading": "Article 6 (Réservations individuelles)",
+      "p1": "Une réservation effectuée via une page de réservation individuelle constitue un engagement entre l'organisateur et l'invité. L'exploitant n'est pas partie à la réservation et décline toute responsabilité pour les litiges entre utilisateurs relatifs à l'exécution, à la modification ou à l'annulation des réservations."
+    },
+    "prohibited": {
+      "heading": "Article 7 (Comportements interdits)",
+      "item1": "Tout acte contraire à la loi, à l'ordre public ou aux bonnes mœurs",
+      "item2": "La publication d'informations portant atteinte aux droits d'autrui, de contenus discriminatoires ou violents, ou d'informations sensibles permettant d'identifier une personne",
+      "item3": "L'enregistrement de l'adresse e-mail d'une autre personne sans son consentement, ou l'utilisation du Service dans le but d'envoyer des e-mails indésirables",
+      "item4": "Le fait d'imposer une charge excessive aux serveurs du Service, l'accès non autorisé ou l'envoi automatisé de requêtes en masse",
+      "item5": "Les activités commerciales, publicitaires ou de démarchage utilisant le Service (sauf celles autorisées par l'exploitant)",
+      "item6": "Tout autre comportement que l'exploitant juge inapproprié"
+    },
+    "removal": {
+      "heading": "Article 8 (Suppression de contenu et suspension de l'utilisation)",
+      "p1": "Si un utilisateur enfreint les présentes conditions, ou si l'exploitant le juge nécessaire pour l'exploitation du Service, l'exploitant peut, sans préavis, supprimer des événements, des réponses, des pages de réservation ou des comptes, ou restreindre l'utilisation du Service."
+    },
+    "changes": {
+      "heading": "Article 9 (Modification et interruption du Service)",
+      "p1": "L'exploitant peut, sans préavis, modifier le contenu du Service, ou en interrompre ou cesser la fourniture. L'exploitant décline toute responsabilité pour les dommages qui en résulteraient pour les utilisateurs."
+    },
+    "disclaimer": {
+      "heading": "Article 10 (Exclusion de responsabilité)",
+      "p1": "L'exploitant ne garantit pas que le Service est exempt de défauts de fait ou de droit. Sauf en cas de faute intentionnelle ou de faute lourde de sa part, l'exploitant décline toute responsabilité, notamment pour la perte de données, le retard ou la non-réception des e-mails de notification, le résultat des planifications ou des réservations, ou les litiges entre utilisateurs."
+    },
+    "amendment": {
+      "heading": "Article 11 (Modification des conditions)",
+      "p1": "L'exploitant peut modifier les présentes conditions si nécessaire. Les conditions modifiées prennent effet dès leur publication sur cette page."
+    },
+    "law": {
+      "heading": "Article 12 (Droit applicable et juridiction compétente)",
+      "p1": "Les présentes conditions sont régies et interprétées conformément au droit japonais. Tout litige relatif au Service relève de la compétence exclusive, convenue entre les parties, du tribunal dans le ressort duquel se trouve l'exploitant."
+    }
+  }
+}

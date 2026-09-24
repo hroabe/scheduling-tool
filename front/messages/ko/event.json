@@ -1,0 +1,151 @@
+{
+  "format": {
+    "dayShort": "M/d(EEE)",
+    "dayLong": "M월 d일 (EEE)"
+  },
+  "meta": {
+    "pageTitle": "{name} 일정 조율",
+    "pageTitleFallback": "일정 조율",
+    "pageDescription": "{owner} 님이 '{name}'의 일정을 조율하고 있습니다. {state}",
+    "pageStateOpen": "후보 날짜에 ◯△×로 응답해 주세요(가입 불필요).",
+    "pageStateFinalized": "일정이 확정되었습니다.",
+    "owner": "주최: {name}",
+    "candidates": "후보: {count}개",
+    "responses": "응답: {count}명",
+    "deadline": "마감: {date}",
+    "deadlineUntil": "응답 마감: {date}까지",
+    "created": "생성: {date}"
+  },
+  "actions": {
+    "share": "공유",
+    "csvLabel": "CSV로 다운로드",
+    "icsLabel": "ICS로 캘린더에 추가",
+    "edit": "편집"
+  },
+  "share": {
+    "text": "'{name}' 일정 조율에 응답해 주세요",
+    "copied": "URL을 복사했습니다",
+    "copiedShort": "복사했습니다",
+    "tooltip": "URL 공유"
+  },
+  "error": {
+    "notFound": "이벤트를 찾을 수 없습니다",
+    "notFoundHint": "URL이 올바른지, 이벤트가 삭제되지 않았는지 확인해 주세요.",
+    "loadFailed": "이벤트를 불러오지 못했습니다",
+    "createNew": "새 이벤트 만들기"
+  },
+  "finalized": {
+    "title": "일정이 확정되었습니다",
+    "addIcs": "캘린더에 추가(ICS)",
+    "googleCalendar": "Google 캘린더에 등록"
+  },
+  "closed": {
+    "title": "응답이 마감되었습니다",
+    "byOrganizer": "{date}에 주최자가 응답을 마감했습니다. 일정 확정을 기다려 주세요.",
+    "waiting": "일정 확정을 기다려 주세요.",
+    "expired": "응답 마감({date})이 지났습니다. 일정 확정을 기다려 주세요."
+  },
+  "meeting": {
+    "join": "회의 참가",
+    "provider": {
+      "google_meet": "Google Meet으로 온라인 진행",
+      "teams": "Microsoft Teams로 온라인 진행",
+      "zoom": "Zoom으로 온라인 진행",
+      "other": "온라인 회의"
+    }
+  },
+  "organizer": {
+    "owner": "내가 만든 이벤트입니다.",
+    "editKey": "이 탭에서는 주최자로 인증되었습니다.",
+    "editPage": "편집 페이지로",
+    "close": "응답 마감하기",
+    "reopen": "응답 받기 재개"
+  },
+  "tabs": {
+    "responses": "응답 현황",
+    "respond": "응답하기",
+    "editMine": "내 응답 편집",
+    "summary": "집계 결과"
+  },
+  "respond": {
+    "cta": "참석 여부 응답하기",
+    "closedFinalized": "이 이벤트는 일정이 확정되어 응답이 마감되었습니다",
+    "closedByOrganizer": "이 이벤트는 응답이 마감되었습니다. 주최자의 확정을 기다려 주세요",
+    "closedExpired": "응답 마감이 지나 응답할 수 없습니다",
+    "closedInactive": "이 이벤트는 현재 응답을 받지 않습니다"
+  },
+  "reminder": {
+    "title": "미응답자에게 리마인드",
+    "titleEmpty": "참가자에게 URL을 공유하세요",
+    "body": "현재 {count}명이 응답했습니다. 아직 응답하지 않은 사람에게 URL을 다시 보내 응답을 요청해 보세요.",
+    "bodyEmpty": "아직 응답이 없습니다. URL을 공유해서 응답을 모아 보세요.",
+    "deadline": "응답 마감: {date}",
+    "deadlineSoon": "응답 마감까지 24시간도 남지 않았습니다({date})",
+    "share": "URL 공유"
+  },
+  "summary": {
+    "empty": "응답이 있으면 집계 결과가 표시됩니다",
+    "title": "후보 날짜별 응답 현황",
+    "scoreHelp": "점수 = {yes}×2 + {maybe}×1. 점수가 가장 높은 후보를 '추천'으로 표시합니다.",
+    "listLabel": "후보 날짜 목록(점수순)",
+    "recommended": "추천",
+    "finalized": "확정",
+    "answered": "응답 {count}/{total}명",
+    "reasonsTitle": "추천 이유",
+    "reason": {
+      "allOk": "모두 참석할 수 있습니다",
+      "mostOk": "'{symbol}'이(가) 가장 많은 후보입니다({count}명)",
+      "noNg": "'{symbol}'(참석 불가)인 사람이 없습니다",
+      "fewestNg": "'{symbol}'이(가) 가장 적은 후보입니다({count}명)",
+      "topScore": "점수가 가장 높은 후보입니다",
+      "earliestTie": "점수가 같은 후보 중 가장 이른 일정입니다"
+    },
+    "finalizeCta": "이 후보로 확정",
+    "addToCalendar": "캘린더에 추가(ICS)",
+    "kpi": {
+      "participants": "응답자 수",
+      "maxOk": "최대 '{symbol}' 수",
+      "candidates": "후보 날짜 수"
+    }
+  },
+  "fix": {
+    "title": "이 일시로 확정할까요?",
+    "breakdown": "응답 내역",
+    "warning": "확정하면 응답 받기가 종료됩니다. 확정은 편집 페이지에서 해제할 수 있습니다.",
+    "confirm": "확정하기"
+  },
+  "toast": {
+    "authRequired": "편집 키를 다시 입력해 주세요(편집 페이지에서 인증할 수 있습니다)",
+    "finalized": "일정을 확정했습니다",
+    "finalizedHint": "참가자에게 확정 사실을 알려 주세요",
+    "closed": "응답을 마감했습니다",
+    "reopened": "응답 받기를 재개했습니다"
+  },
+  "delete": {
+    "title": "응답을 삭제할까요?",
+    "body": "{name} 님의 응답을 삭제합니다. 이 작업은 취소할 수 없습니다.",
+    "bodyOwn": "내 응답을 삭제합니다. 이 작업은 취소할 수 없습니다.",
+    "confirm": "삭제하기",
+    "done": "응답을 삭제했습니다"
+  },
+  "created": {
+    "title": "이벤트를 만들었습니다",
+    "description": "이 URL을 참가자에게 공유해서 응답을 모아 보세요.",
+    "shareUrl": "공유 URL",
+    "editKey": "편집 키",
+    "editKeyWarning": "편집 키는 이벤트 편집·일정 확정·삭제에 필요합니다. 다시 표시할 수 없으니 꼭 메모해 두세요.",
+    "copy": "복사",
+    "copied": "복사됨",
+    "copyLabel": "{label} 복사",
+    "ok": "확인"
+  },
+  "success": {
+    "submitted": "응답을 보냈습니다",
+    "updated": "응답을 수정했습니다",
+    "thanks": "응답해 주셔서 감사합니다",
+    "ctaTitle": "나도 이벤트를 만들어 볼까요?",
+    "ctaFree": "가입 불필요 / 무료",
+    "ctaExport": "결과를 CSV·ICS로 내보내기 가능",
+    "ctaButton": "이벤트 만들기"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "title": "설정",
+  "language": "표시 언어",
+  "timezone": "시간대",
+  "notifications": "알림 설정",
+  "emailNotifications": "이메일 알림 받기",
+  "emailNotificationsHelp": "응답이나 예약이 있을 때, 일정이 확정되었을 때 이메일로 알려 드립니다."
+}

@@ -1,4 +1,4 @@
-name: CI
+name: 品質チェック（API・画面・E2E）
 
 on:
   push:

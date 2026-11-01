@@ -38,11 +38,17 @@ class SettingsSecurityTests(TestCase):
 
     def test_production_settings_security_headers(self):
         """Production settings should have security headers enabled."""
-        from django.conf import settings
-        
-        # These settings should be True when DEBUG=False
-        # For now, verify they exist in the settings module
-        if not settings.DEBUG:
-            self.assertTrue(hasattr(settings, 'SECURE_BROWSER_XSS_FILTER'))
-            self.assertTrue(hasattr(settings, 'SECURE_CONTENT_TYPE_NOSNIFF'))
-            self.assertTrue(hasattr(settings, 'X_FRAME_OPTIONS'))
+        from django.http import HttpResponse
+        from django.middleware.clickjacking import XFrameOptionsMiddleware
+        from django.middleware.security import SecurityMiddleware
+        from django.test import RequestFactory, override_settings
+
+        # Django 4 removed SECURE_BROWSER_XSS_FILTER. Verify the supported
+        # protections on a real response instead of checking setting presence.
+        with override_settings(DEBUG=False):
+            handler = SecurityMiddleware(
+                XFrameOptionsMiddleware(lambda request: HttpResponse('ok'))
+            )
+            response = handler(RequestFactory().get('/', secure=True))
+        self.assertEqual(response['X-Content-Type-Options'], 'nosniff')
+        self.assertEqual(response['X-Frame-Options'], 'DENY')

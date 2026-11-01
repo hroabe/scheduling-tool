@@ -17,6 +17,7 @@ import { useI18n } from '@/providers/I18nProvider';
 
 export function FaqAccordion() {
     const { t } = useI18n();
+    const hoverBg = useColorModeValue('gray.50', 'gray.700');
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
 
@@ -65,7 +66,7 @@ export function FaqAccordion() {
                                 <AccordionButton
                                     py={3}
                                     px={4}
-                                    _hover={{ bg: useColorModeValue('gray.50', 'gray.700') }}
+                                    _hover={{ bg: hoverBg }}
                                 >
                                     <Box flex="1" textAlign="left" fontSize="md" fontWeight="medium">
                                         {item.question}

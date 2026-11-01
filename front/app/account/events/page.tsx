@@ -53,6 +53,7 @@ export default function MyEventsPage() {
     const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
     const [sortOption, setSortOption] = useState<SortOption>('newest');
 
+    const cardBg = useColorModeValue('white', 'gray.800');
     const pageBg = useColorModeValue('gray.50', 'gray.900');
     const subtitleColor = useColorModeValue('gray.600', 'gray.400');
 
@@ -195,7 +196,7 @@ export default function MyEventsPage() {
                                 placeholder="イベント名で検索…"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                bg={useColorModeValue('white', 'gray.800')}
+                                bg={cardBg}
                             />
                         </InputGroup>
 
@@ -221,7 +222,7 @@ export default function MyEventsPage() {
                             maxW={{ base: '100%', md: '180px' }}
                             value={sortOption}
                             onChange={(e) => setSortOption(e.target.value as SortOption)}
-                            bg={useColorModeValue('white', 'gray.800')}
+                            bg={cardBg}
                         >
                             <option value="newest">新しい順</option>
                             <option value="oldest">古い順</option>
@@ -242,7 +243,7 @@ export default function MyEventsPage() {
                     {/* Event List */}
                     {filteredSchedules.length === 0 ? (
                         <Box
-                            bg={useColorModeValue('white', 'gray.800')}
+                            bg={cardBg}
                             borderRadius="xl"
                             p={8}
                             textAlign="center"

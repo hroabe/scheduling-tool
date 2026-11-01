@@ -9,6 +9,7 @@ import type {
     ScheduleSummary,
     Participant,
     ParticipantInput,
+    ParticipantResponse,
     PaginatedResponse,
     User,
     UserProfile,
@@ -137,9 +138,9 @@ class ApiClient {
         uuid: string,
         data: ParticipantInput,
         editToken?: string
-    ): Promise<Participant> {
+    ): Promise<ParticipantResponse> {
         const body = editToken ? { ...data, edit_token: editToken } : data;
-        return this.request<Participant>(`/api/v1/schedules/${uuid}/respond/`, {
+        return this.request<ParticipantResponse>(`/api/v1/schedules/${uuid}/respond/`, {
             method: 'POST',
             body: JSON.stringify(body),
         });

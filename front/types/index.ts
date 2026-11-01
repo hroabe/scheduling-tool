@@ -44,6 +44,11 @@ export interface Participant {
     updated_at: string;
 }
 
+export interface ParticipantResponse extends Participant {
+    // Only returned when a new response is created, not when it is updated.
+    edit_token?: string;
+}
+
 export interface ParticipantInput {
     name: string;
     comment?: string;

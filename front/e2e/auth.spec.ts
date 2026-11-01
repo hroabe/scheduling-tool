@@ -24,41 +24,42 @@ test.describe('Authentication Flow', () => {
 
   test('login page should load correctly', async ({ page }) => {
     await page.goto('/login');
-
-    // Page should display login form
-    await expect(page.locator('h1, h2').first()).toContainText(/Login|ログイン/i);
-
-    // Form fields should be present
-    await expect(page.locator('input[name="username"]')).toBeVisible();
-    await expect(page.locator('input[name="password"]')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Login|ログイン/i, exact: true })).toBeVisible();
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await expect(page.locator('input[type="password"]')).toHaveCount(0);
     await expect(page.locator('button[type="submit"]')).toBeVisible();
   });
 
-  test('should show error on failed login', async ({ page }) => {
+  test('should show error on failed login', async ({ page, request }) => {
+    // Create an isolated CI account so the real email-check API selects login.
+    const username = `e2e_${Date.now()}`;
+    const email = `${username}@example.test`;
+    const password = 'E2e-Only-Valid-Password-739!';
+    const created = await request.post('http://localhost:8000/api/v1/accounts/register/', {
+      data: { username, email, password, password_confirm: password },
+    });
+    expect(created.status()).toBe(201);
+
     await page.goto('/login');
-
-    await page.fill('input[name="username"]', 'wronguser');
-    await page.fill('input[name="password"]', 'wrongpass');
-    await page.click('button[type="submit"]');
-
-    // Wait for response and check for error (red box or text indicating error)
-    await page.waitForTimeout(1000);
-
-    // Should show error message - check for error box or toast
-    const errorVisible = await page.locator('.chakra-toast, [role="alert"], text=Error, text=failed, text=失敗').first().isVisible({ timeout: 5000 }).catch(() => false);
-
-    // If error is visible, test passes
-    // If no error, we may be on login page still (which is also acceptable)
-    if (!errorVisible) {
-      await expect(page).toHaveURL(/login/);
-    }
+    await page.locator('input[type="email"]').fill(email);
+    await page.locator('button[type="submit"]').click();
+    await expect(page.locator('input[type="password"]')).toBeVisible();
+    await page.locator('input[type="password"]').fill('Wrong-password-739!');
+    const rejected = page.waitForResponse(response =>
+      response.url().endsWith('/api/v1/accounts/login/') && response.request().method() === 'POST');
+    await page.locator('button[type="submit"]').click();
+    expect((await rejected).status()).toBe(400);
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page).toHaveURL(/login/);
   });
 
-  test('register link should navigate to register page', async ({ page }) => {
+  test('new email should navigate to register page', async ({ page }) => {
+    const email = `new_${Date.now()}@example.test`;
     await page.goto('/login');
-
-    await page.click('a:has-text("Register"), a:has-text("登録")');
-    await expect(page).toHaveURL(/register/);
+    await page.locator('input[type="email"]').fill(email);
+    await page.locator('button[type="submit"]').click();
+    await expect(page).toHaveURL(`/register?email=${encodeURIComponent(email)}`);
+    await expect(page.locator('input[name="username"]')).toBeVisible();
   });
 
   test('login link should navigate to login page', async ({ page }) => {

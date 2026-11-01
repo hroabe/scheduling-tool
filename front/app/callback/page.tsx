@@ -7,13 +7,21 @@
  * Handles the OAuth2/OIDC callback after Keycloak authentication
  */
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Box, Container, VStack, Spinner, Text, Alert, AlertIcon } from '@chakra-ui/react';
 import { keycloakConfig, exchangeCodeForTokens } from '@/lib/keycloak';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function CallbackPage() {
+    return (
+        <Suspense fallback={<Container maxW="container.sm" py={20}><Spinner size="xl" color="brand.500" /></Container>}>
+            <CallbackContent />
+        </Suspense>
+    );
+}
+
+function CallbackContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [error, setError] = useState<string | null>(null);

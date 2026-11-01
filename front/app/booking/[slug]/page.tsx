@@ -75,6 +75,7 @@ export default function PublicBookingPage() {
     const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+    const pageBg = useColorModeValue('gray.50', 'gray.900');
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.600');
     const selectedBg = useColorModeValue('blue.50', 'blue.900');
@@ -187,7 +188,7 @@ export default function PublicBookingPage() {
     }
 
     return (
-        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Box minH="100vh" bg={pageBg}>
             <Header />
             <Container maxW="container.xl" py={8}>
                 <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={6}>

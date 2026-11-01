@@ -66,6 +66,7 @@ export default function BookingHostPage() {
     const [newSlotStartTime, setNewSlotStartTime] = useState('09:00');
     const [newSlotEndTime, setNewSlotEndTime] = useState('09:30');
 
+    const pageBg = useColorModeValue('gray.50', 'gray.900');
     const cardBg = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.600');
 
@@ -181,7 +182,7 @@ export default function BookingHostPage() {
     }
 
     return (
-        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Box minH="100vh" bg={pageBg}>
             <Header />
             <Container maxW="container.lg" py={8}>
                 <VStack spacing={6} align="stretch">

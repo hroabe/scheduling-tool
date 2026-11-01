@@ -5,7 +5,7 @@
  * 認証トークンを検証して予約ページを公開
  */
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
     Box,
@@ -24,6 +24,14 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 
 export default function BookingVerifyPage() {
+    return (
+        <Suspense fallback={<Container maxW="container.sm" py={16}><Spinner size="xl" color="blue.500" /></Container>}>
+            <BookingVerifyContent />
+        </Suspense>
+    );
+}
+
+function BookingVerifyContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     

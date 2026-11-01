@@ -92,7 +92,7 @@ test.describe('Responsive Design', () => {
     // Desktop navigation should be hidden
     const desktopNav = page.locator('header').locator('[data-testid="desktop-nav"]');
     // Check that login button is not visible in header (it's in drawer)
-    await expect(page.locator('header').locator('a[href="/login"]')).not.toBeVisible();
+    await expect(page.locator('header').getByRole('link', { name: /^(Login|ログイン)$/i, includeHidden: true })).not.toBeVisible();
   });
 
   test('should show full navigation on desktop', async ({ page }) => {
@@ -107,7 +107,7 @@ test.describe('Responsive Design', () => {
     await expect(menuButton).not.toBeVisible();
 
     // Desktop navigation should be visible
-    await expect(page.locator('header').locator('a[href="/login"]')).toBeVisible();
+    await expect(page.locator('header').getByRole('link', { name: /^(Login|ログイン)$/i, includeHidden: true })).toBeVisible();
   });
 
   test('should work on tablet viewport', async ({ page }) => {
